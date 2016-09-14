@@ -220,7 +220,7 @@ class AZTabBarController: UIViewController {
         }
     }
     
-    public func set(action: AZTabBarAction, atIndex index: Int) {
+    public func set(action: @escaping AZTabBarAction, atIndex index: Int) {
         self.actions[(index)] = action
     }
     
@@ -275,6 +275,16 @@ class AZTabBarController: UIViewController {
         if index != NSNotFound {
             self.set(selectedIndex: index, animated: true)
         }
+    }
+    
+    func longClick(sender:AnyObject?){
+        let button = (sender as! UIGestureRecognizer).view as! UIButton
+        let index = self.buttons.index(of: button)
+        
+        if selectedIndex != index {
+            tabButtonAction(button: button)
+        }
+        
     }
     
     
@@ -345,11 +355,13 @@ class AZTabBarController: UIViewController {
     
     private func createButton(forIndex index:Int)-> UIButton{
         let button = UIButton(type: .custom)
-        
-        button.addTarget(self, action: #selector(AZTabBarController.tabButtonAction(button:)), for: .touchUpInside)
-        
+        button.isExclusiveTouch = true
+        button.addTarget(self, action: #selector(self.tabButtonAction(button:)), for: .touchUpInside)
+        button.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(self.longClick(sender:))))
         return button
     }
+    
+    
     
     private func moveToController(at index:Int,animated:Bool){
         let subController:UIViewController? = controllers[index] as? UIViewController
@@ -583,6 +595,9 @@ fileprivate extension UIButton {
         // original color.
         self.setImage(image.imageWithColor(color: defaultColor!), for: .normal)
         
+        self.setImage(image.imageWithColor(color: defaultColor!), for: .highlighted)
+        
+        self.setImage(image.imageWithColor(color: defaultColor!), for: UIControlState.reserved)
         
         // When the button is selected, we apply the tint color using the
         // always template mode.

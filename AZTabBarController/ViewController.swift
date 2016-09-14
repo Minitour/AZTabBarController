@@ -18,11 +18,11 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         
         var icons = [String]()
-        icons.append("archive")
-        icons.append("clock")
-        icons.append("globe")
-        icons.append("map")
-        icons.append("target")
+        icons.append("ic_star")
+        icons.append("ic_history")
+        icons.append("ic_phone")
+        icons.append("ic_chat")
+        icons.append("ic_settings")
         
         let tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
         
@@ -51,17 +51,13 @@ class ViewController: UIViewController {
         
         tabController.set(action: { 
             self.counter = 0
-            tabController.set(badge: nil, atIndex: 0)
-            }, atIndex: 0)
+            tabController.set(badge: nil, atIndex: 3)
+            }, atIndex: 3)
         
         tabController.set(action: {
             self.counter += 1
-            tabController.set(badge: "\(self.counter)", atIndex: 0)
+            tabController.set(badge: "\(self.counter)", atIndex: 3)
             }, atIndex: 2)
-        
-        tabController.set(action: { 
-            tabController.setBar(hidden: true, animated: true)
-            }, atIndex: 3)
         
         
     }
@@ -86,7 +82,6 @@ class LabelController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = UIColor.gray
         labelView.text = text
     }
     
