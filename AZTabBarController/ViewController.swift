@@ -29,9 +29,6 @@ class ViewController: UIViewController {
         
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "No Favorites", title: "Favorites")), atIndex: 0)
         
-        
-        
-        
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "No Recents", title: "Recents")), atIndex: 1)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "Did you expect me to make an actual keypad?", title: "Phone")), atIndex: 2)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
