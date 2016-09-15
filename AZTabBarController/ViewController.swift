@@ -26,11 +26,16 @@ class ViewController: UIViewController {
         
         let tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
         
-        tabController.set(viewController: LabelController.controller(text: "Test 1"), atIndex: 0)
-        tabController.set(viewController: LabelController.controller(text: "Test 2"), atIndex: 1)
-        tabController.set(viewController: LabelController.controller(text: "Test 3"), atIndex: 2)
-        tabController.set(viewController: LabelController.controller(text: "Test 4"), atIndex: 3)
-        tabController.set(viewController: LabelController.controller(text: "Test 5"), atIndex: 4)
+        
+        tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "No Favorites", title: "Favorites")), atIndex: 0)
+        
+        
+        
+        
+        tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "No Recents", title: "Recents")), atIndex: 1)
+        tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "Did you expect me to make an actual keypad?", title: "Phone")), atIndex: 2)
+        tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
+        tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "...", title: "Settings")), atIndex: 4)
         
         
 //        tabController.defaultColor = UIColor.white
@@ -63,15 +68,19 @@ class ViewController: UIViewController {
     }
     
     
-    
+    func getNavigationController(root: UIViewController)->UINavigationController{
+        let navigationController = UINavigationController(rootViewController: root)
+        navigationController.title = title
+        return navigationController
+    }
 }
 
 class LabelController: UIViewController {
     
-    class func controller(text:String)-> LabelController{
+    class func controller(text:String, title: String)-> LabelController{
         
         let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "LabelController") as! LabelController
-        
+        controller.title = title
         controller.text = text
         return controller
     }
