@@ -30,33 +30,33 @@ icons.append("ic_settings")
 
 Now initialize the controller object through the following methods:
 ```swift
-    let tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
+let tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
 ```
 
 Or the old fashion way:
 ```swift
-    let tabController = AZTabBarController(withTabIconNames: icons)
-    self.addChildViewController(controller)
-    self.view.addSubview(controller.view)
-    tabController.view.frame = parent.view.bounds
-    tabController.didMove(toParentViewController: parent)
+let tabController = AZTabBarController(withTabIconNames: icons)
+self.addChildViewController(controller)
+self.view.addSubview(controller.view)
+tabController.view.frame = parent.view.bounds
+tabController.didMove(toParentViewController: parent)
 ```
 
 Add optional controllers:
 ```swift
-    tabController.set(viewController: myChildViewController, atIndex: 0)
-    tabController.set(viewController: myOtherChildViewController, atIndex: 1)
-    tabController.set(viewController: settingsController, atIndex: 2)
+tabController.set(viewController: myChildViewController, atIndex: 0)
+tabController.set(viewController: myOtherChildViewController, atIndex: 1)
+tabController.set(viewController: settingsController, atIndex: 2)
 ```
 
 Add optional actions:
 ```swift
-    tabController.set(action: { 
+tabController.set(action: { 
 
-        //Your statments
-        print("Hello World")
+    //Your statments
+    print("Hello World")
 
-    }, atIndex: 3)
+}, atIndex: 3)
 ```
 
 Note that you can add both actions and view controllers at a certain index.
@@ -65,37 +65,36 @@ Note that you can add both actions and view controllers at a certain index.
 
 ```swift
 
-    tabController.defaultColor = UIColor.white //default color of the icons on the buttons
-        
-    tabController.selectedColor = UIColor.orange //the color of the icon when a menu is selected
-        
-    tabController.buttonsBackgroundColor = UIColor.black //The background color of the tab bar in a nutshell
+tabController.defaultColor = UIColor.white //default color of the icons on the buttons
 
-    tabController.selectionIndicatorHeight = 0 // default is 3.0
+tabController.selectedColor = UIColor.orange //the color of the icon when a menu is selected
 
-    tabController.highlightButton(atIndex: 2) //make this button look highlighted.
+tabController.buttonsBackgroundColor = UIColor.black //The background color of the tab bar in a nutshell
 
-    tabController.separatorLineColor = UIColor.black // change the seperator line color (I recommened to leave this untouched or simply hide the seperator)
+tabController.selectionIndicatorHeight = 0 // default is 3.0
 
-    tabController.separatorLineVisible = false //hide or show the seperator line
+tabController.highlightButton(atIndex: 2) //make this button look highlighted.
+
+tabController.separatorLineColor = UIColor.black // change the seperator line color (I recommened to leave this untouched or simply hide the seperator)
+
+tabController.separatorLineVisible = false //hide or show the seperator line
 ```
 
 ##Extras
 
-
 Hide/Show the tab bar:
 ```swift
-     tabController.setBar(hidden: true, animated: true)
+tabController.setBar(hidden: true, animated: true)
 ```
 
 Add badge to menu (use nil value to remove existing badges): 
 ```swift
-    tabController.set(badge: "5", atIndex: 3)
+tabController.set(badge: "5", atIndex: 3)
 ```
 
 switch programmatically to a certain tab: 
 ```swift
-    tabController.set(selectedIndex: 2, animated: true)
+tabController.set(selectedIndex: 2, animated: true)
 ```
 
 ##Credit
