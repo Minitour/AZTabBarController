@@ -9,14 +9,14 @@
 import UIKit
 import EasyNotificationBadge
 
-typealias AZTabBarAction = () -> Void
-class AZTabBarController: UIViewController {
+public typealias AZTabBarAction = () -> Void
+public class AZTabBarController: UIViewController {
     
     /*
      *  MARK: - Static instance methods
      */
     
-    class func insert(into parent:UIViewController, withTabIconNames: [String])->AZTabBarController {
+    open class func insert(into parent:UIViewController, withTabIconNames: [String])->AZTabBarController {
         let controller = AZTabBarController(withTabIconNames: withTabIconNames)
         parent.addChildViewController(controller)
         parent.view.addSubview(controller.view)
@@ -26,7 +26,7 @@ class AZTabBarController: UIViewController {
         return controller
     }
     
-    class func insert(into parent:UIViewController, withTabIcons: [AnyObject])->AZTabBarController {
+    open class func insert(into parent:UIViewController, withTabIcons: [AnyObject])->AZTabBarController {
         let controller = AZTabBarController(withTabIcons: withTabIcons)
         parent.addChildViewController(controller)
         parent.view.addSubview(controller.view)
@@ -35,12 +35,12 @@ class AZTabBarController: UIViewController {
         
         return controller
     }
-
+    
     /*
      * MARK: - Public Properties
      */
     
-    public var selectedColor:UIColor! {
+    open var selectedColor:UIColor! {
         didSet{
             self.updateInterfaceIfNeeded()
             if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
@@ -49,7 +49,7 @@ class AZTabBarController: UIViewController {
         }
     }
     
-    public var defaultColor:UIColor! {
+    open var defaultColor:UIColor! {
         didSet{
             self.updateInterfaceIfNeeded()
             if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
@@ -58,7 +58,7 @@ class AZTabBarController: UIViewController {
         }
     }
     
-    public var buttonsBackgroundColor:UIColor!{
+    open var buttonsBackgroundColor:UIColor!{
         didSet{
             if buttonsBackgroundColor != oldValue {
                 self.updateInterfaceIfNeeded()
@@ -67,9 +67,9 @@ class AZTabBarController: UIViewController {
         }
     }
     
-    public var selectedIndex:Int!
+    open var selectedIndex:Int!
     
-    public var separatorLineVisible:Bool = true{
+    open var separatorLineVisible:Bool = true{
         didSet{
             if separatorLineVisible != oldValue {
                 self.setupSeparatorLine()
@@ -77,7 +77,7 @@ class AZTabBarController: UIViewController {
         }
     }
     
-    public var separatorLineColor:UIColor!{
+    open var separatorLineColor:UIColor!{
         didSet{
             if self.separatorLine != nil {
                 self.separatorLine.backgroundColor = separatorLineColor
@@ -85,9 +85,9 @@ class AZTabBarController: UIViewController {
         }
     }
     
-    public var highlightsSelectedButton:Bool = false
+    open var highlightsSelectedButton:Bool = false
     
-    public var selectionIndicatorHeight:CGFloat = 3.0{
+    open var selectionIndicatorHeight:CGFloat = 3.0{
         didSet{
             updateInterfaceIfNeeded()
         }
@@ -97,15 +97,15 @@ class AZTabBarController: UIViewController {
      * MARK: - Internal Properties
      */
     
-    @IBOutlet weak var controllersContainer:UIView!
+    @IBOutlet fileprivate weak var controllersContainer:UIView!
     
-    @IBOutlet weak var buttonsContainer:UIView!
+    @IBOutlet fileprivate weak var buttonsContainer:UIView!
     
-    @IBOutlet weak var separatorLine:UIView!
+    @IBOutlet fileprivate weak var separatorLine:UIView!
     
-    @IBOutlet weak var separatorLineHeightConstraint:NSLayoutConstraint!
+    @IBOutlet fileprivate weak var separatorLineHeightConstraint:NSLayoutConstraint!
     
-    @IBOutlet weak var buttonsContainerHeightConstraint:NSLayoutConstraint!
+    @IBOutlet fileprivate weak var buttonsContainerHeightConstraint:NSLayoutConstraint!
     
     internal var buttons:NSMutableArray!
     
@@ -125,27 +125,27 @@ class AZTabBarController: UIViewController {
     
     
     
-    private var controllers:NSMutableDictionary!
+    fileprivate var controllers:NSMutableDictionary!
     
-    private var actions:NSMutableDictionary!
+    fileprivate var actions:NSMutableDictionary!
     
-    private var didSetupInterface:Bool = false
+    fileprivate var didSetupInterface:Bool = false
     
-    private var highlightedButtonIndexes:NSMutableSet!
+    fileprivate var highlightedButtonIndexes:NSMutableSet!
     
     /*
      * MARK: - Init
      */
     
-    init(withTabIcons tabIcons: [AnyObject]) {
+    public init(withTabIcons tabIcons: [AnyObject]) {
         let bundle = Bundle(for: AZTabBarController.self)
         super.init(nibName: "AZTabBarController", bundle: bundle)
         self.initialize(withTabIcons: tabIcons)
         
-    
+        
     }
     
-    convenience init(withTabIconNames iconNames: [String]) {
+    public convenience init(withTabIconNames iconNames: [String]) {
         var icons = [AnyObject]()
         for name in iconNames {
             icons.append(UIImage(named: name)!)
@@ -153,7 +153,7 @@ class AZTabBarController: UIViewController {
         self.init(withTabIcons: icons)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -163,12 +163,12 @@ class AZTabBarController: UIViewController {
      * MARK: - UIViewController
      */
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         self.buttonsContainerHeightConstraintInitialConstant = self.buttonsContainerHeightConstraint.constant
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         if self.selectedIndex == -1 {
@@ -180,7 +180,7 @@ class AZTabBarController: UIViewController {
         
     }
     
-    override func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
+    override public func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         // When rotating, have to update the selection indicator leading to match
         // the selected button x, that might have changed because of the rotation.
         
@@ -199,7 +199,7 @@ class AZTabBarController: UIViewController {
      */
     
     
-    public func set(viewController controller: UIViewController, atIndex index: Int) {
+    open func set(viewController controller: UIViewController, atIndex index: Int) {
         if let currentViewController:UIViewController = (self.controllers[index] as? UIViewController){
             currentViewController.removeFromParentViewController()
         }
@@ -211,7 +211,7 @@ class AZTabBarController: UIViewController {
         }
     }
     
-    public func set(selectedIndex index:Int,animated:Bool){
+    open func set(selectedIndex index:Int,animated:Bool){
         if self.selectedIndex != index {
             moveToController(at: index, animated: animated)
         }
@@ -221,11 +221,11 @@ class AZTabBarController: UIViewController {
         }
     }
     
-    public func set(action: @escaping AZTabBarAction, atIndex index: Int) {
+    open func set(action: @escaping AZTabBarAction, atIndex index: Int) {
         self.actions[(index)] = action
     }
     
-    public func set(badge: String?, atIndex index:Int){
+    open func set(badge: String?, atIndex index:Int){
         if let button = buttons[index] as? UIButton {
             //button.badge(text: badge, badgeEdgeInsets: UIEdgeInsets(top: 5 , left: 15, bottom: 0, right: 0))
             var appearnce = BadgeAppearnce()
@@ -236,12 +236,12 @@ class AZTabBarController: UIViewController {
         }
     }
     
-    public func highlightButton(atIndex index: Int) {
+    open func highlightButton(atIndex index: Int) {
         self.highlightedButtonIndexes.add(index)
         self.updateInterfaceIfNeeded()
     }
     
-    public func setButtonTintColor(color: UIColor, atIndex index: Int) {
+    open func setButtonTintColor(color: UIColor, atIndex index: Int) {
         if !self.highlightedButtonIndexes.contains((index)) {
             let button:UIButton = self.buttons[index] as! UIButton
             button.tintColor! = color
@@ -251,7 +251,7 @@ class AZTabBarController: UIViewController {
         }
     }
     
-    public func setBar(hidden: Bool, animated: Bool) {
+    open func setBar(hidden: Bool, animated: Bool) {
         let animations = {() -> Void in
             self.buttonsContainerHeightConstraint.constant = hidden ? 0 : self.buttonsContainerHeightConstraintInitialConstant
             self.view.layoutIfNeeded()
@@ -269,7 +269,7 @@ class AZTabBarController: UIViewController {
     /*
      * MARK: - Actions
      */
-
+    
     func tabButtonAction(button:UIButton){
         let index = self.buttons.index(of: button)
         
@@ -292,7 +292,7 @@ class AZTabBarController: UIViewController {
     /*
      * MARK: - Private methods
      */
-
+    
     private func initialize(withTabIcons tabIcons:[AnyObject]){
         assert(tabIcons.count > 0, "The array of tab icons shouldn't be empty.")
         
@@ -491,7 +491,7 @@ fileprivate extension AZTabBarController {
         self.buttonsContainer.addConstraints(self.bottomLayoutConstraintsForIndicator())
     }
     
-
+    
     
     func setupConstraints(forChildController controller: UIViewController) {
         let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: [], metrics: nil, views: ["view": controller.view])
