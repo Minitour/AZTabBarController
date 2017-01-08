@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1275B07B8657B17D4A95BF28 /* Pods_AZTabBarController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C1DF6371E2DF3A8BE6120E9 /* Pods_AZTabBarController.framework */; };
 		4F613FFD1D883D72005BFB4F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F613FFC1D883D72005BFB4F /* AppDelegate.swift */; };
 		4F6140021D883D72005BFB4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F6140001D883D72005BFB4F /* Main.storyboard */; };
 		4F6140041D883D72005BFB4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F6140031D883D72005BFB4F /* Assets.xcassets */; };
@@ -17,6 +18,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A0F8BB07592D080B9FAE825 /* Pods-AZTabBarController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AZTabBarController.release.xcconfig"; path = "Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController.release.xcconfig"; sourceTree = "<group>"; };
 		4F613FF91D883D72005BFB4F /* AZTabBarController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AZTabBarController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F613FFC1D883D72005BFB4F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4F6140011D883D72005BFB4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -26,6 +28,8 @@
 		4F6140111D886FE4005BFB4F /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4F6140141D895F14005BFB4F /* AZTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarController.swift; sourceTree = "<group>"; };
 		4F6140151D895F14005BFB4F /* AZTabBarController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AZTabBarController.xib; sourceTree = "<group>"; };
+		5C1DF6371E2DF3A8BE6120E9 /* Pods_AZTabBarController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AZTabBarController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		9433B79E50ED01D596E39D98 /* Pods-AZTabBarController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AZTabBarController.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -33,18 +37,29 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1275B07B8657B17D4A95BF28 /* Pods_AZTabBarController.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2064703B5BE1C7D40D02770B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				5C1DF6371E2DF3A8BE6120E9 /* Pods_AZTabBarController.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4F613FF01D883D72005BFB4F = {
 			isa = PBXGroup;
 			children = (
 				4F6140131D895F14005BFB4F /* Sources */,
 				4F613FFB1D883D72005BFB4F /* AZTabBarController */,
 				4F613FFA1D883D72005BFB4F /* Products */,
+				EEE99515ED9EF315E9EAAD93 /* Pods */,
+				2064703B5BE1C7D40D02770B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,6 +93,15 @@
 			path = Sources;
 			sourceTree = "<group>";
 		};
+		EEE99515ED9EF315E9EAAD93 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				9433B79E50ED01D596E39D98 /* Pods-AZTabBarController.debug.xcconfig */,
+				2A0F8BB07592D080B9FAE825 /* Pods-AZTabBarController.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -85,9 +109,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 4F61400B1D883D72005BFB4F /* Build configuration list for PBXNativeTarget "AZTabBarController" */;
 			buildPhases = (
+				CC3374129962B6DD15F9049A /* [CP] Check Pods Manifest.lock */,
 				4F613FF51D883D72005BFB4F /* Sources */,
 				4F613FF61D883D72005BFB4F /* Frameworks */,
 				4F613FF71D883D72005BFB4F /* Resources */,
+				CC710D6F7D0CDC6E5B699A7F /* [CP] Embed Pods Frameworks */,
+				EFA7C56E3FB00E82F8ECFED9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -146,6 +173,54 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		CC3374129962B6DD15F9049A /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		CC710D6F7D0CDC6E5B699A7F /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EFA7C56E3FB00E82F8ECFED9 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "[CP] Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		4F613FF51D883D72005BFB4F /* Sources */ = {
@@ -273,6 +348,7 @@
 		};
 		4F61400C1D883D72005BFB4F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9433B79E50ED01D596E39D98 /* Pods-AZTabBarController.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = Y759RK5K7D;
@@ -286,6 +362,7 @@
 		};
 		4F61400D1D883D72005BFB4F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2A0F8BB07592D080B9FAE825 /* Pods-AZTabBarController.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = Y759RK5K7D;

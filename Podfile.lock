@@ -1,0 +1,12 @@
+PODS:
+  - EasyNotificationBadge (1.0.1)
+
+DEPENDENCIES:
+  - EasyNotificationBadge
+
+SPEC CHECKSUMS:
+  EasyNotificationBadge: b74584698ea3ec9955cf1ad5b8c99a340f54be53
+
+PODFILE CHECKSUM: 76924a542007406cd0250ddbd64bfc372f5d5078
+
+COCOAPODS: 1.1.0.rc.2

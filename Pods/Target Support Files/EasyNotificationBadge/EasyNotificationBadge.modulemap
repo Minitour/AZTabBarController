@@ -1,0 +1,6 @@
+framework module EasyNotificationBadge {
+  umbrella header "EasyNotificationBadge-umbrella.h"
+
+  export *
+  module * { export * }
+}
