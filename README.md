@@ -7,14 +7,16 @@ A custom tab bar controller for iOS written in Swift 3.0
 
 ##Installation
 
-###Manual:
-
-Simply drag and drop the ```Sources``` folder to your project.
 
 ###Cocoa Pods:
 
-Will be added soon.
+```bash
+pod 'AZTabBar'
+```
 
+###Manual:
+
+Simply drag and drop the ```Sources``` folder to your project.
 
 ##Usage
 
