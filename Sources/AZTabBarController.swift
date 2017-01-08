@@ -185,11 +185,24 @@ public class AZTabBarController: UIViewController {
         // the selected button x, that might have changed because of the rotation.
         
         let selectedButtonX: CGFloat = (self.buttons[self.selectedIndex] as! UIButton).frame.origin.x
+        
         if self.selectionIndicatorLeadingConstraint.constant != selectedButtonX {
             UIView.animate(withDuration: 0.1, animations: {() -> Void in
                 self.selectionIndicatorLeadingConstraint.constant = selectedButtonX
                 self.view.layoutIfNeeded()
             })
+        }
+    }
+    
+    override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: { (context) in
+        }) { (context) in
+            
+            UIView.animate(withDuration: 0.1, animations: { 
+                self.moveToController(at: self.selectedIndex, animated: false)
+            })
+            
         }
     }
     
@@ -408,7 +421,6 @@ public class AZTabBarController: UIViewController {
                 controller.view.translatesAutoresizingMaskIntoConstraints = false
                 
                 self.controllersContainer.addSubview(controller.view)
-                
                 
                 self.setupConstraints(forChildController: controller)
                 

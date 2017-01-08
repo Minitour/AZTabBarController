@@ -27,7 +27,7 @@ class ViewController: UIViewController {
         let tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
         
         
-        tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "No Favorites", title: "Favorites")), atIndex: 0)
+        tabController.set(viewController: UINavigationController(rootViewController: LabelController.controller(text: "No Favorites", title: "Favorites")), atIndex: 0)
         
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "No Recents", title: "Recents")), atIndex: 1)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "Did you expect me to make an actual keypad?", title: "Phone")), atIndex: 2)
