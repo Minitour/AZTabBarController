@@ -194,17 +194,6 @@ public class AZTabBarController: UIViewController {
         }
     }
     
-    override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
-        super.viewWillTransition(to: size, with: coordinator)
-        coordinator.animate(alongsideTransition: { (context) in
-        }) { (context) in
-            
-            UIView.animate(withDuration: 0.1, animations: { 
-                self.moveToController(at: self.selectedIndex, animated: false)
-            })
-            
-        }
-    }
     
     
     /*
@@ -375,8 +364,6 @@ public class AZTabBarController: UIViewController {
         return button
     }
     
-    
-    
     private func moveToController(at index:Int,animated:Bool){
         let subController:UIViewController? = controllers[index] as? UIViewController
         if let controller = subController {
@@ -399,10 +386,11 @@ public class AZTabBarController: UIViewController {
             if self.selectedIndex >= 0 {
                 let currentController:UIViewController = self.controllers[selectedIndex] as! UIViewController
                 currentController.view.removeFromSuperview()
+                currentController.removeFromParentViewController()
             }
             
             if !self.childViewControllers.contains(controller){
-                controller.didMove(toParentViewController: self)
+                controller.willMove(toParentViewController: self)
             }
             
             if NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 {
@@ -414,8 +402,10 @@ public class AZTabBarController: UIViewController {
                 // For this reason, we just adjust the frame to the container
                 // bounds leaving the autoresizing constraints enabled.
                 
-                self.controllersContainer.addSubview(controller.view)
+                
                 controller.view.frame = self.controllersContainer.bounds
+                self.controllersContainer.addSubview(controller.view)
+                
             }else{
                 
                 controller.view.translatesAutoresizingMaskIntoConstraints = false
@@ -424,7 +414,11 @@ public class AZTabBarController: UIViewController {
                 
                 self.setupConstraints(forChildController: controller)
                 
+                
             }
+            
+            self.addChildViewController(controller)
+            controller.didMove(toParentViewController: self)
             
             self.moveSelectionIndicator(toIndex: index,animated:animated)
             

@@ -48,7 +48,7 @@ class ViewController: UIViewController {
         
         //tabController.highlightButton(atIndex: 2)
         
-        tabController.selectionIndicatorHeight = 0
+        tabController.selectionIndicatorHeight = 3
         
         
         tabController.set(action: { 
