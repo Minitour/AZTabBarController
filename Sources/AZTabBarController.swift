@@ -16,8 +16,13 @@ public class AZTabBarController: UIViewController {
      *  MARK: - Static instance methods
      */
     
-    open class func insert(into parent:UIViewController, withTabIconNames: [String])->AZTabBarController {
-        let controller = AZTabBarController(withTabIconNames: withTabIconNames)
+    ///This function creates an instance of AZTabBarController using the specifed icons and inserts it into the provided view controller.
+    /// - parameter parent: The controller which we are inserting our Tab Bar controller into.
+    /// - parameter names: An array which contains the names of the icons that will be displayed as default.
+    /// - parameter sNames: An optional array which contains the names of the icons that will be displayed when the menu is selected.
+    /// - returns: The instance of AZTabBarController which was created.
+    open class func insert(into parent:UIViewController, withTabIconNames names: [String],andSelectedIconNames sNames: [String]? = nil)->AZTabBarController {
+        let controller = AZTabBarController(withTabIconNames: names,highlightedIcons: sNames)
         parent.addChildViewController(controller)
         parent.view.addSubview(controller.view)
         controller.view.frame = parent.view.bounds
@@ -26,13 +31,17 @@ public class AZTabBarController: UIViewController {
         return controller
     }
     
-    open class func insert(into parent:UIViewController, withTabIcons: [AnyObject])->AZTabBarController {
-        let controller = AZTabBarController(withTabIcons: withTabIcons)
+    ///This function creates an instance of AZTabBarController using the specifed icons and inserts it into the provided view controller.
+    /// - parameter parent: The controller which we are inserting our Tab Bar controller into.
+    /// - parameter icons: An array which contains the images of the icons that will be displayed as default.
+    /// - parameter sIcons: An optional array which contains the images of the icons that will be displayed when the menu is selected.
+    /// - returns: The instance of AZTabBarController which was created.
+    open class func insert(into parent:UIViewController, withTabIcons icons: [UIImage],andSelectedIcons sIcons: [UIImage]? = nil)->AZTabBarController {
+        let controller = AZTabBarController(withTabIcons: icons,highlightedIcons: sIcons)
         parent.addChildViewController(controller)
         parent.view.addSubview(controller.view)
         controller.view.frame = parent.view.bounds
         controller.didMove(toParentViewController: parent)
-        
         return controller
     }
     
@@ -40,6 +49,7 @@ public class AZTabBarController: UIViewController {
      * MARK: - Public Properties
      */
     
+    ///The color of icon in the tab bar when the menu is selected.
     open var selectedColor:UIColor! {
         didSet{
             self.updateInterfaceIfNeeded()
@@ -49,6 +59,7 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    ///The default icon color of the buttons in the tab bar.
     open var defaultColor:UIColor! {
         didSet{
             self.updateInterfaceIfNeeded()
@@ -58,6 +69,7 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    ///The background color of the buttons in the tab bar.
     open var buttonsBackgroundColor:UIColor!{
         didSet{
             if buttonsBackgroundColor != oldValue {
@@ -67,8 +79,10 @@ public class AZTabBarController: UIViewController {
         }
     }
     
-    open var selectedIndex:Int!
+    ///The current selected index.
+    private (set) open var selectedIndex:Int!
     
+    ///If the separator line view that is between the buttons container and the primary view container is visable.
     open var separatorLineVisible:Bool = true{
         didSet{
             if separatorLineVisible != oldValue {
@@ -77,6 +91,7 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    ///The color of the separator.
     open var separatorLineColor:UIColor!{
         didSet{
             if self.separatorLine != nil {
@@ -85,8 +100,13 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    ///Change the alpha of the deselected menus that do not have actions set on them to 0.5
     open var highlightsSelectedButton:Bool = false
     
+    ///The appearance of the notification badge.
+    open var notificationBadgeAppearance: BadgeAppearnce = BadgeAppearnce()
+    
+    ///The height of the selection indicator.
     open var selectionIndicatorHeight:CGFloat = 3.0{
         didSet{
             updateInterfaceIfNeeded()
@@ -97,20 +117,31 @@ public class AZTabBarController: UIViewController {
      * MARK: - Internal Properties
      */
     
+    ///The view that holds the views of the controllers.
     @IBOutlet fileprivate weak var controllersContainer:UIView!
     
+    ///The view which holds the buttons.
     @IBOutlet fileprivate weak var buttonsContainer:UIView!
     
+    ///The separator line between the controllers container and the buttons container.
     @IBOutlet fileprivate weak var separatorLine:UIView!
     
+    ///NSLayoutConstraint of the height of the seperator line.
     @IBOutlet fileprivate weak var separatorLineHeightConstraint:NSLayoutConstraint!
     
+    ///NSLayoutConstraint of the height of the button container.
     @IBOutlet fileprivate weak var buttonsContainerHeightConstraint:NSLayoutConstraint!
     
+    ///Array which holds the buttons.
     internal var buttons:NSMutableArray!
     
-    internal var tabIcons:[AnyObject]!
+    ///Array which holds the default tab icons.
+    internal var tabIcons:[UIImage]!
     
+    ///Optional Array which holds the highlighted tab icons.
+    internal var selectedTabIcons: [UIImage]?
+    
+    ///The view that goes inside the buttons container and indicates which menu is selected.
     internal var selectionIndicator:UIView!
     
     internal var selectionIndicatorLeadingConstraint:NSLayoutConstraint!
@@ -123,41 +154,48 @@ public class AZTabBarController: UIViewController {
      * MARK: - Private Properties
      */
     
-    
-    
+    ///Array which holds the controllers.
     fileprivate var controllers:NSMutableDictionary!
     
+    ///Array which holds the actions.
     fileprivate var actions:NSMutableDictionary!
     
+    ///A flag to indicate if the interface was set up.
     fileprivate var didSetupInterface:Bool = false
     
+    ///An array which keeps track of the highlighted menus.
     fileprivate var highlightedButtonIndexes:NSMutableSet!
     
     /*
      * MARK: - Init
      */
     
-    public init(withTabIcons tabIcons: [AnyObject]) {
+    public init(withTabIcons tabIcons: [UIImage],highlightedIcons: [UIImage]? = nil) {
         let bundle = Bundle(for: AZTabBarController.self)
         super.init(nibName: "AZTabBarController", bundle: bundle)
-        self.initialize(withTabIcons: tabIcons)
-        
-        
+        self.initialize(withTabIcons: tabIcons,highlightedIcons: highlightedIcons)
     }
     
-    public convenience init(withTabIconNames iconNames: [String]) {
-        var icons = [AnyObject]()
+    public convenience init(withTabIconNames iconNames: [String],highlightedIcons: [String]? = nil) {
+        var icons = [UIImage]()
         for name in iconNames {
             icons.append(UIImage(named: name)!)
         }
-        self.init(withTabIcons: icons)
+        
+        var highlighted: [UIImage]?
+        if let imageNames = highlightedIcons{
+            highlighted = [UIImage]()
+            for name in imageNames{
+                highlighted?.append(UIImage(named: name)!)
+            }
+        }
+        
+        self.init(withTabIcons: icons,highlightedIcons: highlighted)
     }
     
     required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-    
     
     /*
      * MARK: - UIViewController
@@ -194,13 +232,13 @@ public class AZTabBarController: UIViewController {
         }
     }
     
-    
-    
     /*
      * MARK: - AZTabBarController
      */
     
-    
+    ///Set a UIViewController at an index.
+    /// - parameter controller: The view controller which you wish to display at a certain index.
+    /// - parameter index: The index of the menu.
     open func set(viewController controller: UIViewController, atIndex index: Int) {
         if let currentViewController:UIViewController = (self.controllers[index] as? UIViewController){
             currentViewController.removeFromParentViewController()
@@ -213,6 +251,9 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    ///Change the current menu programatically.
+    /// - parameter index: The index of the menu.
+    /// - parameter animated: animate the selection indicator or not.
     open func set(selectedIndex index:Int,animated:Bool){
         if self.selectedIndex != index {
             moveToController(at: index, animated: animated)
@@ -223,26 +264,34 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    ///Set an action at a certain index.
+    /// - parameter action: A closure which contains the action that will be executed when clicking the menu at a certain index.
+    /// - parameter index: The index of the menu of which you would like to add an action to.
     open func set(action: @escaping AZTabBarAction, atIndex index: Int) {
         self.actions[(index)] = action
     }
     
-    open func set(badge: String?, atIndex index:Int){
+    ///Set a badge with a text on a menu at a certain index. In order to remove an existing badge use `nil` for the `text` parameter.
+    /// - parameter text: The text you wish to set.
+    /// - parameter index: The index of the menu in which you would like to add the badge.
+    open func set(badgeText text: String?, atIndex index:Int){
         if let button = buttons[index] as? UIButton {
-            //button.badge(text: badge, badgeEdgeInsets: UIEdgeInsets(top: 5 , left: 15, bottom: 0, right: 0))
-            var appearnce = BadgeAppearnce()
-            appearnce.distenceFromCenterX = 15
-            appearnce.distenceFromCenterY = -10
-            
-            button.badge(text: badge, appearnce:appearnce)
+            self.notificationBadgeAppearance.distenceFromCenterX = 15
+            self.notificationBadgeAppearance.distenceFromCenterY = -10
+            button.badge(text: text, appearnce: self.notificationBadgeAppearance)
         }
     }
     
+    ///Make a button look highlighted.
+    /// - parameter index: The index of the button which you would like to highlight.
     open func highlightButton(atIndex index: Int) {
         self.highlightedButtonIndexes.add(index)
         self.updateInterfaceIfNeeded()
     }
     
+    ///Set a tint color for a button at a certain index.
+    /// - parameter color: The color which you would like to set as tint color for the button at a certain index.
+    /// - parameter index: The index of the button.
     open func setButtonTintColor(color: UIColor, atIndex index: Int) {
         if !self.highlightedButtonIndexes.contains((index)) {
             let button:UIButton = self.buttons[index] as! UIButton
@@ -253,6 +302,9 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    ///Show and hide the tab bar.
+    /// - parameter hidden: To hide or show.
+    /// - parameter animated: To animate or not.
     open func setBar(hidden: Bool, animated: Bool) {
         let animations = {() -> Void in
             self.buttonsContainerHeightConstraint.constant = hidden ? 0 : self.buttonsContainerHeightConstraintInitialConstant
@@ -266,7 +318,6 @@ public class AZTabBarController: UIViewController {
             animations()
         }
     }
-    
     
     /*
      * MARK: - Actions
@@ -295,10 +346,16 @@ public class AZTabBarController: UIViewController {
      * MARK: - Private methods
      */
     
-    private func initialize(withTabIcons tabIcons:[AnyObject]){
+    private func initialize(withTabIcons tabIcons:[UIImage],highlightedIcons: [UIImage]? = nil){
         assert(tabIcons.count > 0, "The array of tab icons shouldn't be empty.")
         
+        if let highlightedIcons = highlightedIcons {
+            assert(tabIcons.count == highlightedIcons.count,"Default and highlighted icons must come in pairs.")
+        }
+        
         self.tabIcons = tabIcons
+        
+        self.selectedTabIcons = highlightedIcons
         
         self.controllers = NSMutableDictionary(capacity: tabIcons.count)
         
@@ -352,7 +409,12 @@ public class AZTabBarController: UIViewController {
             
             let isHighlighted = self.highlightedButtonIndexes.contains(i)
             
-            button.customizeForTabBarWithImage(image: self.tabIcons[i] as! UIImage, selectedColor: self.selectedColor ?? UIColor.black, highlighted: isHighlighted,defaultColor: self.defaultColor ?? UIColor.gray)
+            var highlightedImage: UIImage?
+            if let selectedImages = self.selectedTabIcons {
+                highlightedImage = selectedImages[i]
+            }
+            
+            button.customizeForTabBarWithImage(image: self.tabIcons[i],highlightImage: highlightedImage, selectedColor: self.selectedColor ?? UIColor.black, highlighted: isHighlighted,defaultColor: self.defaultColor ?? UIColor.gray)
         }
     }
     
@@ -577,12 +639,12 @@ fileprivate extension AZTabBarController {
 fileprivate extension UIButton {
     // MARK: - Public methods
     
-    func customizeForTabBarWithImage(image: UIImage, selectedColor: UIColor, highlighted: Bool,defaultColor: UIColor? = UIColor.gray) {
+    func customizeForTabBarWithImage(image: UIImage,highlightImage: UIImage? = nil, selectedColor: UIColor, highlighted: Bool,defaultColor: UIColor? = UIColor.gray) {
         if highlighted {
             self.customizeAsHighlightedButtonForTabBarWithImage(image: image, selectedColor: selectedColor)
         }
         else {
-            self.customizeAsNormalButtonForTabBarWithImage(image: image, selectedColor: selectedColor,defaultColor: defaultColor)
+            self.customizeAsNormalButtonForTabBarWithImage(image: image,highlightImage: highlightImage, selectedColor: selectedColor,defaultColor: defaultColor)
         }
     }
     // MARK: - Private methods
@@ -595,20 +657,23 @@ fileprivate extension UIButton {
         self.backgroundColor = selectedColor
     }
     
-    private func customizeAsNormalButtonForTabBarWithImage(image: UIImage, selectedColor: UIColor, defaultColor: UIColor? = UIColor.gray) {
+    private func customizeAsNormalButtonForTabBarWithImage(image: UIImage,highlightImage: UIImage? = nil, selectedColor: UIColor, defaultColor: UIColor? = UIColor.gray) {
         // The tint color is the one used for selected state.
         self.tintColor = selectedColor
         // When the button is not selected, we show the image always with its
         // original color.
-        self.setImage(image.imageWithColor(color: defaultColor!), for: .normal)
         
+        self.setImage(image.imageWithColor(color: defaultColor!), for: [])
         self.setImage(image.imageWithColor(color: defaultColor!), for: .highlighted)
+        if let hImage = highlightImage {
+            self.setImage(hImage.imageWithColor(color: selectedColor), for: .selected)
+            self.setImage(hImage.imageWithColor(color: selectedColor), for: [.selected, .highlighted])
+        }else{
+            self.setImage(image.imageWithColor(color: selectedColor), for: .selected)
+            self.setImage(image.imageWithColor(color: selectedColor), for: [.selected, .highlighted])
+        }
         
-        self.setImage(image.imageWithColor(color: defaultColor!), for: UIControlState.reserved)
         
-        // When the button is selected, we apply the tint color using the
-        // always template mode.
-        self.setImage(image.imageWithColor(color: selectedColor), for: .selected)
         // We don't want a background color to use the one in the tab bar.
         self.backgroundColor = UIColor.clear
     }

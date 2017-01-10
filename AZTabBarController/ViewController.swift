@@ -24,6 +24,15 @@ class ViewController: UIViewController {
         icons.append("ic_chat")
         icons.append("ic_settings")
         
+        var sIcons = [String]()
+        sIcons.append("ic_settings")
+        sIcons.append("ic_star")
+        sIcons.append("ic_history")
+        sIcons.append("ic_phone")
+        sIcons.append("ic_chat")
+        
+        
+        
         let tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
         
         
@@ -34,31 +43,22 @@ class ViewController: UIViewController {
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "...", title: "Settings")), atIndex: 4)
         
-        
-//        tabController.defaultColor = UIColor.white
-//        
-//        tabController.selectedColor = UIColor.orange
-//        
-//        tabController.buttonsBackgroundColor = UIColor.black
-        
         tabController.selectedColor = UIColor(colorLiteralRed: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0)
         
         tabController.buttonsBackgroundColor = UIColor(colorLiteralRed: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)
         
-        
-        //tabController.highlightButton(atIndex: 2)
-        
         tabController.selectionIndicatorHeight = 3
         
+        tabController.highlightsSelectedButton = true
         
         tabController.set(action: { 
             self.counter = 0
-            tabController.set(badge: nil, atIndex: 3)
+            tabController.set(badgeText: nil, atIndex: 3)
             }, atIndex: 3)
         
         tabController.set(action: {
             self.counter += 1
-            tabController.set(badge: "\(self.counter)", atIndex: 3)
+            tabController.set(badgeText: "\(self.counter)", atIndex: 3)
             }, atIndex: 2)
         
         
