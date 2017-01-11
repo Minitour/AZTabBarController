@@ -13,6 +13,7 @@ class ViewController: UIViewController {
     
     
     var counter = 0
+    var tabController:AZTabBarController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,13 +34,14 @@ class ViewController: UIViewController {
         
         
         
-        let tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
+        tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
+        
+        tabController.delegate = self
         
         
         tabController.set(viewController: UINavigationController(rootViewController: LabelController.controller(text: "No Favorites", title: "Favorites")), atIndex: 0)
-        
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "No Recents", title: "Recents")), atIndex: 1)
-        tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "Did you expect me to make an actual keypad?", title: "Phone")), atIndex: 2)
+        //tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "Did you expect me to make an actual keypad?", title: "Phone")), atIndex: 2)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "...", title: "Settings")), atIndex: 4)
         
@@ -49,26 +51,55 @@ class ViewController: UIViewController {
         
         tabController.selectionIndicatorHeight = 3
         
-        tabController.highlightsSelectedButton = true
+        //tabController.highlightsSelectedButton = true
         
         tabController.set(action: { 
             self.counter = 0
-            tabController.set(badgeText: nil, atIndex: 3)
+            self.tabController.set(badgeText: nil, atIndex: 3)
             }, atIndex: 3)
         
         tabController.set(action: {
             self.counter += 1
-            tabController.set(badgeText: "\(self.counter)", atIndex: 3)
+            self.tabController.set(badgeText: "\(self.counter)", atIndex: 3)
             }, atIndex: 2)
         
         
     }
     
+    override var childViewControllerForStatusBarStyle: UIViewController?{
+        return tabController
+    }
     
     func getNavigationController(root: UIViewController)->UINavigationController{
         let navigationController = UINavigationController(rootViewController: root)
         navigationController.title = title
         return navigationController
+    }
+}
+
+extension ViewController: AZTabBarDelegate{
+    func tabBar(_ tabBar: AZTabBarController, statusBarStyleForIndex index: Int) -> UIStatusBarStyle {
+        return (index % 2) == 0 ? .default : .lightContent
+    }
+    
+    func tabBar(_ tabBar: AZTabBarController, shouldLongClickForIndex index: Int) -> Bool {
+        return false
+    }
+    
+    func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int) {
+        print("didMoveToTabAtIndex \(index)")
+    }
+    
+    func tabBar(_ tabBar: AZTabBarController, didSelectTabAtIndex index: Int) {
+        print("didSelectTabAtIndex \(index)")
+    }
+    
+    func tabBar(_ tabBar: AZTabBarController, willMoveToTabAtIndex index: Int) {
+        print("willMoveToTabAtIndex \(index)")
+    }
+    
+    func tabBar(_ tabBar: AZTabBarController, didLongClickTabAtIndex index: Int) {
+        print("didLongClickTabAtIndex \(index)")
     }
 }
 

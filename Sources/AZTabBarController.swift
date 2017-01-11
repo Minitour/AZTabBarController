@@ -10,6 +10,62 @@ import UIKit
 import EasyNotificationBadge
 
 public typealias AZTabBarAction = () -> Void
+
+public protocol AZTabBarDelegate {
+    
+    ///This function is called after `didMoveToTabAtIndex` is called. In order for this function to work you must override the var `childViewControllerForStatusBarStyle` in the root controller to return this instance of AZTabBarController.
+    /// - parameter tabBar: The current instance of AZTabBarController.
+    /// - parameter index: The index of the child view controller which you wish to set a status bar style for.
+    func tabBar(_ tabBar: AZTabBarController, statusBarStyleForIndex index: Int)-> UIStatusBarStyle
+    
+    ///This function is called whenever user clicks the menu a long click. If returned false, the action will be ignored.
+    /// - parameter tabBar: The current instance of AZTabBarController.
+    /// - parameter index: The index of the child view controller which you wish to disable the long menu click for.
+    func tabBar(_ tabBar: AZTabBarController, shouldLongClickForIndex index: Int)-> Bool
+    
+    ///This function is called whenever user taps one of the menu buttons.
+    /// - parameter tabBar: The current instance of AZTabBarController.
+    /// - parameter index: The index of the menu the user tapped.
+    func tabBar(_ tabBar: AZTabBarController, didSelectTabAtIndex index: Int)
+    
+    ///This function is called whenever user taps and hold one of the menu buttons. Note that this function will not be called for a certain index if `shouldLongClickForIndex` is implemented and returns false for that very same index.
+    /// - parameter tabBar: The current instance of AZTabBarController.
+    /// - parameter index: The index of the menu the user long clicked.
+    func tabBar(_ tabBar: AZTabBarController, didLongClickTabAtIndex index:Int)
+    
+    ///This function is called before the child view controllers are switched.
+    /// - parameter tabBar: The current instance of AZTabBarController.
+    /// - parameter index: The index of the controller which the tab bar will be switching to.
+    func tabBar(_ tabBar: AZTabBarController, willMoveToTabAtIndex index:Int)
+    
+    ///This function is called after the child view controllers are switched.
+    /// - parameter tabBar: The current instance of AZTabBarController.
+    /// - parameter index: The index of the controller which the tab bar had switched to.
+    func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int)
+    
+}
+
+//The point of this extension is to make the delegate functions optional.
+public extension AZTabBarDelegate{
+    
+    func tabBar(_ tabBar: AZTabBarController, statusBarStyleForIndex index: Int)-> UIStatusBarStyle{
+        return .default
+    }
+    
+    func tabBar(_ tabBar: AZTabBarController, shouldLongClickForIndex index: Int)-> Bool{
+        return true
+    }
+    
+    func tabBar(_ tabBar: AZTabBarController, didSelectTabAtIndex index: Int){}
+    
+    func tabBar(_ tabBar: AZTabBarController, didLongClickTabAtIndex index:Int){}
+    
+    func tabBar(_ tabBar: AZTabBarController, willMoveToTabAtIndex index:Int){}
+    
+    func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int){}
+    
+}
+
 public class AZTabBarController: UIViewController {
     
     /*
@@ -113,9 +169,28 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    open var delegate: AZTabBarDelegate!
+    
     /*
      * MARK: - Internal Properties
      */
+    
+    override public var preferredStatusBarStyle: UIStatusBarStyle{
+        return self.statusBarStyle
+    }
+    
+    override public var childViewControllerForStatusBarStyle: UIViewController?{
+        return nil
+    }
+    
+    ///A var to change the status bar appearnce
+    internal var statusBarStyle: UIStatusBarStyle = .default{
+        didSet{
+            if oldValue != statusBarStyle {
+                self.setNeedsStatusBarAppearanceUpdate()
+            }
+        }
+    }
     
     ///The view that holds the views of the controllers.
     @IBOutlet fileprivate weak var controllersContainer:UIView!
@@ -325,6 +400,9 @@ public class AZTabBarController: UIViewController {
     
     func tabButtonAction(button:UIButton){
         let index = self.buttons.index(of: button)
+        if let delegate = delegate{
+            delegate.tabBar(self, didSelectTabAtIndex: index)
+        }
         
         if index != NSNotFound {
             self.set(selectedIndex: index, animated: true)
@@ -332,8 +410,22 @@ public class AZTabBarController: UIViewController {
     }
     
     func longClick(sender:AnyObject?){
+        
+        
         let button = (sender as! UIGestureRecognizer).view as! UIButton
         let index = self.buttons.index(of: button)
+        
+        if let delegate = delegate{
+            if !delegate.tabBar(self, shouldLongClickForIndex: index) {
+                return
+            }
+        }
+        
+        
+        if let delegate = delegate {
+           delegate.tabBar(self, didLongClickTabAtIndex: index)
+        }
+        
         
         if selectedIndex != index {
             tabButtonAction(button: button)
@@ -366,6 +458,8 @@ public class AZTabBarController: UIViewController {
         self.selectedIndex = -1
         
         self.separatorLineColor = UIColor.lightGray
+        
+        self.modalPresentationCapturesStatusBarAppearance = true
         
     }
     
@@ -445,6 +539,10 @@ public class AZTabBarController: UIViewController {
                 
             }
             
+            if let delegate = delegate {
+                delegate.tabBar(self, willMoveToTabAtIndex: index)
+            }
+            
             if self.selectedIndex >= 0 {
                 let currentController:UIViewController = self.controllers[selectedIndex] as! UIViewController
                 currentController.view.removeFromSuperview()
@@ -463,28 +561,22 @@ public class AZTabBarController: UIViewController {
                 // inside the table.
                 // For this reason, we just adjust the frame to the container
                 // bounds leaving the autoresizing constraints enabled.
-                
-                
                 controller.view.frame = self.controllersContainer.bounds
                 self.controllersContainer.addSubview(controller.view)
                 
             }else{
-                
                 controller.view.translatesAutoresizingMaskIntoConstraints = false
-                
                 self.controllersContainer.addSubview(controller.view)
-                
                 self.setupConstraints(forChildController: controller)
-                
-                
             }
-            
             self.addChildViewController(controller)
             controller.didMove(toParentViewController: self)
-            
             self.moveSelectionIndicator(toIndex: index,animated:animated)
-            
             self.selectedIndex = index
+            if let delegate = delegate {
+                delegate.tabBar(self, didMoveToTabAtIndex: index)
+                self.statusBarStyle = delegate.tabBar(self, statusBarStyleForIndex: index)
+            }
         }
         
     }
@@ -558,8 +650,6 @@ fileprivate extension AZTabBarController {
         self.buttonsContainer.addConstraints(self.heightLayoutConstraintsForIndicator())
         self.buttonsContainer.addConstraints(self.bottomLayoutConstraintsForIndicator())
     }
-    
-    
     
     func setupConstraints(forChildController controller: UIViewController) {
         let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: [], metrics: nil, views: ["view": controller.view])
