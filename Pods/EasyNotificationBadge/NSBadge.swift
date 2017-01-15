@@ -84,9 +84,6 @@ extension UIView {
             doesBadgeExist = true
         }
         
-        //Clip to bounds
-        badgeLabel.clipsToBounds = true
-        
         //Set the text on the badge label
         badgeLabel.text = badgeText
         
@@ -99,10 +96,12 @@ extension UIView {
         badgeLabel.textAlignment = appearnce.textAlignment
         
         //set background color
-        badgeLabel.backgroundColor = appearnce.backgroundColor
+        badgeLabel.layer.backgroundColor = appearnce.backgroundColor.cgColor
         
         //set text color
         badgeLabel.textColor = appearnce.textColor
+        
+        
         
         //get current badge size
         let badgeSize = badgeLabel.frame.size
@@ -120,7 +119,9 @@ extension UIView {
             //remove view to delete constraints
             badgeLabel.removeFromSuperview()
         }
-        addSubview(badgeLabel)
+        self.addSubview(badgeLabel)
+        
+        
         
         //The distance from the center of the view (vertically)
         let centerY = appearnce.distenceFromCenterY == 0 ? -(bounds.size.height / 2) : appearnce.distenceFromCenterY
@@ -146,6 +147,22 @@ extension UIView {
         
         //corner radius
         badgeLabel.layer.cornerRadius = badgeLabel.frame.size.height / 2
+        
+        //setup shadow
+        if appearnce.allowShadow {
+            badgeLabel.layer.shadowOffset = CGSize(width: 1, height: 1)
+            
+            badgeLabel.layer.shadowRadius = 1
+            
+            badgeLabel.layer.shadowOpacity = 0.5
+            
+            badgeLabel.layer.shadowColor = UIColor.black.cgColor
+        }
+        
+        badgeLabel.layer.borderColor = appearnce.borderColor.cgColor
+        
+        badgeLabel.layer.borderWidth = appearnce.borderWidth
+        
         
         //badge does not exist, meaning we are adding a new one
         if !doesBadgeExist {
@@ -213,6 +230,9 @@ class BadgeLabel:UILabel{}
 public struct BadgeAppearnce {
     public var textSize: CGFloat
     public var textAlignment: NSTextAlignment
+    public var borderColor: UIColor
+    public var borderWidth: CGFloat
+    public var allowShadow: Bool
     public var backgroundColor: UIColor
     public var textColor: UIColor
     public var animate: Bool
@@ -227,6 +247,9 @@ public struct BadgeAppearnce {
         textColor = .white
         animate = true
         duration = 0.2
+        borderColor = .clear
+        borderWidth = 0
+        allowShadow = false
         distenceFromCenterY = 0
         distenceFromCenterX = 0
     }

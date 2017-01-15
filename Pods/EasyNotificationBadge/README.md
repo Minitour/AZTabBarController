@@ -8,7 +8,12 @@ The code that was used in this extension was originally written by [mustafaibrah
 
 ##Installation
 
-Simply drag and drop ```NSBadge.swift``` to your project.
+
+```bash
+pod 'EasyNotificationBadge'
+```
+
+Or simply drag and drop ```NSBadge.swift``` to your project.
 
 ##Usage
 
@@ -38,5 +43,10 @@ appearnce.backgroundColor = UIColor.blue //default is red
 appearnce.textColor = UIColor.white // default is white
 appearnce.alignment = .center //default is center
 appearnce.textSize = 15 //default is 12
-view.badge(text: "Your text",badgeEdgeInsets: UIEdgeInsetsMake(20, 0, 0, 15),appearnce: badgeAppearnce)
+appearnce.distenceFromCenterX = 15 //default is 0
+appearnce.distenceFromCenterY = -10 //default is 0
+appearnce.allowShadow = true
+appearnce.borderColor = .blue
+appearnce.borderWidth = 1
+view.badge(text: "Your text", appearnce: badgeAppearnce)
 ```

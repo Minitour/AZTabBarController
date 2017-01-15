@@ -38,6 +38,8 @@ class ViewController: UIViewController {
         
         tabController.delegate = self
         
+
+        
         
         tabController.set(viewController: UINavigationController(rootViewController: LabelController.controller(text: "No Favorites", title: "Favorites")), atIndex: 0)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "No Recents", title: "Recents")), atIndex: 1)
@@ -50,6 +52,8 @@ class ViewController: UIViewController {
         tabController.buttonsBackgroundColor = UIColor(colorLiteralRed: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)
         
         tabController.selectionIndicatorHeight = 3
+        
+        
         
         //tabController.highlightsSelectedButton = true
         
@@ -64,6 +68,11 @@ class ViewController: UIViewController {
             }, atIndex: 2)
         
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        //tabController.set(badgeText: "hi", atIndex: 3)
     }
     
     override var childViewControllerForStatusBarStyle: UIViewController?{
