@@ -33,16 +33,28 @@ class ViewController: UIViewController {
         sIcons.append("ic_chat")
         
         
-        
+        //init
         tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
         
+        
+        //set delegate
         tabController.delegate = self
         
+        //set child controllers
         tabController.set(viewController: UINavigationController(rootViewController: LabelController.controller(text: "No Favorites", title: "Favorites")), atIndex: 0)
-        tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "No Recents", title: "Recents")), atIndex: 1)
+        
+        let darkController = getNavigationController(root: LabelController.controller(text: "No Recents", title: "Recents"))
+        darkController.navigationBar.barStyle = .black
+        darkController.navigationBar.isTranslucent = false
+        darkController.navigationBar.barTintColor = #colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
+        
+        tabController.set(viewController: darkController, atIndex: 1)
         //tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "Did you expect me to make an actual keypad?", title: "Phone")), atIndex: 2)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "...", title: "Settings")), atIndex: 4)
+        
+        
+        //customize
         
         tabController.selectedColor = .white //UIColor(colorLiteralRed: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0)
         
@@ -55,6 +67,8 @@ class ViewController: UIViewController {
         tabController.buttonsBackgroundColor = #colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)//UIColor(colorLiteralRed: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)
         
         tabController.selectionIndicatorHeight = 3
+        
+        tabController.selectionIndicatorColor = #colorLiteral(red: 0.1803921569, green: 0.8, blue: 0.4431372549, alpha: 1)
         
         tabController.tabBarHeight = 60
         

@@ -167,6 +167,14 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    open var selectionIndicatorColor: UIColor!{
+        didSet{
+            self.updateInterfaceIfNeeded()
+            if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
+                button.isSelected = true
+            }
+        }
+    }
     
     /// The background color of the buttons in the tab bar.
     open var buttonsBackgroundColor:UIColor!{
@@ -762,7 +770,7 @@ public class AZTabBarController: UIViewController {
             self.setupSelectionIndicatorConstraints()
         }
         self.selectionIndicatorHeightConstraint.constant = self.selectionIndicatorHeight
-        self.selectionIndicator.backgroundColor = self.selectedColor ?? UIColor.black
+        self.selectionIndicator.backgroundColor = self.selectionIndicatorColor ?? UIColor.black
     }
     
     private func setupSeparatorLine() {
@@ -831,7 +839,6 @@ extension AZTabBarController: AZTabBarButtonDelegate{
  */
 
 fileprivate extension AZTabBarController {
-    
     
     /*
      * MARK: - Public Methods
@@ -1102,11 +1109,7 @@ fileprivate extension AZTabBarButton {
             },
                            completion: nil)
         }
-        if self.bounds.contains(point){
-           super.touchesEnded(touches, with: event)
-        }else {
-          super.touchesCancelled(touches, with: event)  
-        }
+        super.touchesEnded(touches, with: event)
         
     }
     
