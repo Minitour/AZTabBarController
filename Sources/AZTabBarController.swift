@@ -275,19 +275,19 @@ public class AZTabBarController: UIViewController {
     }
     
     /// The view that holds the views of the controllers.
-    @IBOutlet fileprivate weak var controllersContainer:UIView!
+    fileprivate var controllersContainer:UIView!
     
     /// The view which holds the buttons.
-    @IBOutlet fileprivate weak var buttonsContainer:UIView!
+    fileprivate var buttonsContainer:UIView!
     
     /// The separator line between the controllers container and the buttons container.
-    @IBOutlet fileprivate weak var separatorLine:UIView!
+    fileprivate var separatorLine:UIView!
     
     /// NSLayoutConstraint of the height of the seperator line.
-    @IBOutlet fileprivate weak var separatorLineHeightConstraint:NSLayoutConstraint!
+    fileprivate var separatorLineHeightConstraint:NSLayoutConstraint!
     
     /// NSLayoutConstraint of the height of the button container.
-    @IBOutlet fileprivate weak var buttonsContainerHeightConstraint:NSLayoutConstraint!
+    fileprivate var buttonsContainerHeightConstraint:NSLayoutConstraint!
     
     /// Array which holds the buttons.
     internal var buttons:NSMutableArray!
@@ -329,6 +329,44 @@ public class AZTabBarController: UIViewController {
      * MARK: - Init
      */
     
+    override public func loadView() {
+        super.loadView()
+        
+        //init primary views
+        self.controllersContainer = UIView()
+        self.buttonsContainer = UIView()
+        self.separatorLine = UIView()
+        
+        //add in correct hierachy
+        self.view.addSubview(self.buttonsContainer)
+        self.view.addSubview(self.controllersContainer)
+        self.view.addSubview(self.separatorLine)
+        
+        //disable autoresizing mask
+        self.controllersContainer.translatesAutoresizingMaskIntoConstraints = false
+        self.buttonsContainer.translatesAutoresizingMaskIntoConstraints = false
+        self.separatorLine.translatesAutoresizingMaskIntoConstraints = false
+        
+        //setup constraints
+        let margins = self.view!
+        
+        self.buttonsContainer.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+        self.buttonsContainer.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
+        self.buttonsContainer.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+        self.buttonsContainer.topAnchor.constraint(equalTo: self.controllersContainer.bottomAnchor).isActive = true
+        self.buttonsContainer.topAnchor.constraint(equalTo: self.separatorLine.topAnchor).isActive = true
+        self.buttonsContainerHeightConstraint = self.buttonsContainer.heightAnchor.constraint(equalToConstant: 50)
+        self.buttonsContainerHeightConstraint.isActive = true
+        
+        self.separatorLine.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+        self.separatorLine.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+        self.separatorLineHeightConstraint = separatorLine.heightAnchor.constraint(equalToConstant: 1)
+        self.separatorLineHeightConstraint.isActive = true
+        
+        self.controllersContainer.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
+        self.controllersContainer.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
+        self.controllersContainer.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+    }
     
     /// Public initializer that creates a controller using tabIcons and (optional) highlightedIcons.
     ///
@@ -336,8 +374,7 @@ public class AZTabBarController: UIViewController {
     ///   - tabIcons: The default icons of the tabs.
     ///   - highlightedIcons: The icons of the tabs when selected.
     public init(withTabIcons tabIcons: [UIImage],highlightedIcons: [UIImage]? = nil) {
-        let bundle = Bundle(for: AZTabBarController.self)
-        super.init(nibName: "AZTabBarController", bundle: bundle)
+        super.init(nibName: nil,bundle: nil)
         self.initialize(withTabIcons: tabIcons,highlightedIcons: highlightedIcons)
     }
     
