@@ -144,6 +144,11 @@ extension UIView {
         //add horizontal constraint
         self.addConstraint(NSLayoutConstraint(item: badgeLabel, attribute: .centerY, relatedBy: .equal, toItem: self, attribute: .centerY, multiplier: 1.0, constant: centerY))
         
+        badgeLabel.layer.borderColor = appearnce.borderColor.cgColor
+        
+        badgeLabel.layer.borderWidth = appearnce.borderWidth
+        
+        
         
         //corner radius
         badgeLabel.layer.cornerRadius = badgeLabel.frame.size.height / 2
@@ -159,9 +164,7 @@ extension UIView {
             badgeLabel.layer.shadowColor = UIColor.black.cgColor
         }
         
-        badgeLabel.layer.borderColor = appearnce.borderColor.cgColor
         
-        badgeLabel.layer.borderWidth = appearnce.borderWidth
         
         
         //badge does not exist, meaning we are adding a new one
@@ -169,12 +172,23 @@ extension UIView {
             
             //should it animate?
             if appearnce.animate {
-                UIView.animate(withDuration: appearnce.duration/2, animations: { () -> Void in
-                    badgeLabel.transform = CGAffineTransform(scaleX: 0, y: 0)
-                }) { (finished: Bool) -> Void in
-                    UIView.animate(withDuration: appearnce.duration/2, animations: { () -> Void in
-                        badgeLabel.transform = CGAffineTransform.identity
-                    })}
+                badgeLabel.transform = CGAffineTransform(scaleX: 0, y: 0)
+                UIView.animate(withDuration: appearnce.duration,
+                               delay: 0,
+                               usingSpringWithDamping: 0.5,
+                               initialSpringVelocity: 0.5,
+                               options: [],
+                               animations: {
+                               badgeLabel.transform = .identity
+                },
+                               completion: nil)
+                
+                //UIView.animate(withDuration: appearnce.duration/2, animations: { () -> Void in
+                //    badgeLabel.transform = CGAffineTransform(scaleX: 0, y: 0)
+                //}) { (finished: Bool) -> Void in
+                //    UIView.animate(withDuration: appearnce.duration/2, animations: { () -> Void in
+                //        badgeLabel.transform = CGAffineTransform.identity
+                //    })}
             }
         }
     }
@@ -188,12 +202,20 @@ extension UIBarButtonItem {
      * Assign badge with only text.
      */
     public func badge(text badgeText: String!) {
-        getView().badge(text: badgeText ,appearnce: BadgeAppearnce())
+        if let view = getView(){
+            view.badge(text: badgeText ,appearnce: BadgeAppearnce())
+        }else{
+            NSLog("Attempted setting badge with value '\(badgeText ?? "nil")' on a nil UIBarButtonItem view.")
+        }
     }
     
     
     public func badge(text badgeText: String!, appearnce:BadgeAppearnce){
-        getView().badge(text: badgeText, appearnce: appearnce)
+        if let view = getView(){
+            view.badge(text: badgeText, appearnce: appearnce)
+        }else{
+            NSLog("Attempted setting badge with value '\(badgeText ?? "nil")' on a nil UIBarButtonItem view.")
+        }
     }
     
     /*
@@ -201,7 +223,12 @@ extension UIBarButtonItem {
      */
     @available(*,deprecated, message: "Use badge(text: String!, appearnce:BadgeAppearnce)")
     public func badge(text badgeText:String!,badgeEdgeInsets:UIEdgeInsets){
-        getView().badge(text: badgeText, badgeEdgeInsets: badgeEdgeInsets, appearnce: BadgeAppearnce())
+        if let view = getView(){
+            view.badge(text: badgeText, badgeEdgeInsets: badgeEdgeInsets, appearnce: BadgeAppearnce())
+        }else{
+            NSLog("Attempted setting badge with value '\(badgeText ?? "nil")' on a nil UIBarButtonItem view.")
+        }
+        
     }
     
     /*
@@ -209,11 +236,15 @@ extension UIBarButtonItem {
      */
     @available(*,deprecated, message: "Use badge(text: String!, appearnce:BadgeAppearnce)")
     public func badge(text badgeText:String!,badgeEdgeInsets:UIEdgeInsets!,appearnce:BadgeAppearnce){
-        getView().badge(text: badgeText, badgeEdgeInsets: badgeEdgeInsets, appearnce: appearnce)
+        if let view = getView(){
+            view.badge(text: badgeText, badgeEdgeInsets: badgeEdgeInsets, appearnce: appearnce)
+        }else{
+            NSLog("Attempted setting badge with value '\(badgeText ?? "nil")' on a nil UIBarButtonItem view.")
+        }
     }
     
-    private func getView()->UIView{
-        return value(forKey: "view") as! UIView
+    private func getView()->UIView?{
+        return value(forKey: "view") as? UIView
     }
     
 }

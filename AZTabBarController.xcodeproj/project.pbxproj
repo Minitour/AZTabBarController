@@ -14,7 +14,6 @@
 		4F6140071D883D72005BFB4F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F6140051D883D72005BFB4F /* LaunchScreen.storyboard */; };
 		4F6140121D886FE4005BFB4F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6140111D886FE4005BFB4F /* ViewController.swift */; };
 		4F6140161D895F14005BFB4F /* AZTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6140141D895F14005BFB4F /* AZTabBarController.swift */; };
-		4F6140171D895F14005BFB4F /* AZTabBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 4F6140151D895F14005BFB4F /* AZTabBarController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,7 +26,6 @@
 		4F6140081D883D72005BFB4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4F6140111D886FE4005BFB4F /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		4F6140141D895F14005BFB4F /* AZTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarController.swift; sourceTree = "<group>"; };
-		4F6140151D895F14005BFB4F /* AZTabBarController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AZTabBarController.xib; sourceTree = "<group>"; };
 		5C1DF6371E2DF3A8BE6120E9 /* Pods_AZTabBarController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AZTabBarController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9433B79E50ED01D596E39D98 /* Pods-AZTabBarController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AZTabBarController.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -88,7 +86,6 @@
 			isa = PBXGroup;
 			children = (
 				4F6140141D895F14005BFB4F /* AZTabBarController.swift */,
-				4F6140151D895F14005BFB4F /* AZTabBarController.xib */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -167,7 +164,6 @@
 			files = (
 				4F6140071D883D72005BFB4F /* LaunchScreen.storyboard in Resources */,
 				4F6140041D883D72005BFB4F /* Assets.xcassets in Resources */,
-				4F6140171D895F14005BFB4F /* AZTabBarController.xib in Resources */,
 				4F6140021D883D72005BFB4F /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

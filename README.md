@@ -3,7 +3,7 @@ A custom tab bar controller for iOS written in Swift 3.0
 
 ##Screenshots
 
-<img src="Screenshots/ss1.png" height="300" />
+<img src="Screenshots/aztabbar.gif" height="100" />
 
 ##Installation
 
@@ -22,18 +22,33 @@ Simply drag and drop the ```Sources``` folder to your project.
 
 Create an array of String/UIImage:
 ```swift
+//The icons that will be displayed on the tabs that are not currently selected
 var icons = [String]()
-icons.append("ic_star")
-icons.append("ic_history")
-icons.append("ic_phone")
-icons.append("ic_chat")
-icons.append("ic_settings")
+icons.append("ic_star_outline")
+icons.append("ic_history_outline")
+icons.append("ic_phone_outline")
+icons.append("ic_chat_outline")
+icons.append("ic_settings_outline")
+
+//The icons that will be displayed for each tab once they are selected.
+var selectedIcons = [String]()
+icons.append("ic_star_filled")
+icons.append("ic_history_filled")
+icons.append("ic_phone_filled")
+icons.append("ic_chat_filled")
+icons.append("ic_settings_filled")
 ```
 
 Now initialize the controller object through the following methods:
 ```swift
 let tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
+
+//Or
+
+let tabController = AZTabBarController.insert(into: self, withTabIconNames: icons, andSelectedIconNames: selectedIcons)
+
 ```
+
 
 Or the old fashion way:
 ```swift
@@ -69,17 +84,23 @@ Note that you can add both actions and view controllers at a certain index.
 
 tabController.defaultColor = UIColor.white //default color of the icons on the buttons
 
-tabController.selectedColor = UIColor.orange //the color of the icon when a menu is selected
+//the color of the icon when a menu is selected
+tabController.selectedColor = UIColor.orange 
 
-tabController.buttonsBackgroundColor = UIColor.black //The background color of the tab bar in a nutshell
+//The background color of the tab bar in a nutshell
+tabController.buttonsBackgroundColor = UIColor.black 
 
-tabController.selectionIndicatorHeight = 0 // default is 3.0
+// default is 3.0
+tabController.selectionIndicatorHeight = 0 
 
-tabController.highlightButton(atIndex: 2) //make this button look highlighted.
+//make this button look highlighted.
+tabController.highlightButton(atIndex: 2) 
 
-tabController.separatorLineColor = UIColor.black // change the seperator line color (I recommened to leave this untouched or simply hide the seperator)
+// change the seperator line color (I recommened to leave this untouched or simply hide the seperator)
+tabController.separatorLineColor = UIColor.black 
 
-tabController.separatorLineVisible = false //hide or show the seperator line
+//hide or show the seperator line
+tabController.separatorLineVisible = false 
 ```
 
 ##Extras
@@ -97,6 +118,76 @@ tabController.set(badge: "5", atIndex: 3)
 switch programmatically to a certain tab: 
 ```swift
 tabController.set(selectedIndex: 2, animated: true)
+```
+
+##Delegate Methods
+
+These are the functions of the AZTabBarDelegate:
+
+```swift
+/// This function is called after `didMoveToTabAtIndex` is called. In order for this function to work you must override the var `childViewControllerForStatusBarStyle` in the root controller to return this instance of AZTabBarController.
+///
+/// - Parameters:
+///   - tabBar: The current instance of AZTabBarController.
+///   - index: The index of the child view controller which you wish to set a status bar style for.
+/// - Returns: The status bar style.
+func tabBar(_ tabBar: AZTabBarController, statusBarStyleForIndex index: Int)-> UIStatusBarStyle
+```
+
+```swift
+/// This function is called whenever user clicks the menu a long click. If returned false, the action will be ignored.
+///
+/// - Parameters:
+///   - tabBar: The current instance of AZTabBarController.
+///   - index: The index of the child view controller which you wish to disable the long menu click for.
+/// - Returns: true if you wish to allow long-click interaction for a specific tab, false otherwise.
+func tabBar(_ tabBar: AZTabBarController, shouldLongClickForIndex index: Int)-> Bool
+```
+
+```swift
+/// This function is used to enable/disable animation for a certian tab.
+///
+/// - Parameters:
+///   - tabBar: The current instance of AZTabBarController.
+///   - index: The index of the tab.
+/// - Returns: true if you wish to enable the animation, false otherwise.
+func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index:Int)->Bool
+```
+
+```swift
+/// This function is called whenever user taps one of the menu buttons.
+///
+/// - Parameters:
+///   - tabBar: The current instance of AZTabBarController.
+///   - index: The index of the menu the user tapped.
+func tabBar(_ tabBar: AZTabBarController, didSelectTabAtIndex index: Int)
+```
+
+```swift
+/// This function is called whenever user taps and hold one of the menu buttons. Note that this function will not be called for a certain index if `shouldLongClickForIndex` is implemented and returns false for that very same index.
+///
+/// - Parameters:
+///   - tabBar: The current instance of AZTabBarController.
+///   - index: The index of the menu the user long clicked.
+func tabBar(_ tabBar: AZTabBarController, didLongClickTabAtIndex index:Int)
+```
+
+```swift
+/// This function is called before the child view controllers are switched.
+///
+/// - Parameters:
+///   - tabBar: The current instance of AZTabBarController.
+///   - index: The index of the controller which the tab bar will be switching to.
+func tabBar(_ tabBar: AZTabBarController, willMoveToTabAtIndex index:Int)
+```
+
+```swift
+/// This function is called after the child view controllers are switched.
+///
+/// - Parameters:
+///   - tabBar: The current instance of AZTabBarController.
+///   - index: The index of the controller which the tab bar had switched to.
+func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int)
 ```
 
 ##Credit
