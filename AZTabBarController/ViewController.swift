@@ -38,24 +38,29 @@ class ViewController: UIViewController {
         
         tabController.delegate = self
         
-
-        
-        
         tabController.set(viewController: UINavigationController(rootViewController: LabelController.controller(text: "No Favorites", title: "Favorites")), atIndex: 0)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "No Recents", title: "Recents")), atIndex: 1)
         //tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "Did you expect me to make an actual keypad?", title: "Phone")), atIndex: 2)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "...", title: "Settings")), atIndex: 4)
         
-        tabController.selectedColor = UIColor(colorLiteralRed: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0)
+        tabController.selectedColor = .white //UIColor(colorLiteralRed: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0)
         
-        tabController.buttonsBackgroundColor = UIColor(colorLiteralRed: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)
+        tabController.highlightedColor = #colorLiteral(red: 0.1803921569, green: 0.8, blue: 0.4431372549, alpha: 1)
+        
+        tabController.defaultColor = .white
+        
+        tabController.highlightButton(atIndex: 2)
+        
+        tabController.buttonsBackgroundColor = #colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)//UIColor(colorLiteralRed: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)
         
         tabController.selectionIndicatorHeight = 3
         
-        
+        tabController.tabBarHeight = 60
         
         //tabController.highlightsSelectedButton = true
+        
+        tabController.set(badgeText: "!", atIndex: 4)
         
         tabController.set(action: { 
             self.counter = 0
@@ -67,12 +72,15 @@ class ViewController: UIViewController {
             self.tabController.set(badgeText: "\(self.counter)", atIndex: 3)
             }, atIndex: 2)
         
+        tabController.set(action: { 
+            //self.tabController.setBar(hidden: true, animated: true)
+            
+        }, atIndex: 4)
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        //tabController.set(badgeText: "hi", atIndex: 3)
     }
     
     override var childViewControllerForStatusBarStyle: UIViewController?{
@@ -92,7 +100,11 @@ extension ViewController: AZTabBarDelegate{
     }
     
     func tabBar(_ tabBar: AZTabBarController, shouldLongClickForIndex index: Int) -> Bool {
-        return false
+        return false//index != 2 && index != 3
+    }
+    
+    func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index: Int) -> Bool {
+        return index != 2
     }
     
     func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int) {
