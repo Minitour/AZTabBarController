@@ -1,6 +1,9 @@
 # AZTabBarController
 A custom tab bar controller for iOS written in Swift 3.0
 
+##Live Demo
+Checkout the live demo on [Appetize](https://appetize.io/app/dmbky73efrt5uvkh4xfdaz5axr?device=iphone6s&scale=75&orientation=portrait&osVersion=9.2)
+
 ##Screenshots
 
 <img src="Screenshots/aztabbar.gif" height="100" />
