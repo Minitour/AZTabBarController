@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVFoundation
 import EasyNotificationBadge
 
 public typealias AZTabBarAction = () -> Void
@@ -38,6 +39,15 @@ public protocol AZTabBarDelegate {
     ///   - index: The index of the tab.
     /// - Returns: true if you wish to enable the animation, false otherwise.
     func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index:Int)->Bool
+    
+    
+    /// This function is used to play a sound when a certain tab is selected.
+    ///
+    /// - Parameters:
+    ///   - tabBar: The current instance of the tab bar controller.
+    ///   - index: The index you wish to play sound for.
+    /// - Returns: The system sound id. if nil is returned nothing will be played.
+    func tabBar(_ tabBar: AZTabBarController, systemSoundIdForButtonAtIndex index:Int)->SystemSoundID?
     
     
     /// This function is called whenever user taps one of the menu buttons.
@@ -81,6 +91,8 @@ public extension AZTabBarDelegate{
     func tabBar(_ tabBar: AZTabBarController, shouldLongClickForIndex index: Int)-> Bool{ return true }
     
     func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index:Int)->Bool{ return true }
+    
+    func tabBar(_ tabBar: AZTabBarController, systemSoundIdForButtonAtIndex index:Int)->SystemSoundID?{return nil}
     
     func tabBar(_ tabBar: AZTabBarController, didSelectTabAtIndex index: Int){}
     
@@ -578,6 +590,12 @@ public class AZTabBarController: UIViewController {
             delegate.tabBar(self, didSelectTabAtIndex: index)
         }
         
+        if let delegate = delegate{
+            if let id = delegate.tabBar(self, systemSoundIdForButtonAtIndex: index){
+                AudioServicesPlaySystemSound(id)
+            }
+        }
+        
         if index != NSNotFound {
             self.set(selectedIndex: index, animated: true)
         }
@@ -696,6 +714,8 @@ public class AZTabBarController: UIViewController {
         button.delegate = self
         button.tag = index
         button.isExclusiveTouch = true
+        button.imageView?.contentMode = .scaleAspectFit
+        button.imageEdgeInsets = UIEdgeInsetsMake(15, 15, 15, 15)
         button.addTarget(self, action: #selector(self.tabButtonAction(button:)), for: .touchUpInside)
         //button.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(self.longClick(sender:))))
         return button
@@ -825,13 +845,14 @@ extension AZTabBarController: AZTabBarButtonDelegate{
     }
 
     internal func shouldLongClick(_ tabBarButton: AZTabBarButton) -> Bool {
-        return self.delegate.tabBar(self, shouldLongClickForIndex: tabBarButton.tag)
+        guard let delegate = self.delegate else {return false}
+        return delegate.tabBar(self, shouldLongClickForIndex: tabBarButton.tag)
     }
 
     internal func shouldAnimate(_ tabBarButton: AZTabBarButton) -> Bool {
-        return self.delegate.tabBar(self, shouldAnimateButtonInteractionAtIndex: tabBarButton.tag)
+        guard let delegate = self.delegate else{return false}
+        return delegate.tabBar(self, shouldAnimateButtonInteractionAtIndex: tabBarButton.tag)
     }
-    
 }
 
 /*

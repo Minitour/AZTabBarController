@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import AVFoundation
 import UIKit
 
 class ViewController: UIViewController {
@@ -15,27 +16,44 @@ class ViewController: UIViewController {
     var counter = 0
     var tabController:AZTabBarController!
     
+    var audioId: SystemSoundID!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        audioId = createAudio()
         
-        var icons = [String]()
-        icons.append("ic_star")
-        icons.append("ic_history")
-        icons.append("ic_phone")
-        icons.append("ic_chat")
-        icons.append("ic_settings")
+//        var icons = [String]()
+//        icons.append("ic_star")
+//        icons.append("ic_history")
+//        icons.append("ic_phone")
+//        icons.append("ic_chat")
+//        icons.append("ic_settings")
+//        
+//        var sIcons = [String]()
+//        sIcons.append("ic_settings")
+//        sIcons.append("ic_star")
+//        sIcons.append("ic_history")
+//        sIcons.append("ic_phone")
+//        sIcons.append("ic_chat")
         
-        var sIcons = [String]()
-        sIcons.append("ic_settings")
-        sIcons.append("ic_star")
-        sIcons.append("ic_history")
-        sIcons.append("ic_phone")
-        sIcons.append("ic_chat")
+        var icons = [UIImage]()
+        icons.append(#imageLiteral(resourceName: "ic_home_outline"))
+        icons.append(#imageLiteral(resourceName: "ic_search_outline"))
+        icons.append(#imageLiteral(resourceName: "ic_camera_outline"))
+        icons.append(#imageLiteral(resourceName: "ic_heart_outline"))
+        icons.append(#imageLiteral(resourceName: "ic_account_outline"))
+        
+        var sIcons = [UIImage]()
+        sIcons.append(#imageLiteral(resourceName: "ic_home"))
+        sIcons.append(#imageLiteral(resourceName: "ic_search"))
+        sIcons.append(#imageLiteral(resourceName: "ic_camera"))
+        sIcons.append(#imageLiteral(resourceName: "ic_heart"))
+        sIcons.append(#imageLiteral(resourceName: "ic_account"))
         
         
         //init
-        tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
-        
+        //tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
+        tabController = AZTabBarController.insert(into: self, withTabIcons: icons, andSelectedIcons: sIcons)
         
         //set delegate
         tabController.delegate = self
@@ -49,28 +67,30 @@ class ViewController: UIViewController {
         darkController.navigationBar.barTintColor = #colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
         
         tabController.set(viewController: darkController, atIndex: 1)
-        //tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "Did you expect me to make an actual keypad?", title: "Phone")), atIndex: 2)
+        tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "Did you expect me to make an actual keypad?", title: "Phone")), atIndex: 2)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "...", title: "Settings")), atIndex: 4)
         
         
         //customize
         
-        tabController.selectedColor = .white //UIColor(colorLiteralRed: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0)
+        tabController.selectedColor = #colorLiteral(red: 0.09048881881, green: 0.09048881881, blue: 0.09048881881, alpha: 1) //UIColor(colorLiteralRed: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0)
         
         tabController.highlightedColor = #colorLiteral(red: 0.1803921569, green: 0.8, blue: 0.4431372549, alpha: 1)
         
-        tabController.defaultColor = .white
+        tabController.defaultColor = #colorLiteral(red: 0.09048881881, green: 0.09048881881, blue: 0.09048881881, alpha: 1)
         
-        tabController.highlightButton(atIndex: 2)
+        //tabController.highlightButton(atIndex: 2)
         
-        tabController.buttonsBackgroundColor = #colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)//UIColor(colorLiteralRed: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)
+        tabController.buttonsBackgroundColor = UIColor(colorLiteralRed: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)//#colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
         
-        tabController.selectionIndicatorHeight = 3
+        tabController.selectionIndicatorHeight = 0
         
         tabController.selectionIndicatorColor = #colorLiteral(red: 0.1803921569, green: 0.8, blue: 0.4431372549, alpha: 1)
         
         tabController.tabBarHeight = 60
+        
+        tabController.notificationBadgeAppearance.backgroundColor = #colorLiteral(red: 1, green: 0.3094263673, blue: 0.4742257595, alpha: 1)
         
         //tabController.highlightsSelectedButton = true
         
@@ -90,7 +110,6 @@ class ViewController: UIViewController {
             //self.tabController.setBar(hidden: true, animated: true)
             
         }, atIndex: 4)
-        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -106,6 +125,13 @@ class ViewController: UIViewController {
         navigationController.title = title
         return navigationController
     }
+    
+    func createAudio()->SystemSoundID{
+        var soundID: SystemSoundID = 0
+        let soundURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(), "blop" as CFString!, "mp3" as CFString!, nil)
+        AudioServicesCreateSystemSoundID(soundURL!, &soundID)
+        return soundID
+    }
 }
 
 extension ViewController: AZTabBarDelegate{
@@ -118,7 +144,7 @@ extension ViewController: AZTabBarDelegate{
     }
     
     func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index: Int) -> Bool {
-        return index != 2
+        return true //index != 2
     }
     
     func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int) {
@@ -135,6 +161,10 @@ extension ViewController: AZTabBarDelegate{
     
     func tabBar(_ tabBar: AZTabBarController, didLongClickTabAtIndex index: Int) {
         print("didLongClickTabAtIndex \(index)")
+    }
+    
+    func tabBar(_ tabBar: AZTabBarController, systemSoundIdForButtonAtIndex index: Int) -> SystemSoundID? {
+        return tabBar.selectedIndex == index ? nil : audioId
     }
 }
 
