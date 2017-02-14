@@ -442,14 +442,15 @@ public class AZTabBarController: UIViewController {
             self.setupInterface()
             self.moveToController(at: 0, animated: false)
             
-            for i in 0..<badgeValues.count{
-                if let value = badgeValues[i]{
-                    self.set(badgeText: value, atIndex: i)
+            if let badgeValues = badgeValues {
+                for i in 0..<badgeValues.count{
+                    if let value = badgeValues[i]{
+                        self.set(badgeText: value, atIndex: i)
+                    }
                 }
+                
+                self.badgeValues = nil
             }
-            
-            self.badgeValues = nil
-            
         }
         
         
