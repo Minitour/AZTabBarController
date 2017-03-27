@@ -1,27 +1,27 @@
 # AZTabBarController
 A custom tab bar controller for iOS written in Swift 3.0
 
-##Live Demo
+## Live Demo
 Checkout the live demo on [Appetize](https://appetize.io/app/dmbky73efrt5uvkh4xfdaz5axr?device=iphone6s&scale=75&orientation=portrait&osVersion=9.2)
 
-##Screenshots
+## Screenshots
 
 <img src="Screenshots/aztabbar.gif" height="100" />
 
-##Installation
+## Installation
 
 
-###Cocoa Pods:
+### Cocoa Pods:
 
 ```bash
 pod 'AZTabBar'
 ```
 
-###Manual:
+### Manual:
 
 Simply drag and drop the ```Sources``` folder to your project.
 
-##Usage
+## Usage
 
 Create an array of String/UIImage:
 ```swift
@@ -81,7 +81,7 @@ tabController.set(action: {
 
 Note that you can add both actions and view controllers at a certain index.
 
-##Customizations
+## Customizations
 
 ```swift
 
@@ -106,7 +106,7 @@ tabController.separatorLineColor = UIColor.black
 tabController.separatorLineVisible = false 
 ```
 
-##Extras
+## Extras
 
 Hide/Show the tab bar:
 ```swift
@@ -123,7 +123,7 @@ switch programmatically to a certain tab:
 tabController.set(selectedIndex: 2, animated: true)
 ```
 
-##Delegate Methods
+## Delegate Methods
 
 These are the functions of the AZTabBarDelegate:
 
@@ -193,7 +193,7 @@ func tabBar(_ tabBar: AZTabBarController, willMoveToTabAtIndex index:Int)
 func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int)
 ```
 
-##Credit
+## Credit
 
 AZTabBarController is a converted and modified version of [ESTabBarController](https://github.com/ezescaruli/ESTabBarController) that is written in Objective-C by [ezescaruli](https://github.com/ezescaruli).
 
