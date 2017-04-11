@@ -12,7 +12,7 @@ import EasyNotificationBadge
 
 public typealias AZTabBarAction = () -> Void
 
-public protocol AZTabBarDelegate {
+public protocol AZTabBarDelegate: class {
     
     /// This function is called after `didMoveToTabAtIndex` is called. In order for this function to work you must override the var `childViewControllerForStatusBarStyle` in the root controller to return this instance of AZTabBarController.
     ///
@@ -150,7 +150,7 @@ public class AZTabBarController: UIViewController {
     /// The color of icon in the tab bar when the menu is selected.
     open var selectedColor:UIColor! {
         didSet{
-            self.updateInterfaceIfNeeded()
+            updateInterfaceIfNeeded()
             if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
                 button.isSelected = true
             }
@@ -161,23 +161,32 @@ public class AZTabBarController: UIViewController {
     /// The default icon color of the buttons in the tab bar.
     open var defaultColor:UIColor! {
         didSet{
-            self.updateInterfaceIfNeeded()
+            updateInterfaceIfNeeded()
             if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
                 button.isSelected = true
             }
         }
     }
     
+    open var highlightColor: UIColor! {
+        didSet{
+            updateInterfaceIfNeeded()
+            if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
+                button.isSelected = true
+            }
+        }
+    }
     
     /// The background color of a highlighted button.
-    open var highlightedColor: UIColor! {
+    open var highlightedBackgroundColor: UIColor! {
         didSet{
-            self.updateInterfaceIfNeeded()
+            updateInterfaceIfNeeded()
             if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
                 button.isSelected = true
             }
         }
     }
+    
     
     open var selectionIndicatorColor: UIColor!{
         didSet{
@@ -195,6 +204,15 @@ public class AZTabBarController: UIViewController {
                 self.updateInterfaceIfNeeded()
             }
             
+        }
+    }
+    
+    open var ignoreIconColors: Bool = false {
+        didSet{
+            updateInterfaceIfNeeded()
+            if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
+                button.isSelected = true
+            }
         }
     }
     
@@ -271,7 +289,7 @@ public class AZTabBarController: UIViewController {
     
     
     /// The AZTabBar Delegate
-    open var delegate: AZTabBarDelegate!
+    open weak var delegate: AZTabBarDelegate?
     
     /*
      * MARK: - Internal Properties
@@ -310,10 +328,10 @@ public class AZTabBarController: UIViewController {
     fileprivate var buttonsContainerHeightConstraint:NSLayoutConstraint!
     
     /// Array which holds the buttons.
-    internal var buttons:NSMutableArray!
+    internal var buttons: NSMutableArray!
     
     /// Array which holds the default tab icons.
-    internal var tabIcons:[UIImage]!
+    internal var tabIcons: [UIImage]!
     
     /// Optional Array which holds the highlighted tab icons.
     internal var selectedTabIcons: [UIImage]?
@@ -332,10 +350,10 @@ public class AZTabBarController: UIViewController {
      */
     
     ///Array which holds the controllers.
-    fileprivate var controllers:NSMutableDictionary!
+    fileprivate var controllers: [UIViewController?]!
     
     ///Array which holds the actions.
-    fileprivate var actions:NSMutableDictionary!
+    fileprivate var actions: [AZTabBarAction?]!
     
     ///A flag to indicate if the interface was set up.
     fileprivate var didSetupInterface:Bool = false
@@ -480,10 +498,11 @@ public class AZTabBarController: UIViewController {
     ///   - controller: The view controller which you wish to display at a certain index.
     ///   - index: The index of the menu.
     open func set(viewController controller: UIViewController, atIndex index: Int) {
-        if let currentViewController:UIViewController = (self.controllers[index] as? UIViewController){
+        if let currentViewController = self.controllers[index]{
             currentViewController.removeFromParentViewController()
         }
         self.controllers[index] = controller
+        self.addChildViewController(controller)
         if index == self.selectedIndex {
             // If the index is the selected one, we have to update the view
             // controller at that index so that the change is reflected.
@@ -502,7 +521,7 @@ public class AZTabBarController: UIViewController {
             moveToController(at: index, animated: animated)
         }
         
-        if let action:AZTabBarAction = actions[index] as? AZTabBarAction {
+        if let action = actions[index] {
             action()
         }
     }
@@ -587,14 +606,10 @@ public class AZTabBarController: UIViewController {
     
     func tabButtonAction(button:UIButton){
         let index = self.buttons.index(of: button)
-        if let delegate = delegate{
-            delegate.tabBar(self, didSelectTabAtIndex: index)
-        }
+        delegate?.tabBar(self, didSelectTabAtIndex: index)
         
-        if let delegate = delegate{
-            if let id = delegate.tabBar(self, systemSoundIdForButtonAtIndex: index){
-                AudioServicesPlaySystemSound(id)
-            }
+        if let id = delegate?.tabBar(self, systemSoundIdForButtonAtIndex: index){
+            AudioServicesPlaySystemSound(id)
         }
         
         if index != NSNotFound {
@@ -612,9 +627,8 @@ public class AZTabBarController: UIViewController {
             }
         }
         
-        if let delegate = delegate {
-           delegate.tabBar(self, didLongClickTabAtIndex: index)
-        }
+        delegate?.tabBar(self, didLongClickTabAtIndex: index)
+        
         
         if selectedIndex != index {
             tabButtonAction(button: button)
@@ -639,9 +653,9 @@ public class AZTabBarController: UIViewController {
         
         self.selectedTabIcons = highlightedIcons
         
-        self.controllers = NSMutableDictionary(capacity: tabIcons.count)
+        self.controllers = [UIViewController?](repeating: nil, count: tabIcons.count)
         
-        self.actions = NSMutableDictionary(capacity: tabIcons.count)
+        self.actions = [AZTabBarAction?](repeating: nil, count: tabIcons.count)
         
         self.highlightedButtonIndexes = NSMutableSet()
         
@@ -700,13 +714,19 @@ public class AZTabBarController: UIViewController {
             
             var color: UIColor!
             if isHighlighted{
-                color = self.highlightedColor ?? UIColor.black
+                color = self.highlightedBackgroundColor ?? UIColor.black
             }else{
                 color = self.selectedColor ?? UIColor.black
             }
             
             
-            button.customizeForTabBarWithImage(image: self.tabIcons[i],highlightImage: highlightedImage, selectedColor: color, highlighted: isHighlighted,defaultColor: self.defaultColor ?? UIColor.gray)
+            button.customizeForTabBarWithImage(self.tabIcons[i],
+                                               highlightImage: highlightedImage,
+                                               selectedColor: color,
+                                               highlighted: isHighlighted,
+                                               defaultColor: self.defaultColor ?? UIColor.gray,
+                                               highlightColor: self.highlightColor ?? UIColor.white,
+                                               ignoreColor: ignoreIconColors)
         }
     }
     
@@ -716,15 +736,12 @@ public class AZTabBarController: UIViewController {
         button.tag = index
         button.isExclusiveTouch = true
         button.imageView?.contentMode = .scaleAspectFit
-        button.imageEdgeInsets = UIEdgeInsetsMake(15, 15, 15, 15)
         button.addTarget(self, action: #selector(self.tabButtonAction(button:)), for: .touchUpInside)
-        //button.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(self.longClick(sender:))))
         return button
     }
     
     private func moveToController(at index:Int,animated:Bool){
-        let subController:UIViewController? = controllers[index] as? UIViewController
-        if let controller = subController {
+        if let controller = controllers[index] {
             
             // Deselect all the buttons excepting the selected one.
             for i in 0 ..< self.tabIcons.count{
@@ -746,9 +763,9 @@ public class AZTabBarController: UIViewController {
             }
             
             if self.selectedIndex >= 0 {
-                let currentController:UIViewController = self.controllers[selectedIndex] as! UIViewController
+                let currentController:UIViewController = self.controllers[selectedIndex]!
                 currentController.view.removeFromSuperview()
-                currentController.removeFromParentViewController()
+                //currentController.removeFromParentViewController()
             }
             
             if !self.childViewControllers.contains(controller){
@@ -771,14 +788,12 @@ public class AZTabBarController: UIViewController {
                 self.controllersContainer.addSubview(controller.view)
                 self.setupConstraints(forChildController: controller)
             }
-            self.addChildViewController(controller)
+            //self.addChildViewController(controller)
             controller.didMove(toParentViewController: self)
             self.moveSelectionIndicator(toIndex: index,animated:animated)
             self.selectedIndex = index
-            if let delegate = delegate {
-                delegate.tabBar(self, didMoveToTabAtIndex: index)
-                self.statusBarStyle = delegate.tabBar(self, statusBarStyleForIndex: index)
-            }
+            delegate?.tabBar(self, didMoveToTabAtIndex: index)
+            self.statusBarStyle = delegate?.tabBar(self, statusBarStyleForIndex: index) ?? .default
         }
         
     }
@@ -846,13 +861,14 @@ extension AZTabBarController: AZTabBarButtonDelegate{
     }
 
     internal func shouldLongClick(_ tabBarButton: AZTabBarButton) -> Bool {
-        guard let delegate = self.delegate else {return false}
-        return delegate.tabBar(self, shouldLongClickForIndex: tabBarButton.tag)
+        return delegate?.tabBar(self, shouldLongClickForIndex: tabBarButton.tag) ?? false
     }
 
     internal func shouldAnimate(_ tabBarButton: AZTabBarButton) -> Bool {
-        guard let delegate = self.delegate else{return false}
-        return delegate.tabBar(self, shouldAnimateButtonInteractionAtIndex: tabBarButton.tag)
+        if tabBarButton.tag == selectedIndex || self.highlightedButtonIndexes.contains(tabBarButton.tag){
+            return false
+        }
+        return delegate?.tabBar(self, shouldAnimateButtonInteractionAtIndex: tabBarButton.tag) ?? false
     }
 }
 
@@ -963,7 +979,7 @@ fileprivate extension AZTabBarController {
  * MARK: - Button Extension
  */
 
-protocol AZTabBarButtonDelegate {
+protocol AZTabBarButtonDelegate: class {
     
     
     /// Function used to decide if the TabBarButton should animate upon interaction.
@@ -1021,7 +1037,7 @@ class AZTabBarButton: UIButton{
     
     var longClickTimer: Timer?
     
-    open var delegate:AZTabBarButtonDelegate!
+    open weak var delegate:AZTabBarButtonDelegate!
     
     open var shouldAnimateInteraction:Bool {
         get{
@@ -1075,7 +1091,7 @@ class AZTabBarButton: UIButton{
     
 }
 
-fileprivate extension AZTabBarButton {
+extension AZTabBarButton {
     // MARK: - Public methods
     override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         longClickTimer = Timer.scheduledTimer(timeInterval: self.longClickTriggerDuration,
@@ -1117,8 +1133,8 @@ fileprivate extension AZTabBarButton {
     }
     
     override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let tap:UITouch = touches.first!
-        let point = tap.location(in: self)
+        //let tap:UITouch = touches.first!
+        //let point = tap.location(in: self)
         longClickTimer?.invalidate()
         if self.shouldAnimateInteraction{
             UIView.animate(withDuration: self.endAnimationDuration,
@@ -1151,42 +1167,42 @@ fileprivate extension AZTabBarButton {
         super.touchesCancelled(touches, with: event)
     }
     
-    func customizeForTabBarWithImage(image: UIImage,
+    func customizeForTabBarWithImage(_ image: UIImage,
                                      highlightImage: UIImage? = nil,
                                      selectedColor: UIColor,
                                      highlighted: Bool,
-                                     defaultColor: UIColor? = UIColor.gray) {
+                                     defaultColor: UIColor = UIColor.gray,
+                                     highlightColor: UIColor = UIColor.white,
+                                     ignoreColor: Bool = false) {
         if highlighted {
-            self.customizeAsHighlightedButtonForTabBarWithImage(image: image, selectedColor: selectedColor)
+            self.customizeAsHighlighted(image: image, selectedColor: selectedColor, highlightedColor: highlightColor,ignoreColor: ignoreColor)
         }
         else {
-            self.customizeAsNormalButtonForTabBarWithImage(image: image,highlightImage: highlightImage, selectedColor: selectedColor,defaultColor: defaultColor)
+            self.customizeAsNormal(image: image,highlightImage: highlightImage, selectedColor: selectedColor,defaultColor: defaultColor, ignoreColor: ignoreColor)
         }
     }
     // MARK: - Private methods
     
-    private func customizeAsHighlightedButtonForTabBarWithImage(image: UIImage, selectedColor: UIColor) {
+    private func customizeAsHighlighted(image: UIImage,selectedColor: UIColor,highlightedColor: UIColor,ignoreColor: Bool = false) {
         // We want the image to be always white in highlighted state.
-        self.tintColor = UIColor.white
-        self.setImage(image.withRenderingMode(.alwaysTemplate), for: .normal)
+        self.tintColor = highlightedColor
+        self.setImage(ignoreColor ? image : image.withRenderingMode(.alwaysTemplate), for: .normal)
         // And its background color should always be the selected color.
         self.backgroundColor = selectedColor
     }
     
-    private func customizeAsNormalButtonForTabBarWithImage(image: UIImage,highlightImage: UIImage? = nil, selectedColor: UIColor, defaultColor: UIColor? = UIColor.gray) {
-        // The tint color is the one used for selected state.
+    private func customizeAsNormal(image: UIImage,highlightImage: UIImage? = nil,selectedColor: UIColor,defaultColor: UIColor = UIColor.gray,ignoreColor: Bool = false) {
+
         self.tintColor = selectedColor
-        // When the button is not selected, we show the image always with its
-        // original color.
         
-        self.setImage(image.imageWithColor(color: defaultColor!), for: [])
-        self.setImage(image.imageWithColor(color: defaultColor!), for: .highlighted)
+        self.setImage(ignoreColor ? image : image.imageWithColor(color: defaultColor), for: [])
+        self.setImage(ignoreColor ? image : image.imageWithColor(color: defaultColor), for: .highlighted)
         if let hImage = highlightImage {
-            self.setImage(hImage.imageWithColor(color: selectedColor), for: .selected)
-            self.setImage(hImage.imageWithColor(color: selectedColor), for: [.selected, .highlighted])
+            self.setImage(ignoreColor ? hImage : hImage.imageWithColor(color: selectedColor), for: .selected)
+            self.setImage(ignoreColor ? hImage : hImage.imageWithColor(color: selectedColor), for: [.selected, .highlighted])
         }else{
-            self.setImage(image.imageWithColor(color: selectedColor), for: .selected)
-            self.setImage(image.imageWithColor(color: selectedColor), for: [.selected, .highlighted])
+            self.setImage(ignoreColor ? image : image.imageWithColor(color: selectedColor), for: .selected)
+            self.setImage(ignoreColor ? image : image.imageWithColor(color: selectedColor), for: [.selected, .highlighted])
         }
         
         
@@ -1204,5 +1220,20 @@ fileprivate extension UIImage {
         image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return image
+    }
+}
+
+
+public extension UIViewController{
+    
+    public var currentTabBar: AZTabBarController?{
+        var current: UIViewController? = parent
+        
+        repeat{
+            if current is AZTabBarController{ return current as? AZTabBarController }
+            current = current?.parent
+        }while current != nil
+        
+        return nil
     }
 }

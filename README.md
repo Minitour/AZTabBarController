@@ -1,27 +1,27 @@
 # AZTabBarController
 A custom tab bar controller for iOS written in Swift 3.0
 
-##Live Demo
+## Live Demo
 Checkout the live demo on [Appetize](https://appetize.io/app/dmbky73efrt5uvkh4xfdaz5axr?device=iphone6s&scale=75&orientation=portrait&osVersion=9.2)
 
-##Screenshots
+## Screenshots
 
 <img src="Screenshots/aztabbar.gif" height="100" />
 
-##Installation
+## Installation
 
 
-###Cocoa Pods:
+### Cocoa Pods:
 
 ```bash
 pod 'AZTabBar'
 ```
 
-###Manual:
+### Manual:
 
 Simply drag and drop the ```Sources``` folder to your project.
 
-##Usage
+## Usage:
 
 Create an array of String/UIImage:
 ```swift
@@ -42,34 +42,23 @@ icons.append("ic_chat_filled")
 icons.append("ic_settings_filled")
 ```
 
-Now initialize the controller object through the following methods:
+Now initialize the controller object through the following method:
 ```swift
-let tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
-
-//Or
-
-let tabController = AZTabBarController.insert(into: self, withTabIconNames: icons, andSelectedIconNames: selectedIcons)
-
+tabController = AZTabBarController.insert(into: self, withTabIconNames: icons, andSelectedIconNames: selectedIcons)
 ```
 
-
-Or the old fashion way:
+Add controllers:
 ```swift
-let tabController = AZTabBarController(withTabIconNames: icons)
-self.addChildViewController(controller)
-self.view.addSubview(controller.view)
-tabController.view.frame = parent.view.bounds
-tabController.didMove(toParentViewController: parent)
-```
+//if you are using storyboard:
+let myChildViewController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ChildViewController")!
 
-Add optional controllers:
-```swift
+//if you are loading programmatically:
+let myChildViewController = ChildViewController()
+
 tabController.set(viewController: myChildViewController, atIndex: 0)
-tabController.set(viewController: myOtherChildViewController, atIndex: 1)
-tabController.set(viewController: settingsController, atIndex: 2)
 ```
 
-Add optional actions:
+Add actions:
 ```swift
 tabController.set(action: { 
 
@@ -81,7 +70,7 @@ tabController.set(action: {
 
 Note that you can add both actions and view controllers at a certain index.
 
-##Customizations
+## Customizations:
 
 ```swift
 
@@ -106,7 +95,7 @@ tabController.separatorLineColor = UIColor.black
 tabController.separatorLineVisible = false 
 ```
 
-##Extras
+## Extras:
 
 Hide/Show the tab bar:
 ```swift
@@ -118,12 +107,27 @@ Add badge to menu (use nil value to remove existing badges):
 tabController.set(badge: "5", atIndex: 3)
 ```
 
-switch programmatically to a certain tab: 
+Switch programmatically to a certain tab: 
 ```swift
 tabController.set(selectedIndex: 2, animated: true)
 ```
 
-##Delegate Methods
+## Access AZTabBarController from child view controllers:
+
+I created an extension for `UIViewController` which adds a var called `currentTabBar`:
+```swift
+public var currentTabBar: AZTabBarController? { get }
+```
+
+You can call it like this:
+```swift
+currentTabBar?.set(badge: "New Badge Value",atIndex: 2)
+```
+
+
+
+
+## Delegate Methods:
 
 These are the functions of the AZTabBarDelegate:
 
@@ -193,7 +197,7 @@ func tabBar(_ tabBar: AZTabBarController, willMoveToTabAtIndex index:Int)
 func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int)
 ```
 
-##Credit
+## Credit
 
 AZTabBarController is a converted and modified version of [ESTabBarController](https://github.com/ezescaruli/ESTabBarController) that is written in Objective-C by [ezescaruli](https://github.com/ezescaruli).
 

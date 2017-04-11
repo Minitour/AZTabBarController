@@ -59,7 +59,10 @@ class ViewController: UIViewController {
         tabController.delegate = self
         
         //set child controllers
-        tabController.set(viewController: UINavigationController(rootViewController: LabelController.controller(text: "No Favorites", title: "Favorites")), atIndex: 0)
+        
+        let buttonController = ButtonController.controller(badgeCount: 0, currentIndex: 0)
+        
+        tabController.set(viewController: UINavigationController(rootViewController: buttonController), atIndex: 0)
         
         let darkController = getNavigationController(root: LabelController.controller(text: "No Recents", title: "Recents"))
         darkController.navigationBar.barStyle = .black
@@ -76,7 +79,7 @@ class ViewController: UIViewController {
         
         tabController.selectedColor = #colorLiteral(red: 0.09048881881, green: 0.09048881881, blue: 0.09048881881, alpha: 1) //UIColor(colorLiteralRed: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0)
         
-        tabController.highlightedColor = #colorLiteral(red: 0.1803921569, green: 0.8, blue: 0.4431372549, alpha: 1)
+        tabController.highlightColor = #colorLiteral(red: 0.1803921569, green: 0.8, blue: 0.4431372549, alpha: 1)
         
         tabController.defaultColor = #colorLiteral(red: 0.09048881881, green: 0.09048881881, blue: 0.09048881881, alpha: 1)
         
@@ -110,6 +113,7 @@ class ViewController: UIViewController {
             //self.tabController.setBar(hidden: true, animated: true)
             
         }, atIndex: 4)
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -186,5 +190,29 @@ class LabelController: UIViewController {
         super.viewDidLoad()
         labelView.text = text
     }
+    
+}
+
+class ButtonController: UIViewController{
+    class func controller(badgeCount:Int, currentIndex: Int )-> ButtonController{
+        
+        let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ButtonController") as! ButtonController
+        controller.badgeCount = badgeCount
+        controller.currentIndex = currentIndex
+        return controller
+    }
+    
+    var badgeCount: Int = 0
+    var currentIndex: Int = 0
+    
+    @IBAction func didClickButton(_ sender: UIButton) {
+        badgeCount += 1
+        
+        
+        if let tabBar = currentTabBar{
+            tabBar.set(badgeText: "\(badgeCount)", atIndex: currentIndex)
+        }
+    }
+    
     
 }
