@@ -8,5 +8,6 @@ target 'AZTabBarController' do
   # Pods for AZTabBarController
 
   pod ‘EasyNotificationBadge’
+  pod ‘AZSearchView’
 
 end

@@ -14,6 +14,8 @@
 		4F6140071D883D72005BFB4F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F6140051D883D72005BFB4F /* LaunchScreen.storyboard */; };
 		4F6140121D886FE4005BFB4F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6140111D886FE4005BFB4F /* ViewController.swift */; };
 		4F6140161D895F14005BFB4F /* AZTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6140141D895F14005BFB4F /* AZTabBarController.swift */; };
+		9D1BF76B1E9F9521004F8F8C /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1BF76A1E9F9521004F8F8C /* SearchController.swift */; };
+		9D1BF76D1E9FC2D4004F8F8C /* ColorSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1BF76C1E9FC2D4004F8F8C /* ColorSelectorController.swift */; };
 		9D8D5F5C1E451CA900038D0D /* blop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9D8D5F5B1E451CA900038D0D /* blop.mp3 */; };
 /* End PBXBuildFile section */
 
@@ -29,6 +31,8 @@
 		4F6140141D895F14005BFB4F /* AZTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarController.swift; sourceTree = "<group>"; };
 		5C1DF6371E2DF3A8BE6120E9 /* Pods_AZTabBarController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AZTabBarController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9433B79E50ED01D596E39D98 /* Pods-AZTabBarController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AZTabBarController.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController.debug.xcconfig"; sourceTree = "<group>"; };
+		9D1BF76A1E9F9521004F8F8C /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
+		9D1BF76C1E9FC2D4004F8F8C /* ColorSelectorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectorController.swift; sourceTree = "<group>"; };
 		9D8D5F5B1E451CA900038D0D /* blop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = blop.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,6 +78,7 @@
 		4F613FFB1D883D72005BFB4F /* AZTabBarController */ = {
 			isa = PBXGroup;
 			children = (
+				9D1BF7691E9F9513004F8F8C /* Tabs */,
 				9D8D5F5B1E451CA900038D0D /* blop.mp3 */,
 				4F613FFC1D883D72005BFB4F /* AppDelegate.swift */,
 				4F6140111D886FE4005BFB4F /* ViewController.swift */,
@@ -91,6 +96,15 @@
 				4F6140141D895F14005BFB4F /* AZTabBarController.swift */,
 			);
 			path = Sources;
+			sourceTree = "<group>";
+		};
+		9D1BF7691E9F9513004F8F8C /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
+				9D1BF76A1E9F9521004F8F8C /* SearchController.swift */,
+				9D1BF76C1E9FC2D4004F8F8C /* ColorSelectorController.swift */,
+			);
+			name = Tabs;
 			sourceTree = "<group>";
 		};
 		EEE99515ED9EF315E9EAAD93 /* Pods */ = {
@@ -230,6 +244,8 @@
 				4F6140161D895F14005BFB4F /* AZTabBarController.swift in Sources */,
 				4F6140121D886FE4005BFB4F /* ViewController.swift in Sources */,
 				4F613FFD1D883D72005BFB4F /* AppDelegate.swift in Sources */,
+				9D1BF76D1E9FC2D4004F8F8C /* ColorSelectorController.swift in Sources */,
+				9D1BF76B1E9F9521004F8F8C /* SearchController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

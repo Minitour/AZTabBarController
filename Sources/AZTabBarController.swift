@@ -151,7 +151,7 @@ public class AZTabBarController: UIViewController {
     open var selectedColor:UIColor! {
         didSet{
             updateInterfaceIfNeeded()
-            if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
+            if didSetUpInterface , let button = (buttons[self.selectedIndex] as? UIButton) {
                 button.isSelected = true
             }
         }
@@ -162,7 +162,7 @@ public class AZTabBarController: UIViewController {
     open var defaultColor:UIColor! {
         didSet{
             updateInterfaceIfNeeded()
-            if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
+            if didSetUpInterface , let button = (buttons[self.selectedIndex] as? UIButton) {
                 button.isSelected = true
             }
         }
@@ -171,7 +171,7 @@ public class AZTabBarController: UIViewController {
     open var highlightColor: UIColor! {
         didSet{
             updateInterfaceIfNeeded()
-            if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
+            if didSetUpInterface , let button = (buttons[self.selectedIndex] as? UIButton) {
                 button.isSelected = true
             }
         }
@@ -181,7 +181,7 @@ public class AZTabBarController: UIViewController {
     open var highlightedBackgroundColor: UIColor! {
         didSet{
             updateInterfaceIfNeeded()
-            if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
+            if didSetUpInterface , let button = (buttons[self.selectedIndex] as? UIButton) {
                 button.isSelected = true
             }
         }
@@ -191,7 +191,7 @@ public class AZTabBarController: UIViewController {
     open var selectionIndicatorColor: UIColor!{
         didSet{
             self.updateInterfaceIfNeeded()
-            if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
+            if didSetUpInterface , let button = (buttons[self.selectedIndex] as? UIButton) {
                 button.isSelected = true
             }
         }
@@ -210,7 +210,7 @@ public class AZTabBarController: UIViewController {
     open var ignoreIconColors: Bool = false {
         didSet{
             updateInterfaceIfNeeded()
-            if selectedIndex >= 0 , let button = (buttons[self.selectedIndex] as? UIButton) {
+            if didSetUpInterface , let button = (buttons[self.selectedIndex] as? UIButton) {
                 button.isSelected = true
             }
         }
@@ -363,6 +363,10 @@ public class AZTabBarController: UIViewController {
     
     fileprivate var badgeValues: [String?]!
     
+    fileprivate var tabCount: Int{ return tabIcons.count }
+    
+    fileprivate var didSetUpInterface = false
+    
     /*
      * MARK: - Init
      */
@@ -455,10 +459,9 @@ public class AZTabBarController: UIViewController {
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if self.selectedIndex == -1 {
-            // We only setup everything if there isn't any selected index.
+        if !didSetUpInterface {
             self.setupInterface()
-            self.moveToController(at: 0, animated: false)
+            self.moveToController(at: selectedIndex, animated: false)
             
             if let badgeValues = badgeValues {
                 for i in 0..<badgeValues.count{
@@ -466,12 +469,10 @@ public class AZTabBarController: UIViewController {
                         self.set(badgeText: value, atIndex: i)
                     }
                 }
-                
                 self.badgeValues = nil
             }
+            didSetUpInterface = true
         }
-        
-        
     }
     
     override public func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
@@ -517,6 +518,11 @@ public class AZTabBarController: UIViewController {
     ///   - index: The index of the menu.
     ///   - animated: animate the selection indicator or not.
     open func set(selectedIndex index:Int,animated:Bool){
+        
+        if index >= tabCount{
+            return
+        }
+        
         if self.selectedIndex != index {
             moveToController(at: index, animated: animated)
         }
@@ -659,7 +665,7 @@ public class AZTabBarController: UIViewController {
         
         self.highlightedButtonIndexes = NSMutableSet()
         
-        self.selectedIndex = -1
+        self.selectedIndex = 0
         
         self.separatorLineColor = UIColor.lightGray
         
@@ -713,6 +719,7 @@ public class AZTabBarController: UIViewController {
             }
             
             var color: UIColor!
+            
             if isHighlighted{
                 color = self.highlightedBackgroundColor ?? UIColor.black
             }else{
@@ -743,6 +750,11 @@ public class AZTabBarController: UIViewController {
     private func moveToController(at index:Int,animated:Bool){
         if let controller = controllers[index] {
             
+            if buttons == nil{
+                selectedIndex = index
+                return
+            }
+            
             // Deselect all the buttons excepting the selected one.
             for i in 0 ..< self.tabIcons.count{
                 
@@ -758,9 +770,7 @@ public class AZTabBarController: UIViewController {
                 
             }
             
-            if let delegate = delegate {
-                delegate.tabBar(self, willMoveToTabAtIndex: index)
-            }
+            delegate?.tabBar(self, willMoveToTabAtIndex: index)
             
             if self.selectedIndex >= 0 {
                 let currentController:UIViewController = self.controllers[selectedIndex]!

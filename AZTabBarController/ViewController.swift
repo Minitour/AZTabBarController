@@ -9,6 +9,7 @@
 import Foundation
 import AVFoundation
 import UIKit
+import AZSearchView
 
 class ViewController: UIViewController {
     
@@ -18,23 +19,13 @@ class ViewController: UIViewController {
     
     var audioId: SystemSoundID!
     
+    var searchController: AZSearchViewController!
+    var resultArray:[String] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         audioId = createAudio()
-        
-//        var icons = [String]()
-//        icons.append("ic_star")
-//        icons.append("ic_history")
-//        icons.append("ic_phone")
-//        icons.append("ic_chat")
-//        icons.append("ic_settings")
-//        
-//        var sIcons = [String]()
-//        sIcons.append("ic_settings")
-//        sIcons.append("ic_star")
-//        sIcons.append("ic_history")
-//        sIcons.append("ic_phone")
-//        sIcons.append("ic_chat")
+
         
         var icons = [UIImage]()
         icons.append(#imageLiteral(resourceName: "ic_home_outline"))
@@ -60,19 +51,22 @@ class ViewController: UIViewController {
         
         //set child controllers
         
-        let buttonController = ButtonController.controller(badgeCount: 0, currentIndex: 0)
         
-        tabController.set(viewController: UINavigationController(rootViewController: buttonController), atIndex: 0)
         
-        let darkController = getNavigationController(root: LabelController.controller(text: "No Recents", title: "Recents"))
+        tabController.set(viewController: ColorSelectorController.instance(), atIndex: 0)
+        
+        let darkController = getNavigationController(root: LabelController.controller(text: "Search", title: "Recents"))
         darkController.navigationBar.barStyle = .black
         darkController.navigationBar.isTranslucent = false
         darkController.navigationBar.barTintColor = #colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
         
-        tabController.set(viewController: darkController, atIndex: 1)
-        tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "Did you expect me to make an actual keypad?", title: "Phone")), atIndex: 2)
+        
+        tabController.set(viewController: SearchController.instance(), atIndex: 1)
+
         tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
-        tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "...", title: "Settings")), atIndex: 4)
+        
+        let buttonController = ButtonController.controller(badgeCount: 0, currentIndex: 4)
+        tabController.set(viewController: getNavigationController(root: buttonController), atIndex: 4)
         
         
         //customize
@@ -93,11 +87,15 @@ class ViewController: UIViewController {
         
         tabController.tabBarHeight = 60
         
-        tabController.notificationBadgeAppearance.backgroundColor = #colorLiteral(red: 1, green: 0.3094263673, blue: 0.4742257595, alpha: 1)
+        tabController.notificationBadgeAppearance.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        tabController.notificationBadgeAppearance.textColor = .red
+        tabController.notificationBadgeAppearance.borderColor = .black
+        tabController.notificationBadgeAppearance.borderWidth = 0.2
         
-        //tabController.highlightsSelectedButton = true
         
         tabController.set(badgeText: "!", atIndex: 4)
+        
+        tabController.set(selectedIndex: 10, animated: true)
         
         tabController.set(action: { 
             self.counter = 0
@@ -105,8 +103,9 @@ class ViewController: UIViewController {
             }, atIndex: 3)
         
         tabController.set(action: {
-            self.counter += 1
-            self.tabController.set(badgeText: "\(self.counter)", atIndex: 3)
+            //self.counter += 1
+            //self.tabController.set(badgeText: "\(self.counter)", atIndex: 3)
+            self.actionLaunchCamera()
             }, atIndex: 2)
         
         tabController.set(action: { 
@@ -114,6 +113,7 @@ class ViewController: UIViewController {
             
         }, atIndex: 4)
         
+        tabController.set(selectedIndex: 3, animated: true)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -135,6 +135,24 @@ class ViewController: UIViewController {
         let soundURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(), "blop" as CFString!, "mp3" as CFString!, nil)
         AudioServicesCreateSystemSoundID(soundURL!, &soundID)
         return soundID
+    }
+    
+    func actionLaunchCamera()
+    {
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
+        {
+            let imagePicker:UIImagePickerController = UIImagePickerController()
+            imagePicker.delegate = self
+            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            imagePicker.allowsEditing = true
+            
+            self.present(imagePicker, animated: true, completion: nil)
+        }
+        else
+        {
+            let alert:UIAlertController = UIAlertController(title: "Camera Unavailable", message: "Unable to find a camera on this device", preferredStyle: UIAlertControllerStyle.alert)
+            self.present(alert, animated: true, completion: nil)
+        }
     }
 }
 
@@ -172,6 +190,44 @@ extension ViewController: AZTabBarDelegate{
     }
 }
 
+extension ViewController: AZSearchViewDelegate{
+    
+    func searchView(_ searchView: AZSearchViewController, didSearchForText text: String) {
+        searchView.dismiss(animated: false, completion: nil)
+    }
+    
+    func searchView(_ searchView: AZSearchViewController, didTextChangeTo text: String, textLength: Int) {
+        self.resultArray.removeAll()
+        if textLength > 3 {
+            for i in 0..<arc4random_uniform(10)+1 {self.resultArray.append("\(text) \(i+1)")}
+        }
+        
+        searchView.reloadData()
+    }
+    
+    func searchView(_ searchView: AZSearchViewController, didSelectResultAt index: Int, text: String) {
+        searchView.dismiss(animated: true, completion: {
+        })
+    }
+}
+
+extension ViewController: AZSearchViewDataSource{
+    
+    func results() -> [String] {
+        return self.resultArray
+    }
+}
+
+extension ViewController: UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+    }
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true, completion: nil)
+    }
+}
+
 class LabelController: UIViewController {
     
     class func controller(text:String, title: String)-> LabelController{
@@ -205,12 +261,25 @@ class ButtonController: UIViewController{
     var badgeCount: Int = 0
     var currentIndex: Int = 0
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        for view in view.subviews{
+            if view is UIButton{
+                view.badge(text: nil)
+            }
+        }
+        
+        currentTabBar?.set(badgeText: nil, atIndex: currentIndex)
+    }
+    
     @IBAction func didClickButton(_ sender: UIButton) {
         badgeCount += 1
         
         
         if let tabBar = currentTabBar{
             tabBar.set(badgeText: "\(badgeCount)", atIndex: currentIndex)
+            sender.badge(text: "\(badgeCount)")
         }
     }
     
