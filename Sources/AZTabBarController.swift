@@ -216,9 +216,12 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    open var animateTabChange: Bool = false
     
     /// The current selected index.
-    private (set) open var selectedIndex:Int!
+    fileprivate (set) open var selectedIndex:Int!
+    
+    fileprivate (set) open var isAnimating: Bool = false
     
     
     /// If the separator line view that is between the buttons container and the primary view container is visable.
@@ -466,7 +469,7 @@ public class AZTabBarController: UIViewController {
             if let badgeValues = badgeValues {
                 for i in 0..<badgeValues.count{
                     if let value = badgeValues[i]{
-                        self.set(badgeText: value, atIndex: i)
+                        self.setBadgeText(value, atIndex: i)
                     }
                 }
                 self.badgeValues = nil
@@ -498,7 +501,7 @@ public class AZTabBarController: UIViewController {
     /// - Parameters:
     ///   - controller: The view controller which you wish to display at a certain index.
     ///   - index: The index of the menu.
-    open func set(viewController controller: UIViewController, atIndex index: Int) {
+    open func setViewController(_ controller: UIViewController, atIndex index: Int) {
         if let currentViewController = self.controllers[index]{
             currentViewController.removeFromParentViewController()
         }
@@ -517,7 +520,7 @@ public class AZTabBarController: UIViewController {
     /// - Parameters:
     ///   - index: The index of the menu.
     ///   - animated: animate the selection indicator or not.
-    open func set(selectedIndex index:Int,animated:Bool){
+    open func setIndex(_ index:Int,animated: Bool = true){
         
         if index >= tabCount{
             return
@@ -538,7 +541,7 @@ public class AZTabBarController: UIViewController {
     /// - Parameters:
     ///   - action: A closure which contains the action that will be executed when clicking the menu at a certain index.
     ///   - index: The index of the menu of which you would like to add an action to.
-    open func set(action: @escaping AZTabBarAction, atIndex index: Int) {
+    open func setAction(atIndex index: Int, action: @escaping AZTabBarAction) {
         self.actions[(index)] = action
     }
     
@@ -548,7 +551,7 @@ public class AZTabBarController: UIViewController {
     /// - Parameters:
     ///   - text: The text you wish to set.
     ///   - index: The index of the menu in which you would like to add the badge.
-    open func set(badgeText text: String?, atIndex index:Int){
+    open func setBadgeText(_ text: String?, atIndex index:Int){
         if let buttons = buttons{
             if let button = buttons[index] as? UIButton {
                 self.notificationBadgeAppearance.distenceFromCenterX = 15
@@ -591,14 +594,14 @@ public class AZTabBarController: UIViewController {
     /// - Parameters:
     ///   - hidden: To hide or show.
     ///   - animated: To animate or not.
-    open func setBar(hidden: Bool, animated: Bool) {
+    open func setBar(hidden: Bool, animated: Bool,duration: TimeInterval = 0.3, completion: ((Bool)->Void)? = nil) {
         let animations = {() -> Void in
             self.buttonsContainerHeightConstraint.constant = hidden ? 0 : self.buttonsContainerHeightConstraintInitialConstant
             self.view.layoutIfNeeded()
         }
         if animated {
             self.view.layoutIfNeeded()
-            UIView.animate(withDuration: 0.5, animations: animations)
+            UIView.animate(withDuration: duration, animations: animations, completion: completion)
         }
         else {
             animations()
@@ -614,12 +617,12 @@ public class AZTabBarController: UIViewController {
         let index = self.buttons.index(of: button)
         delegate?.tabBar(self, didSelectTabAtIndex: index)
         
-        if let id = delegate?.tabBar(self, systemSoundIdForButtonAtIndex: index){
+        if let id = delegate?.tabBar(self, systemSoundIdForButtonAtIndex: index), !isAnimating{
             AudioServicesPlaySystemSound(id)
         }
         
         if index != NSNotFound {
-            self.set(selectedIndex: index, animated: true)
+            self.setIndex(index, animated: true)
         }
     }
     
@@ -748,7 +751,7 @@ public class AZTabBarController: UIViewController {
     }
     
     private func moveToController(at index:Int,animated:Bool){
-        if let controller = controllers[index] {
+        if let controller = controllers[index], !(animated && isAnimating) {
             
             if buttons == nil{
                 selectedIndex = index
@@ -772,11 +775,18 @@ public class AZTabBarController: UIViewController {
             
             delegate?.tabBar(self, willMoveToTabAtIndex: index)
             
+            
+            var currentViewControllerView: UIView?
+            
             if self.selectedIndex >= 0 {
                 let currentController:UIViewController = self.controllers[selectedIndex]!
-                currentController.view.removeFromSuperview()
+                currentViewControllerView = currentController.view
+                if !animateTabChange {
+                    currentController.view.removeFromSuperview()
+                }
                 //currentController.removeFromParentViewController()
             }
+            
             
             if !self.childViewControllers.contains(controller){
                 controller.willMove(toParentViewController: self)
@@ -800,6 +810,28 @@ public class AZTabBarController: UIViewController {
             }
             //self.addChildViewController(controller)
             controller.didMove(toParentViewController: self)
+            
+                if let currentViewControllerView = currentViewControllerView, animated, animateTabChange {
+                    //animate
+                    
+                    let offset: CGFloat = self.view.frame.size.width / 5
+                    //let startX = index > selectedIndex ? self.view.frame.size.width + offset : -offset
+                    let startX = index > selectedIndex ? offset : -offset
+                    controller.view.transform = CGAffineTransform(translationX: startX, y: 0)
+                    controller.view.alpha = 0
+                    
+                    UIView.animate(withDuration: 0.2, animations: {
+                        self.isAnimating = true
+                        controller.view.transform = .identity
+                        controller.view.alpha = 1
+                        currentViewControllerView.transform = CGAffineTransform(translationX: -startX, y: 0)
+                    }, completion: { (bool) in
+                        self.isAnimating = false
+                        currentViewControllerView.removeFromSuperview()
+                    })
+                }
+
+            
             self.moveSelectionIndicator(toIndex: index,animated:animated)
             self.selectedIndex = index
             delegate?.tabBar(self, didMoveToTabAtIndex: index)
@@ -875,7 +907,7 @@ extension AZTabBarController: AZTabBarButtonDelegate{
     }
 
     internal func shouldAnimate(_ tabBarButton: AZTabBarButton) -> Bool {
-        if tabBarButton.tag == selectedIndex || self.highlightedButtonIndexes.contains(tabBarButton.tag){
+        if tabBarButton.tag == selectedIndex || self.highlightedButtonIndexes.contains(tabBarButton.tag) || isAnimating{
             return false
         }
         return delegate?.tabBar(self, shouldAnimateButtonInteractionAtIndex: tabBarButton.tag) ?? false
@@ -1233,7 +1265,6 @@ fileprivate extension UIImage {
     }
 }
 
-
 public extension UIViewController{
     
     public var currentTabBar: AZTabBarController?{
@@ -1247,3 +1278,5 @@ public extension UIViewController{
         return nil
     }
 }
+
+

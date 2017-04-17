@@ -14,7 +14,9 @@ class SearchController: UIViewController{
     
     class func instance()->UIViewController{
         let searchController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "SearchController")
-        return UINavigationController(rootViewController: searchController)
+        let nav = UINavigationController(rootViewController: searchController)
+        nav.navigationBar.isTranslucent = false
+        return nav
     }
     
     var resultArray:[String] = []
@@ -24,7 +26,7 @@ class SearchController: UIViewController{
     
     @IBAction func click(_ sender: UIBarButtonItem) {
         //self.present(searchController, animated: true, completion: nil)
-        searchController.show(in: self)
+        searchController.show(in: currentTabBar!)
     }
     
     

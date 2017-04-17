@@ -12,7 +12,9 @@ import UIKit
 class ColorSelectorController: UIViewController{
     class func instance()->UIViewController{
         let colorController = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ColorSelectorController")
-        return UINavigationController(rootViewController: colorController)
+        let nav = UINavigationController(rootViewController: colorController)
+        nav.navigationBar.isTranslucent = false
+        return nav
     }
     
     var isTabBarHidden = false

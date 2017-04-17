@@ -53,7 +53,7 @@ class ViewController: UIViewController {
         
         
         
-        tabController.set(viewController: ColorSelectorController.instance(), atIndex: 0)
+        tabController.setViewController(ColorSelectorController.instance(), atIndex: 0)
         
         let darkController = getNavigationController(root: LabelController.controller(text: "Search", title: "Recents"))
         darkController.navigationBar.barStyle = .black
@@ -61,12 +61,12 @@ class ViewController: UIViewController {
         darkController.navigationBar.barTintColor = #colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
         
         
-        tabController.set(viewController: SearchController.instance(), atIndex: 1)
+        tabController.setViewController(SearchController.instance(), atIndex: 1)
 
-        tabController.set(viewController: getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
+        tabController.setViewController(getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
         
         let buttonController = ButtonController.controller(badgeCount: 0, currentIndex: 4)
-        tabController.set(viewController: getNavigationController(root: buttonController), atIndex: 4)
+        tabController.setViewController(getNavigationController(root: buttonController), atIndex: 4)
         
         
         //customize
@@ -93,27 +93,28 @@ class ViewController: UIViewController {
         tabController.notificationBadgeAppearance.borderWidth = 0.2
         
         
-        tabController.set(badgeText: "!", atIndex: 4)
+        tabController.setBadgeText("!", atIndex: 4)
         
-        tabController.set(selectedIndex: 10, animated: true)
+        tabController.setIndex(10, animated: true)
         
-        tabController.set(action: { 
+        tabController.setAction(atIndex: 3){
             self.counter = 0
-            self.tabController.set(badgeText: nil, atIndex: 3)
-            }, atIndex: 3)
+            self.tabController.setBadgeText(nil, atIndex: 3)
+        }
         
-        tabController.set(action: {
+        tabController.setAction(atIndex: 2) {
             //self.counter += 1
             //self.tabController.set(badgeText: "\(self.counter)", atIndex: 3)
             self.actionLaunchCamera()
-            }, atIndex: 2)
+        }
         
-        tabController.set(action: { 
+        tabController.setAction(atIndex: 4) {
             //self.tabController.setBar(hidden: true, animated: true)
-            
-        }, atIndex: 4)
+        }
         
-        tabController.set(selectedIndex: 3, animated: true)
+        tabController.setIndex(3, animated: true)
+        
+        tabController.animateTabChange = true
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -127,6 +128,10 @@ class ViewController: UIViewController {
     func getNavigationController(root: UIViewController)->UINavigationController{
         let navigationController = UINavigationController(rootViewController: root)
         navigationController.title = title
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.barStyle = .black
+        navigationController.navigationBar.isTranslucent = false
+        navigationController.navigationBar.barTintColor = #colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
         return navigationController
     }
     
@@ -270,7 +275,7 @@ class ButtonController: UIViewController{
             }
         }
         
-        currentTabBar?.set(badgeText: nil, atIndex: currentIndex)
+        currentTabBar?.setBadgeText(nil, atIndex: currentIndex)
     }
     
     @IBAction func didClickButton(_ sender: UIButton) {
@@ -278,7 +283,7 @@ class ButtonController: UIViewController{
         
         
         if let tabBar = currentTabBar{
-            tabBar.set(badgeText: "\(badgeCount)", atIndex: currentIndex)
+            tabBar.setBadgeText("\(badgeCount)", atIndex: currentIndex)
             sender.badge(text: "\(badgeCount)")
         }
     }
