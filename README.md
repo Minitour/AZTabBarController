@@ -55,17 +55,15 @@ let myChildViewController = UIStoryboard(name: "Main", bundle: nil).instantiateV
 //if you are loading programmatically:
 let myChildViewController = ChildViewController()
 
-tabController.set(viewController: myChildViewController, atIndex: 0)
+tabController.setViewController(myChildViewController, atIndex: 0)
 ```
 
 Add actions:
 ```swift
-tabController.set(action: { 
-
+tabController.setAction(atIndex: 3) { 
     //Your statments
     print("Hello World")
-
-}, atIndex: 3)
+}
 ```
 
 Note that you can add both actions and view controllers at a certain index.
@@ -73,29 +71,43 @@ Note that you can add both actions and view controllers at a certain index.
 ## Customizations:
 
 ```swift
-
-tabController.defaultColor = UIColor.white //default color of the icons on the buttons
+//default color of the icons on the buttons
+tabController.defaultColor = .white 
 
 //the color of the icon when a menu is selected
-tabController.selectedColor = UIColor.orange 
+tabController.selectedColor = .orange 
 
-//The background color of the tab bar in a nutshell
-tabController.buttonsBackgroundColor = UIColor.black 
+//The color of the icon of a highlighted tab
+tabController.highlightColor = .white
+
+//The background color of the button of the highlighted tabs.
+tabController.highlightedBackgroundColor = .green
+
+//The background color of the tab bar
+tabController.buttonsBackgroundColor = .black 
+
+//The color of the selection indicator.
+tabController.selectionIndicatorColor = .green
 
 // default is 3.0
 tabController.selectionIndicatorHeight = 0 
 
-//make this button look highlighted.
-tabController.highlightButton(atIndex: 2) 
-
-// change the seperator line color (I recommened to leave this untouched or simply hide the seperator)
-tabController.separatorLineColor = UIColor.black 
+// change the seperator line color
+tabController.separatorLineColor = .black 
 
 //hide or show the seperator line
 tabController.separatorLineVisible = false 
+
+//Enable tab change animation that looks like facebook
+tabController.animateTabChange = true
 ```
 
 ## Extras:
+
+Make tab look highlighted:
+```swift
+tabController.highlightButton(atIndex: 2) 
+```
 
 Hide/Show the tab bar:
 ```swift
@@ -104,13 +116,30 @@ tabController.setBar(hidden: true, animated: true)
 
 Add badge to menu (use nil value to remove existing badges): 
 ```swift
-tabController.set(badge: "5", atIndex: 3)
+tabController.setBadgeText("5", atIndex: 3)
 ```
 
 Switch programmatically to a certain tab: 
 ```swift
-tabController.set(selectedIndex: 2, animated: true)
+tabController.setIndex(2) //animated = true by default
+//or
+tabController.setIndex(2, animated: false)
 ```
+
+Grant access to change the status bar style per tab:
+```swift
+override var childViewControllerForStatusBarStyle: UIViewController?{
+    return tabController
+}
+```
+
+```swift
+//Then implement the delegate method:
+func tabBar(_ tabBar: AZTabBarController, statusBarStyleForIndex index: Int) -> UIStatusBarStyle {
+    return (index % 2) == 0 ? .default : .lightContent
+}
+```
+
 
 ## Access AZTabBarController from child view controllers:
 
@@ -121,10 +150,8 @@ public var currentTabBar: AZTabBarController? { get }
 
 You can call it like this:
 ```swift
-currentTabBar?.set(badge: "New Badge Value",atIndex: 2)
+currentTabBar?.setBadgeText("New Badge Value",atIndex: 2)
 ```
-
-
 
 
 ## Delegate Methods:
