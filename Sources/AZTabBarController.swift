@@ -10,7 +10,7 @@ import UIKit
 import AVFoundation
 import EasyNotificationBadge
 
-public typealias AZTabBarAction = () -> Void
+public typealias AZTabBarAction = (() -> Void)
 
 public protocol AZTabBarDelegate: class {
     
@@ -32,13 +32,22 @@ public protocol AZTabBarDelegate: class {
     func tabBar(_ tabBar: AZTabBarController, shouldLongClickForIndex index: Int)-> Bool
     
     
+    /// Should the tab be switched to the new tab at a given index.
+    ///
+    /// - Parameters:
+    ///   - tabBar: The current instance of AZTabBarController.
+    ///   - index: The index of the child view controller which the controller is about to change to.
+    /// - Returns: true to move and false to ignore.
+    func tabBar(_ tabBar: AZTabBarController, shouldMoveToTabAtIndex index: Int)-> Bool
+    
+    
     /// This function is used to enable/disable animation for a certian tab.
     ///
     /// - Parameters:
     ///   - tabBar: The current instance of AZTabBarController.
     ///   - index: The index of the tab.
     /// - Returns: true if you wish to enable the animation, false otherwise.
-    func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index:Int)->Bool
+    func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index:Int)-> Bool
     
     
     /// This function is used to play a sound when a certain tab is selected.
@@ -47,7 +56,7 @@ public protocol AZTabBarDelegate: class {
     ///   - tabBar: The current instance of the tab bar controller.
     ///   - index: The index you wish to play sound for.
     /// - Returns: The system sound id. if nil is returned nothing will be played.
-    func tabBar(_ tabBar: AZTabBarController, systemSoundIdForButtonAtIndex index:Int)->SystemSoundID?
+    func tabBar(_ tabBar: AZTabBarController, systemSoundIdForButtonAtIndex index:Int)-> SystemSoundID?
     
     
     /// This function is called whenever user taps one of the menu buttons.
@@ -86,13 +95,15 @@ public protocol AZTabBarDelegate: class {
 //The point of this extension is to make the delegate functions optional.
 public extension AZTabBarDelegate{
     
-    func tabBar(_ tabBar: AZTabBarController, statusBarStyleForIndex index: Int)-> UIStatusBarStyle{ return .default }
+    func tabBar(_ tabBar: AZTabBarController, statusBarStyleForIndex index: Int)-> UIStatusBarStyle { return .default }
     
-    func tabBar(_ tabBar: AZTabBarController, shouldLongClickForIndex index: Int)-> Bool{ return true }
+    func tabBar(_ tabBar: AZTabBarController, shouldLongClickForIndex index: Int)-> Bool { return true }
     
-    func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index:Int)->Bool{ return true }
+    func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index:Int)-> Bool { return true }
     
-    func tabBar(_ tabBar: AZTabBarController, systemSoundIdForButtonAtIndex index:Int)->SystemSoundID?{return nil}
+    func tabBar(_ tabBar: AZTabBarController, shouldMoveToTabAtIndex index: Int)-> Bool { return true }
+    
+    func tabBar(_ tabBar: AZTabBarController, systemSoundIdForButtonAtIndex index:Int)-> SystemSoundID? {return nil}
     
     func tabBar(_ tabBar: AZTabBarController, didSelectTabAtIndex index: Int){}
     
@@ -187,7 +198,7 @@ public class AZTabBarController: UIViewController {
         }
     }
     
-    
+    /// The color of the selection indicator.
     open var selectionIndicatorColor: UIColor!{
         didSet{
             self.updateInterfaceIfNeeded()
@@ -207,6 +218,7 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    /// When setting this to true, The tab bar will display the icons with their orignal colors instead of template color.
     open var ignoreIconColors: Bool = false {
         didSet{
             updateInterfaceIfNeeded()
@@ -216,6 +228,7 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    /// Should the tab bar have animated transitions enabled?
     open var animateTabChange: Bool = false
     
     /// The current selected index.
@@ -502,6 +515,9 @@ public class AZTabBarController: UIViewController {
     ///   - controller: The view controller which you wish to display at a certain index.
     ///   - index: The index of the menu.
     open func setViewController(_ controller: UIViewController, atIndex index: Int) {
+        
+        if index >= tabCount { return }
+        
         if let currentViewController = self.controllers[index]{
             currentViewController.removeFromParentViewController()
         }
@@ -512,6 +528,23 @@ public class AZTabBarController: UIViewController {
             // controller at that index so that the change is reflected.
             self.moveToController(at: index, animated: false)
         }
+    }
+    
+    
+    /// Remove view controller at a given index. This won't work if you are trying to remove a view controller at a current index.
+    ///
+    /// - Parameter index: The index of which you want to remove the view controller
+    open func removeViewController(atIndex index: Int){
+        //possible exceptions: IOOBException, removing current view
+        if index >= tabCount { return }
+        
+        if selectedIndex == index { return }
+        
+        if let currentVC = controllers[index] {
+            currentVC.removeFromParentViewController()
+        }
+        
+        controllers[index] = nil
     }
     
   
@@ -542,7 +575,21 @@ public class AZTabBarController: UIViewController {
     ///   - action: A closure which contains the action that will be executed when clicking the menu at a certain index.
     ///   - index: The index of the menu of which you would like to add an action to.
     open func setAction(atIndex index: Int, action: @escaping AZTabBarAction) {
+        
+        if index >= tabCount { return }
+        
         self.actions[(index)] = action
+    }
+    
+    
+    /// Remove an action from an index.
+    ///
+    /// - Parameter index: The index at which you wish to remove the action.
+    open func removeAction(atIndex index: Int){
+        
+        if index >= tabCount { return }
+        
+        self.actions[index] = nil
     }
     
     
@@ -751,7 +798,12 @@ public class AZTabBarController: UIViewController {
     }
     
     private func moveToController(at index:Int,animated:Bool){
+        
         if let controller = controllers[index], !(animated && isAnimating) {
+            
+            if let shouldMove = delegate?.tabBar(self, shouldMoveToTabAtIndex: index), shouldMove == false{
+                return
+            }
             
             if buttons == nil{
                 selectedIndex = index
@@ -811,28 +863,31 @@ public class AZTabBarController: UIViewController {
             //self.addChildViewController(controller)
             controller.didMove(toParentViewController: self)
             
-                if let currentViewControllerView = currentViewControllerView, animated, animateTabChange {
+            if let currentViewControllerView = currentViewControllerView, animated, animateTabChange {
                     //animate
                     
-                    let offset: CGFloat = self.view.frame.size.width / 5
-                    //let startX = index > selectedIndex ? self.view.frame.size.width + offset : -offset
-                    let startX = index > selectedIndex ? offset : -offset
-                    controller.view.transform = CGAffineTransform(translationX: startX, y: 0)
-                    controller.view.alpha = 0
+                let offset: CGFloat = self.view.frame.size.width / 5
+                //let startX = index > selectedIndex ? self.view.frame.size.width + offset : -offset
+                let startX = index > selectedIndex ? offset : -offset
+                controller.view.transform = CGAffineTransform(translationX: startX, y: 0)
+                controller.view.alpha = 0
                     
-                    UIView.animate(withDuration: 0.2, animations: {
-                        self.isAnimating = true
-                        controller.view.transform = .identity
-                        controller.view.alpha = 1
-                        currentViewControllerView.transform = CGAffineTransform(translationX: -startX, y: 0)
-                    }, completion: { (bool) in
-                        self.isAnimating = false
-                        currentViewControllerView.removeFromSuperview()
-                    })
-                }
+                UIView.animate(withDuration: 0.2, animations: {
+                    self.isAnimating = true
+                    controller.view.transform = .identity
+                    controller.view.alpha = 1
+                    currentViewControllerView.transform = CGAffineTransform(translationX: -startX, y: 0)
+                }, completion: { (bool) in
+                    self.isAnimating = false
+                    currentViewControllerView.removeFromSuperview()
+                })
+                self.moveSelectionIndicator(toIndex: index,animated: animated)
+            }else{
+                self.moveSelectionIndicator(toIndex: index,animated: false)
+            }
 
             
-            self.moveSelectionIndicator(toIndex: index,animated:animated)
+            
             self.selectedIndex = index
             delegate?.tabBar(self, didMoveToTabAtIndex: index)
             self.statusBarStyle = delegate?.tabBar(self, statusBarStyleForIndex: index) ?? .default
@@ -858,7 +913,8 @@ public class AZTabBarController: UIViewController {
     }
     
     private func moveSelectionIndicator(toIndex index: Int,animated:Bool){
-        let constant:CGFloat = (self.buttons[index] as! UIButton).frame.origin.x
+        //let constant:CGFloat = (self.buttons[index] as! UIButton).frame.origin.x
+        let constant: CGFloat = ((buttonsContainer.frame.size.width / CGFloat(tabCount)) * CGFloat(index))
         
         self.buttonsContainer.layoutIfNeeded()
         
@@ -1271,7 +1327,7 @@ public extension UIViewController{
         var current: UIViewController? = parent
         
         repeat{
-            if current is AZTabBarController{ return current as? AZTabBarController }
+            if current is AZTabBarController { return current as? AZTabBarController }
             current = current?.parent
         }while current != nil
         

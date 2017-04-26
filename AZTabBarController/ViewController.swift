@@ -53,7 +53,7 @@ class ViewController: UIViewController {
         
         
         
-        tabController.setViewController(ColorSelectorController.instance(), atIndex: 0)
+        //tabController.setViewController(ColorSelectorController.instance(), atIndex: 0)
         
         let darkController = getNavigationController(root: LabelController.controller(text: "Search", title: "Recents"))
         darkController.navigationBar.barStyle = .black
@@ -75,13 +75,15 @@ class ViewController: UIViewController {
         
         tabController.highlightColor = #colorLiteral(red: 0.1803921569, green: 0.8, blue: 0.4431372549, alpha: 1)
         
+        //tabController.highlightedBackgroundColor
+        
         tabController.defaultColor = #colorLiteral(red: 0.09048881881, green: 0.09048881881, blue: 0.09048881881, alpha: 1)
         
         //tabController.highlightButton(atIndex: 2)
         
         tabController.buttonsBackgroundColor = UIColor(colorLiteralRed: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)//#colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
         
-        tabController.selectionIndicatorHeight = 0
+        tabController.selectionIndicatorHeight = 3
         
         tabController.selectionIndicatorColor = #colorLiteral(red: 0.1803921569, green: 0.8, blue: 0.4431372549, alpha: 1)
         
@@ -171,7 +173,7 @@ extension ViewController: AZTabBarDelegate{
     }
     
     func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index: Int) -> Bool {
-        return true //index != 2
+        return !(index == 3 || index == 2)
     }
     
     func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int) {
@@ -193,6 +195,7 @@ extension ViewController: AZTabBarDelegate{
     func tabBar(_ tabBar: AZTabBarController, systemSoundIdForButtonAtIndex index: Int) -> SystemSoundID? {
         return tabBar.selectedIndex == index ? nil : audioId
     }
+    
 }
 
 extension ViewController: AZSearchViewDelegate{
@@ -281,6 +284,8 @@ class ButtonController: UIViewController{
     @IBAction func didClickButton(_ sender: UIButton) {
         badgeCount += 1
         
+        //currentTabBar?.removeAction(atIndex: 2)
+        currentTabBar?.removeViewController(atIndex: 0)
         
         if let tabBar = currentTabBar{
             tabBar.setBadgeText("\(badgeCount)", atIndex: currentIndex)
