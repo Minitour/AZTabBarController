@@ -290,7 +290,6 @@ class ButtonController: UIViewController{
         badgeCount += 1
         
         //currentTabBar?.removeAction(atIndex: 2)
-        currentTabBar?.removeViewController(atIndex: 0)
         
         if let tabBar = currentTabBar{
             tabBar.setBadgeText("\(badgeCount)", atIndex: currentIndex)

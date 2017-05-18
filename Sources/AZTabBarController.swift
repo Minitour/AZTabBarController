@@ -132,8 +132,8 @@ public class AZTabBarController: UIViewController {
     /// The current selected index.
     fileprivate (set) open var selectedIndex:Int!
     
+    /// Is the tab bar in the middle of an animation.
     fileprivate (set) open var isAnimating: Bool = false
-    
     
     /// If the separator line view that is between the buttons container and the primary view container is visable.
     open var separatorLineVisible:Bool = true{
@@ -144,7 +144,6 @@ public class AZTabBarController: UIViewController {
         }
     }
     
-    
     /// The color of the separator.
     open var separatorLineColor:UIColor!{
         didSet{
@@ -154,14 +153,11 @@ public class AZTabBarController: UIViewController {
         }
     }
     
-    
     /// Change the alpha of the deselected menus that do not have actions set on them to 0.5
     open var highlightsSelectedButton:Bool = false
     
-    
     /// The appearance of the notification badge.
     open var notificationBadgeAppearance: BadgeAppearnce = BadgeAppearnce()
-    
     
     /// The height of the selection indicator.
     open var selectionIndicatorHeight:CGFloat = 3.0{
@@ -169,7 +165,6 @@ public class AZTabBarController: UIViewController {
             updateInterfaceIfNeeded()
         }
     }
-    
     
     /// Set the tab bar height.
     open var tabBarHeight: CGFloat{
@@ -181,26 +176,23 @@ public class AZTabBarController: UIViewController {
         }
     }
     
-    
     /// The duration that is needed to invoke a long click.
     open var longClickTriggerDuration: TimeInterval = 0.5
-    
     
     /// The duration of the starting animation.
     open var iconStartAnimationDuration: TimeInterval = 0.2
     
-    
     /// The duration of the ending (spring) animation.
     open var iconEndAnimationDuration: TimeInterval = 0.25
     
+    /// The duration of the animation of the selection indicator's movement.
+    open var selectionIndicatorAnimationDuration: TimeInterval = 0.25
     
     /// Spring damping.
     open var iconSpringWithDamping: CGFloat = 0.2
     
-    
     /// Initial spring velocity.
     open var iconInitialSpringVelocity: CGFloat = 6.0
-    
     
     /// The AZTabBar Delegate
     open weak var delegate: AZTabBarDelegate?
@@ -227,11 +219,12 @@ public class AZTabBarController: UIViewController {
     }
     
     /// The view that holds the views of the controllers.
-    fileprivate var controllersContainer:UIView!
+    fileprivate (set) public var controllersContainer:UIView!
     
-    /// The view which holds the buttons.
-    fileprivate var buttonsContainer:UIView!
+    /// The view that holds the stack and selection indicator
+    fileprivate (set) public var buttonsContainer:UIView!
     
+    /// The stack view that holds the buttons
     fileprivate var buttonsStackView: UIStackView!
     
     /// The separator line between the controllers container and the buttons container.
@@ -253,7 +246,7 @@ public class AZTabBarController: UIViewController {
     internal var selectedTabIcons: [UIImage]?
     
     /// The view that goes inside the buttons container and indicates which menu is selected.
-    internal var selectionIndicator:UIView!
+    internal (set) public var selectionIndicator:UIView!
     
     internal var selectionIndicatorLeadingConstraint:NSLayoutConstraint!
     
@@ -395,18 +388,9 @@ public class AZTabBarController: UIViewController {
         }
     }
     
-    override public func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
-        // When rotating, have to update the selection indicator leading to match
-        // the selected button x, that might have changed because of the rotation.
-        
+    override public func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {        
         let selectedButtonX: CGFloat = self.buttons[self.selectedIndex].frame.origin.x
         self.selectionIndicatorLeadingConstraint.constant = selectedButtonX
-//        if self.selectionIndicatorLeadingConstraint.constant != selectedButtonX {
-//            UIView.animate(withDuration: 0.1, animations: {() -> Void in
-//                self.selectionIndicatorLeadingConstraint.constant = selectedButtonX
-//                self.view.layoutIfNeeded()
-//            })
-//        }
     }
     
     /*
@@ -607,13 +591,16 @@ public class AZTabBarController: UIViewController {
     /// - Parameter index: The index of the tab to remove.
     open func removeTab(atIndex index: Int){
         
-        if selectedIndex == index {
+        if selectedIndex == index || index >= buttons.count {
             return
         }
         
         if buttons != nil {
             let button = buttons.remove(at: index)
-            button.removeFromSuperview()
+            UIView.animate(withDuration: 0.2){
+                button.removeFromSuperview()
+            }
+            
             for i in 0..<buttons.count{ buttons[i].tag = i }
         }
         
@@ -628,6 +615,19 @@ public class AZTabBarController: UIViewController {
         
         moveSelectionIndicator(toIndex: selectedIndex, animated: false)
         
+        updateInterfaceIfNeeded()
+    }
+    
+    
+    /// Change the tab icon at a certain index.
+    ///
+    /// - Parameters:
+    ///   - index: The index of which you would like to change the icon image.
+    ///   - normal: The default icon.
+    ///   - selected: The highlighted (selected) icon.
+    open func setTabIcon(forIndex index: Int, normal: UIImage,selected: UIImage? = nil){
+        self.tabIcons?[index] = normal
+        self.selectedTabIcons?[index] = selected ?? normal
         updateInterfaceIfNeeded()
     }
     

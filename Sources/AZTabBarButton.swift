@@ -62,9 +62,7 @@ public class AZTabBarButton: UIButton{
             self.touchesCancelled(Set<UITouch>(), with: nil)
             self.delegate.longClickAction(self)
         }
-        
     }
-    
 }
 
 extension AZTabBarButton {
