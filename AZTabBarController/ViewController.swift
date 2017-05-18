@@ -53,7 +53,7 @@ class ViewController: UIViewController {
         
         
         
-        //tabController.setViewController(ColorSelectorController.instance(), atIndex: 0)
+        tabController.setViewController(ColorSelectorController.instance(), atIndex: 0)
         
         let darkController = getNavigationController(root: LabelController.controller(text: "Search", title: "Recents"))
         darkController.navigationBar.barStyle = .black
@@ -105,18 +105,23 @@ class ViewController: UIViewController {
         }
         
         tabController.setAction(atIndex: 2) {
+            
+            self.tabController.removeTab(atIndex: 3)
             //self.counter += 1
             //self.tabController.set(badgeText: "\(self.counter)", atIndex: 3)
-            self.actionLaunchCamera()
+            //self.actionLaunchCamera()
         }
         
         tabController.setAction(atIndex: 4) {
             //self.tabController.setBar(hidden: true, animated: true)
         }
         
-        tabController.setIndex(3, animated: true)
+        tabController.setIndex(1, animated: true)
         
         tabController.animateTabChange = true
+        
+        self.tabController.insertTab(atIndex: 3, icon: #imageLiteral(resourceName: "ic_phone"))
+        tabController.setViewController(UIViewController(), atIndex: 3)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -285,7 +290,6 @@ class ButtonController: UIViewController{
         badgeCount += 1
         
         //currentTabBar?.removeAction(atIndex: 2)
-        currentTabBar?.removeViewController(atIndex: 0)
         
         if let tabBar = currentTabBar{
             tabBar.setBadgeText("\(badgeCount)", atIndex: currentIndex)

@@ -17,6 +17,9 @@
 		9D1BF76B1E9F9521004F8F8C /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1BF76A1E9F9521004F8F8C /* SearchController.swift */; };
 		9D1BF76D1E9FC2D4004F8F8C /* ColorSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1BF76C1E9FC2D4004F8F8C /* ColorSelectorController.swift */; };
 		9D8D5F5C1E451CA900038D0D /* blop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9D8D5F5B1E451CA900038D0D /* blop.mp3 */; };
+		9DDDC8051ECE1CC700869009 /* AZTabBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDDC8041ECE1CC700869009 /* AZTabBarDelegate.swift */; };
+		9DDDC8071ECE1D1400869009 /* AZTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDDC8061ECE1D1400869009 /* AZTabBarButton.swift */; };
+		9DDDC8091ECE1D6200869009 /* AZTabBarButtonDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDDC8081ECE1D6200869009 /* AZTabBarButtonDelegate.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +37,9 @@
 		9D1BF76A1E9F9521004F8F8C /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		9D1BF76C1E9FC2D4004F8F8C /* ColorSelectorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectorController.swift; sourceTree = "<group>"; };
 		9D8D5F5B1E451CA900038D0D /* blop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = blop.mp3; sourceTree = "<group>"; };
+		9DDDC8041ECE1CC700869009 /* AZTabBarDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarDelegate.swift; sourceTree = "<group>"; };
+		9DDDC8061ECE1D1400869009 /* AZTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarButton.swift; sourceTree = "<group>"; };
+		9DDDC8081ECE1D6200869009 /* AZTabBarButtonDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarButtonDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +100,9 @@
 			isa = PBXGroup;
 			children = (
 				4F6140141D895F14005BFB4F /* AZTabBarController.swift */,
+				9DDDC8041ECE1CC700869009 /* AZTabBarDelegate.swift */,
+				9DDDC8061ECE1D1400869009 /* AZTabBarButton.swift */,
+				9DDDC8081ECE1D6200869009 /* AZTabBarButtonDelegate.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -241,9 +250,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DDDC8051ECE1CC700869009 /* AZTabBarDelegate.swift in Sources */,
+				9DDDC8071ECE1D1400869009 /* AZTabBarButton.swift in Sources */,
 				4F6140161D895F14005BFB4F /* AZTabBarController.swift in Sources */,
 				4F6140121D886FE4005BFB4F /* ViewController.swift in Sources */,
 				4F613FFD1D883D72005BFB4F /* AppDelegate.swift in Sources */,
+				9DDDC8091ECE1D6200869009 /* AZTabBarButtonDelegate.swift in Sources */,
 				9D1BF76D1E9FC2D4004F8F8C /* ColorSelectorController.swift in Sources */,
 				9D1BF76B1E9F9521004F8F8C /* SearchController.swift in Sources */,
 			);
