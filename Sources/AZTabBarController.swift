@@ -12,108 +12,6 @@ import EasyNotificationBadge
 
 public typealias AZTabBarAction = (() -> Void)
 
-public protocol AZTabBarDelegate: class {
-    
-    /// This function is called after `didMoveToTabAtIndex` is called. In order for this function to work you must override the var `childViewControllerForStatusBarStyle` in the root controller to return this instance of AZTabBarController.
-    ///
-    /// - Parameters:
-    ///   - tabBar: The current instance of AZTabBarController.
-    ///   - index: The index of the child view controller which you wish to set a status bar style for.
-    /// - Returns: The status bar style.
-    func tabBar(_ tabBar: AZTabBarController, statusBarStyleForIndex index: Int)-> UIStatusBarStyle
-    
-    
-    /// This function is called whenever user clicks the menu a long click. If returned false, the action will be ignored.
-    ///
-    /// - Parameters:
-    ///   - tabBar: The current instance of AZTabBarController.
-    ///   - index: The index of the child view controller which you wish to disable the long menu click for.
-    /// - Returns: true if you wish to allow long-click interaction for a specific tab, false otherwise.
-    func tabBar(_ tabBar: AZTabBarController, shouldLongClickForIndex index: Int)-> Bool
-    
-    
-    /// Should the tab be switched to the new tab at a given index.
-    ///
-    /// - Parameters:
-    ///   - tabBar: The current instance of AZTabBarController.
-    ///   - index: The index of the child view controller which the controller is about to change to.
-    /// - Returns: true to move and false to ignore.
-    func tabBar(_ tabBar: AZTabBarController, shouldMoveToTabAtIndex index: Int)-> Bool
-    
-    
-    /// This function is used to enable/disable animation for a certian tab.
-    ///
-    /// - Parameters:
-    ///   - tabBar: The current instance of AZTabBarController.
-    ///   - index: The index of the tab.
-    /// - Returns: true if you wish to enable the animation, false otherwise.
-    func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index:Int)-> Bool
-    
-    
-    /// This function is used to play a sound when a certain tab is selected.
-    ///
-    /// - Parameters:
-    ///   - tabBar: The current instance of the tab bar controller.
-    ///   - index: The index you wish to play sound for.
-    /// - Returns: The system sound id. if nil is returned nothing will be played.
-    func tabBar(_ tabBar: AZTabBarController, systemSoundIdForButtonAtIndex index:Int)-> SystemSoundID?
-    
-    
-    /// This function is called whenever user taps one of the menu buttons.
-    ///
-    /// - Parameters:
-    ///   - tabBar: The current instance of AZTabBarController.
-    ///   - index: The index of the menu the user tapped.
-    func tabBar(_ tabBar: AZTabBarController, didSelectTabAtIndex index: Int)
-    
-    
-    /// This function is called whenever user taps and hold one of the menu buttons. Note that this function will not be called for a certain index if `shouldLongClickForIndex` is implemented and returns false for that very same index.
-    ///
-    /// - Parameters:
-    ///   - tabBar: The current instance of AZTabBarController.
-    ///   - index: The index of the menu the user long clicked.
-    func tabBar(_ tabBar: AZTabBarController, didLongClickTabAtIndex index:Int)
-    
-    
-    /// This function is called before the child view controllers are switched.
-    ///
-    /// - Parameters:
-    ///   - tabBar: The current instance of AZTabBarController.
-    ///   - index: The index of the controller which the tab bar will be switching to.
-    func tabBar(_ tabBar: AZTabBarController, willMoveToTabAtIndex index:Int)
-    
-    
-    /// This function is called after the child view controllers are switched.
-    ///
-    /// - Parameters:
-    ///   - tabBar: The current instance of AZTabBarController.
-    ///   - index: The index of the controller which the tab bar had switched to.
-    func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int)
-    
-}
-
-//The point of this extension is to make the delegate functions optional.
-public extension AZTabBarDelegate{
-    
-    func tabBar(_ tabBar: AZTabBarController, statusBarStyleForIndex index: Int)-> UIStatusBarStyle { return .default }
-    
-    func tabBar(_ tabBar: AZTabBarController, shouldLongClickForIndex index: Int)-> Bool { return true }
-    
-    func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index:Int)-> Bool { return true }
-    
-    func tabBar(_ tabBar: AZTabBarController, shouldMoveToTabAtIndex index: Int)-> Bool { return true }
-    
-    func tabBar(_ tabBar: AZTabBarController, systemSoundIdForButtonAtIndex index:Int)-> SystemSoundID? {return nil}
-    
-    func tabBar(_ tabBar: AZTabBarController, didSelectTabAtIndex index: Int){}
-    
-    func tabBar(_ tabBar: AZTabBarController, didLongClickTabAtIndex index:Int){}
-    
-    func tabBar(_ tabBar: AZTabBarController, willMoveToTabAtIndex index:Int){}
-    
-    func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int){}
-}
-
 public class AZTabBarController: UIViewController {
     
     /*
@@ -162,8 +60,8 @@ public class AZTabBarController: UIViewController {
     open var selectedColor:UIColor! {
         didSet{
             updateInterfaceIfNeeded()
-            if didSetUpInterface , let button = (buttons[self.selectedIndex] as? UIButton) {
-                button.isSelected = true
+            if didSetUpInterface {
+                buttons[self.selectedIndex].isSelected = true
             }
         }
     }
@@ -173,8 +71,8 @@ public class AZTabBarController: UIViewController {
     open var defaultColor:UIColor! {
         didSet{
             updateInterfaceIfNeeded()
-            if didSetUpInterface , let button = (buttons[self.selectedIndex] as? UIButton) {
-                button.isSelected = true
+            if didSetUpInterface {
+                buttons[self.selectedIndex].isSelected = true
             }
         }
     }
@@ -182,8 +80,8 @@ public class AZTabBarController: UIViewController {
     open var highlightColor: UIColor! {
         didSet{
             updateInterfaceIfNeeded()
-            if didSetUpInterface , let button = (buttons[self.selectedIndex] as? UIButton) {
-                button.isSelected = true
+            if didSetUpInterface {
+                buttons[self.selectedIndex].isSelected = true
             }
         }
     }
@@ -192,8 +90,8 @@ public class AZTabBarController: UIViewController {
     open var highlightedBackgroundColor: UIColor! {
         didSet{
             updateInterfaceIfNeeded()
-            if didSetUpInterface , let button = (buttons[self.selectedIndex] as? UIButton) {
-                button.isSelected = true
+            if didSetUpInterface {
+                buttons[self.selectedIndex].isSelected = true
             }
         }
     }
@@ -202,8 +100,8 @@ public class AZTabBarController: UIViewController {
     open var selectionIndicatorColor: UIColor!{
         didSet{
             self.updateInterfaceIfNeeded()
-            if didSetUpInterface , let button = (buttons[self.selectedIndex] as? UIButton) {
-                button.isSelected = true
+            if didSetUpInterface {
+                buttons[self.selectedIndex].isSelected = true
             }
         }
     }
@@ -222,8 +120,8 @@ public class AZTabBarController: UIViewController {
     open var ignoreIconColors: Bool = false {
         didSet{
             updateInterfaceIfNeeded()
-            if didSetUpInterface , let button = (buttons[self.selectedIndex] as? UIButton) {
-                button.isSelected = true
+            if didSetUpInterface {
+                buttons[self.selectedIndex].isSelected = true
             }
         }
     }
@@ -334,6 +232,8 @@ public class AZTabBarController: UIViewController {
     /// The view which holds the buttons.
     fileprivate var buttonsContainer:UIView!
     
+    fileprivate var buttonsStackView: UIStackView!
+    
     /// The separator line between the controllers container and the buttons container.
     fileprivate var separatorLine:UIView!
     
@@ -344,7 +244,7 @@ public class AZTabBarController: UIViewController {
     fileprivate var buttonsContainerHeightConstraint:NSLayoutConstraint!
     
     /// Array which holds the buttons.
-    internal var buttons: NSMutableArray!
+    internal var buttons: [UIButton]!
     
     /// Array which holds the default tab icons.
     internal var tabIcons: [UIImage]!
@@ -391,39 +291,43 @@ public class AZTabBarController: UIViewController {
         super.loadView()
         
         //init primary views
-        self.controllersContainer = UIView()
-        self.buttonsContainer = UIView()
-        self.separatorLine = UIView()
+        controllersContainer = UIView()
+        buttonsContainer = UIView()
+        buttonsStackView = UIStackView()
+        buttonsStackView.alignment = .fill
+        buttonsStackView.distribution = .fillEqually
+        separatorLine = UIView()
+        
         
         //add in correct hierachy
-        self.view.addSubview(self.buttonsContainer)
-        self.view.addSubview(self.controllersContainer)
-        self.view.addSubview(self.separatorLine)
+        view.addSubview(buttonsContainer)
+        view.addSubview(controllersContainer)
+        view.addSubview(separatorLine)
+        buttonsContainer.addSubview(buttonsStackView)
         
         //disable autoresizing mask
-        self.controllersContainer.translatesAutoresizingMaskIntoConstraints = false
-        self.buttonsContainer.translatesAutoresizingMaskIntoConstraints = false
-        self.separatorLine.translatesAutoresizingMaskIntoConstraints = false
+        controllersContainer.translatesAutoresizingMaskIntoConstraints = false
+        buttonsContainer.translatesAutoresizingMaskIntoConstraints = false
+        separatorLine.translatesAutoresizingMaskIntoConstraints = false
+        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
         
         //setup constraints
-        let margins = self.view!
+        buttonsContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        buttonsContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        buttonsContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        buttonsContainer.topAnchor.constraint(equalTo: self.controllersContainer.bottomAnchor).isActive = true
+        buttonsContainer.topAnchor.constraint(equalTo: self.separatorLine.topAnchor).isActive = true
+        buttonsContainerHeightConstraint = self.buttonsContainer.heightAnchor.constraint(equalToConstant: 50)
+        buttonsContainerHeightConstraint.isActive = true
         
-        self.buttonsContainer.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
-        self.buttonsContainer.bottomAnchor.constraint(equalTo: margins.bottomAnchor).isActive = true
-        self.buttonsContainer.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
-        self.buttonsContainer.topAnchor.constraint(equalTo: self.controllersContainer.bottomAnchor).isActive = true
-        self.buttonsContainer.topAnchor.constraint(equalTo: self.separatorLine.topAnchor).isActive = true
-        self.buttonsContainerHeightConstraint = self.buttonsContainer.heightAnchor.constraint(equalToConstant: 50)
-        self.buttonsContainerHeightConstraint.isActive = true
+        separatorLine.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        separatorLine.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        separatorLineHeightConstraint = separatorLine.heightAnchor.constraint(equalToConstant: 1)
+        separatorLineHeightConstraint.isActive = true
         
-        self.separatorLine.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
-        self.separatorLine.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
-        self.separatorLineHeightConstraint = separatorLine.heightAnchor.constraint(equalToConstant: 1)
-        self.separatorLineHeightConstraint.isActive = true
-        
-        self.controllersContainer.topAnchor.constraint(equalTo: margins.topAnchor).isActive = true
-        self.controllersContainer.leadingAnchor.constraint(equalTo: margins.leadingAnchor).isActive = true
-        self.controllersContainer.trailingAnchor.constraint(equalTo: margins.trailingAnchor).isActive = true
+        controllersContainer.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        controllersContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        controllersContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
     
     /// Public initializer that creates a controller using tabIcons and (optional) highlightedIcons.
@@ -495,14 +399,14 @@ public class AZTabBarController: UIViewController {
         // When rotating, have to update the selection indicator leading to match
         // the selected button x, that might have changed because of the rotation.
         
-        let selectedButtonX: CGFloat = (self.buttons[self.selectedIndex] as! UIButton).frame.origin.x
-        
-        if self.selectionIndicatorLeadingConstraint.constant != selectedButtonX {
-            UIView.animate(withDuration: 0.1, animations: {() -> Void in
-                self.selectionIndicatorLeadingConstraint.constant = selectedButtonX
-                self.view.layoutIfNeeded()
-            })
-        }
+        let selectedButtonX: CGFloat = self.buttons[self.selectedIndex].frame.origin.x
+        self.selectionIndicatorLeadingConstraint.constant = selectedButtonX
+//        if self.selectionIndicatorLeadingConstraint.constant != selectedButtonX {
+//            UIView.animate(withDuration: 0.1, animations: {() -> Void in
+//                self.selectionIndicatorLeadingConstraint.constant = selectedButtonX
+//                self.view.layoutIfNeeded()
+//            })
+//        }
     }
     
     /*
@@ -600,10 +504,10 @@ public class AZTabBarController: UIViewController {
     ///   - index: The index of the menu in which you would like to add the badge.
     open func setBadgeText(_ text: String?, atIndex index:Int){
         if let buttons = buttons{
-            if let button = buttons[index] as? UIButton {
+            if index < buttons.count{
                 self.notificationBadgeAppearance.distenceFromCenterX = 15
                 self.notificationBadgeAppearance.distenceFromCenterY = -10
-                button.badge(text: text, appearnce: self.notificationBadgeAppearance)
+                buttons[index].badge(text: text, appearnce: self.notificationBadgeAppearance)
             }
         }else{
             self.badgeValues[index] = text
@@ -627,7 +531,7 @@ public class AZTabBarController: UIViewController {
     ///   - index: The index of the button.
     open func setButtonTintColor(color: UIColor, atIndex index: Int) {
         if !self.highlightedButtonIndexes.contains((index)) {
-            let button:UIButton = self.buttons[index] as! UIButton
+            let button:UIButton = self.buttons[index]
             button.tintColor! = color
             let buttonImage = button.image(for: .normal)!
             button.setImage(buttonImage.withRenderingMode(.alwaysTemplate), for: .normal)
@@ -655,39 +559,112 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    
+    /// Insert a tab at a certain index
+    ///
+    /// - Parameters:
+    ///   - index: The index of the new tab.
+    ///   - icon: The default icon of the tab
+    ///   - selectedIcon: The highlighted (selected) icon of the tab
+    open func insertTab(atIndex index: Int,icon: UIImage, selectedIcon: UIImage? = nil){
+        //create button
+        let button = createButton(forIndex: index)
+        
+        if buttons != nil{
+            buttons.insert(button, at: index)
+            //sync buttons tag
+            for i in 0..<buttons.count{ buttons[i].tag = i }
+        }
+        
+        if index <= buttonsStackView.arrangedSubviews.count {
+            buttonsStackView.insertArrangedSubview(button, at: index)
+        }
+        
+        if selectedIndex >= index {
+            selectedIndex! += 1
+        }
+        
+        //shift icons array
+        self.tabIcons.insert(icon, at: index)
+        
+        //shift selected icons array
+        self.selectedTabIcons?.insert(selectedIcon ?? icon, at: index)
+        
+        //shift controllers array
+        self.controllers.insert(nil, at: index)
+        
+        //shift actions array
+        self.actions.insert(nil, at: index)
+        
+        moveSelectionIndicator(toIndex: selectedIndex, animated: false)
+        
+        updateInterfaceIfNeeded()
+    }
+    
+    
+    /// Remove a tab at a certain index. This will not work if attempted to remove at index that equals to the selected index.
+    ///
+    /// - Parameter index: The index of the tab to remove.
+    open func removeTab(atIndex index: Int){
+        
+        if selectedIndex == index {
+            return
+        }
+        
+        if buttons != nil {
+            let button = buttons.remove(at: index)
+            button.removeFromSuperview()
+            for i in 0..<buttons.count{ buttons[i].tag = i }
+        }
+        
+        if selectedIndex >= index {
+            selectedIndex! -= 1
+        }
+        
+        tabIcons.remove(at: index)
+        selectedTabIcons?.remove(at: index)
+        controllers.remove(at: index)
+        actions.remove(at: index)
+        
+        moveSelectionIndicator(toIndex: selectedIndex, animated: false)
+        
+        updateInterfaceIfNeeded()
+    }
+    
     /*
      * MARK: - Actions
      */
     
-    
     func tabButtonAction(button:UIButton){
-        let index = self.buttons.index(of: button)
-        delegate?.tabBar(self, didSelectTabAtIndex: index)
+        if let index = self.buttons.index(of: button){
+        	delegate?.tabBar(self, didSelectTabAtIndex: index)
         
-        if let id = delegate?.tabBar(self, systemSoundIdForButtonAtIndex: index), !isAnimating{
-            AudioServicesPlaySystemSound(id)
-        }
+            if let id = delegate?.tabBar(self, systemSoundIdForButtonAtIndex: index), !isAnimating{
+                AudioServicesPlaySystemSound(id)
+            }
         
-        if index != NSNotFound {
-            self.setIndex(index, animated: true)
+            if index != NSNotFound {
+                self.setIndex(index, animated: true)
+            }
         }
     }
     
     func longClick(sender:AnyObject?){
         let button = sender as! UIButton
-        let index = self.buttons.index(of: button)
+        if let index = self.buttons.index(of: button){
         
-        if let delegate = delegate{
-            if !delegate.tabBar(self, shouldLongClickForIndex: index) {
-                return
+            if let delegate = delegate{
+                if !delegate.tabBar(self, shouldLongClickForIndex: index) {
+                    return
+                }
             }
-        }
         
-        delegate?.tabBar(self, didLongClickTabAtIndex: index)
+            delegate?.tabBar(self, didLongClickTabAtIndex: index)
         
         
-        if selectedIndex != index {
-            tabButtonAction(button: button)
+            if selectedIndex != index {
+                tabButtonAction(button: button)
+            }
         }
         
     }
@@ -740,17 +717,19 @@ public class AZTabBarController: UIViewController {
     private func setupButtons(){
         
         if self.buttons == nil {
-            self.buttons = NSMutableArray(capacity: self.tabIcons.count)
+            self.buttons = [UIButton]()//NSMutableArray(capacity: self.tabIcons.count)
             
             for i in 0 ..< self.tabIcons.count {
                 
                 let button:UIButton = self.createButton(forIndex: i)
                 
-                self.buttonsContainer.addSubview(button)
+                self.buttonsStackView.addArrangedSubview(button)
                 
-                self.buttons[i] = button
+                //self.buttons[i] = button
+                buttons.append(button)
             }
-            self.setupButtonsConstraints()
+            //self.setupButtonsConstraints()
+            setupStackConstraints()
         }
         self.customizeButtons()
         
@@ -813,7 +792,7 @@ public class AZTabBarController: UIViewController {
             // Deselect all the buttons excepting the selected one.
             for i in 0 ..< self.tabIcons.count{
                 
-                let button:UIButton = self.buttons[i] as! UIButton
+                let button:UIButton = self.buttons[i]
                 
                 let selected:Bool = i == index
                 
@@ -831,40 +810,24 @@ public class AZTabBarController: UIViewController {
             var currentViewControllerView: UIView?
             
             if self.selectedIndex >= 0 {
-                let currentController:UIViewController = self.controllers[selectedIndex]!
-                currentViewControllerView = currentController.view
-                if !animateTabChange {
-                    currentController.view.removeFromSuperview()
+                if let currentController:UIViewController = self.controllers[selectedIndex] {
+                    currentViewControllerView = currentController.view
+                    if !animateTabChange {
+                        currentController.view.removeFromSuperview()
+                    }
                 }
-                //currentController.removeFromParentViewController()
             }
             
+            controller.willMove(toParentViewController: self)
             
-            if !self.childViewControllers.contains(controller){
-                controller.willMove(toParentViewController: self)
-            }
+            controller.view.translatesAutoresizingMaskIntoConstraints = false
+            self.controllersContainer.addSubview(controller.view)
+            self.setupConstraints(forChildController: controller)
             
-            if NSFoundationVersionNumber <= NSFoundationVersionNumber_iOS_7_1 {
-                // Table views have an issue when disabling autoresizing
-                // constraints in iOS 7.
-                // Their width is set to zero initially and then it's not able to
-                // adjust it again, causing constraint conflicts with the cells
-                // inside the table.
-                // For this reason, we just adjust the frame to the container
-                // bounds leaving the autoresizing constraints enabled.
-                controller.view.frame = self.controllersContainer.bounds
-                self.controllersContainer.addSubview(controller.view)
-                
-            }else{
-                controller.view.translatesAutoresizingMaskIntoConstraints = false
-                self.controllersContainer.addSubview(controller.view)
-                self.setupConstraints(forChildController: controller)
-            }
-            //self.addChildViewController(controller)
             controller.didMove(toParentViewController: self)
             
             if let currentViewControllerView = currentViewControllerView, animated, animateTabChange {
-                    //animate
+                //animate
                     
                 let offset: CGFloat = self.view.frame.size.width / 5
                 //let startX = index > selectedIndex ? self.view.frame.size.width + offset : -offset
@@ -886,8 +849,6 @@ public class AZTabBarController: UIViewController {
                 self.moveSelectionIndicator(toIndex: index,animated: false)
             }
 
-            
-            
             self.selectedIndex = index
             delegate?.tabBar(self, didMoveToTabAtIndex: index)
             self.statusBarStyle = delegate?.tabBar(self, statusBarStyleForIndex: index) ?? .default
@@ -913,6 +874,11 @@ public class AZTabBarController: UIViewController {
     }
     
     private func moveSelectionIndicator(toIndex index: Int,animated:Bool){
+        
+        if selectionIndicatorLeadingConstraint == nil{
+            return
+        }
+        
         //let constant:CGFloat = (self.buttons[index] as! UIButton).frame.origin.x
         let constant: CGFloat = ((buttonsContainer.frame.size.width / CGFloat(tabCount)) * CGFloat(index))
         
@@ -934,35 +900,35 @@ public class AZTabBarController: UIViewController {
 
 extension AZTabBarController: AZTabBarButtonDelegate{
     
-    internal func beginAnimationDuration(_ tabBarButton: AZTabBarButton) -> TimeInterval {
+    public func beginAnimationDuration(_ tabBarButton: AZTabBarButton) -> TimeInterval {
         return self.iconStartAnimationDuration
     }
     
-    internal func endAnimationDuration(_ tabBarButton: AZTabBarButton) -> TimeInterval {
+    public func endAnimationDuration(_ tabBarButton: AZTabBarButton) -> TimeInterval {
         return self.iconEndAnimationDuration
     }
 
-    internal func usingSpringWithDamping(_ tabBarButton: AZTabBarButton) -> CGFloat {
+    public func usingSpringWithDamping(_ tabBarButton: AZTabBarButton) -> CGFloat {
         return self.iconSpringWithDamping
     }
 
-    internal func initialSpringVelocity(_ tabBarButton: AZTabBarButton) -> CGFloat {
+    public func initialSpringVelocity(_ tabBarButton: AZTabBarButton) -> CGFloat {
         return self.iconInitialSpringVelocity
     }
     
-    internal func longClickTriggerDuration(_ tabBarButton: AZTabBarButton) -> TimeInterval {
+    public func longClickTriggerDuration(_ tabBarButton: AZTabBarButton) -> TimeInterval {
         return self.longClickTriggerDuration
     }
 
-    internal func longClickAction(_ tabBarButton: AZTabBarButton) {
+    public func longClickAction(_ tabBarButton: AZTabBarButton) {
         self.longClick(sender: tabBarButton)
     }
 
-    internal func shouldLongClick(_ tabBarButton: AZTabBarButton) -> Bool {
+    public func shouldLongClick(_ tabBarButton: AZTabBarButton) -> Bool {
         return delegate?.tabBar(self, shouldLongClickForIndex: tabBarButton.tag) ?? false
     }
 
-    internal func shouldAnimate(_ tabBarButton: AZTabBarButton) -> Bool {
+    public func shouldAnimate(_ tabBarButton: AZTabBarButton) -> Bool {
         if tabBarButton.tag == selectedIndex || self.highlightedButtonIndexes.contains(tabBarButton.tag) || isAnimating{
             return false
         }
@@ -976,350 +942,32 @@ extension AZTabBarController: AZTabBarButtonDelegate{
 
 fileprivate extension AZTabBarController {
     
-    /*
-     * MARK: - Public Methods
-     */
-    
-    func setupButtonsConstraints(){
-        for i in 0 ..< self.tabIcons.count {
-            let button:UIButton = self.buttons[i] as! UIButton
-            
-            button.translatesAutoresizingMaskIntoConstraints = false
-            
-            self.view.addConstraints(self.leftLayoutConstraintsForButtonAtIndex(index: i))
-            self.view.addConstraints(self.verticalLayoutConstraintsForButtonAtIndex(index: i))
-            self.view.addConstraint(self.widthLayoutConstraintForButtonAtIndex(index: i))
-            self.view.addConstraint(self.heightLayoutConstraintForButtonAtIndex(index: i))
-        }
+    func setupStackConstraints(){
+        buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
+        buttonsStackView.heightAnchor.constraint(equalToConstant: buttonsContainerHeightConstraintInitialConstant).isActive = true
+        buttonsStackView.widthAnchor.constraint(equalTo: buttonsContainer.widthAnchor, multiplier: 1.0).isActive = true
+        buttonsStackView.topAnchor.constraint(equalTo: buttonsContainer.topAnchor).isActive = true
     }
     
     func setupSelectionIndicatorConstraints(){
-        self.selectionIndicatorLeadingConstraint = self.leadingLayoutConstraintForIndicator()
-        
-        self.buttonsContainer.addConstraint(self.selectionIndicatorLeadingConstraint)
-        self.buttonsContainer.addConstraints(self.widthLayoutConstraintsForIndicator())
-        self.buttonsContainer.addConstraints(self.heightLayoutConstraintsForIndicator())
-        self.buttonsContainer.addConstraints(self.bottomLayoutConstraintsForIndicator())
+        selectionIndicatorLeadingConstraint = selectionIndicator.leadingAnchor.constraint(equalTo: buttonsContainer.leadingAnchor)
+        selectionIndicatorHeightConstraint = selectionIndicator.heightAnchor.constraint(equalToConstant: 3)
+        selectionIndicatorLeadingConstraint.isActive = true
+        selectionIndicator.widthAnchor.constraint(equalTo: buttons[0].widthAnchor, multiplier: 1.0).isActive = true
+        selectionIndicatorHeightConstraint.isActive = true
+        selectionIndicator.bottomAnchor.constraint(equalTo: buttonsStackView.bottomAnchor).isActive = true
     }
     
     func setupConstraints(forChildController controller: UIViewController) {
-        let horizontalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "H:|-0-[view]-0-|", options: [], metrics: nil, views: ["view": controller.view])
-        self.controllersContainer.addConstraints(horizontalConstraints)
-        let verticalConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:|-0-[view]-0-|", options: [], metrics: nil, views: ["view": controller.view])
-        self.controllersContainer.addConstraints(verticalConstraints)
-    }
-    
-    /*
-     * MARK: - Private Methods
-     */
-    private func leftLayoutConstraintsForButtonAtIndex(index: Int)-> [NSLayoutConstraint]{
-        let button:UIButton = self.buttons[index] as! UIButton
-        
-        var leftConstraints:[NSLayoutConstraint]!
-        
-        if index == 0 {
-            leftConstraints = NSLayoutConstraint.constraints(withVisualFormat: "|-(0)-[button]", options: [], metrics: nil, views: ["button": button])
-        }else {
-            
-            let views = ["previousButton": self.buttons[index - 1], "button": button]
-            
-            leftConstraints = NSLayoutConstraint.constraints(withVisualFormat: "[previousButton]-(0)-[button]", options: [], metrics: nil, views: views)
-            
-        }
-        return leftConstraints
-    }
-    
-    private func verticalLayoutConstraintsForButtonAtIndex(index: Int)-> [NSLayoutConstraint]{
-        let button:UIButton = self.buttons[index] as! UIButton
-        
-        return NSLayoutConstraint.constraints(withVisualFormat: "V:|-(0)-[button]", options: [], metrics: nil, views: ["button": button])
-        
-    }
-    
-    private func widthLayoutConstraintForButtonAtIndex(index: Int)->NSLayoutConstraint {
-        let button:UIButton = self.buttons[index] as! UIButton
-        
-        return NSLayoutConstraint(item: button, attribute: .width, relatedBy: .equal, toItem: self.buttonsContainer, attribute: .width, multiplier: 1.0 / CGFloat(self.buttons.count), constant: 0.0)
-    }
-    
-    private func heightLayoutConstraintForButtonAtIndex(index: Int)-> NSLayoutConstraint {
-        let button:UIButton = self.buttons[index] as! UIButton
-        
-        return NSLayoutConstraint(item: button, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1.0, constant: self.buttonsContainerHeightConstraintInitialConstant)
-    }
-    
-    private func leadingLayoutConstraintForIndicator()->NSLayoutConstraint {
-        let constraints = NSLayoutConstraint.constraints(withVisualFormat: "|-(0)-[selectionIndicator]", options: [], metrics: nil, views: ["selectionIndicator": self.selectionIndicator])
-        
-        return constraints.first!
-    }
-    
-    private func widthLayoutConstraintsForIndicator()-> [NSLayoutConstraint]{
-        let views = ["button": self.buttons[0], "selectionIndicator": self.selectionIndicator]
-        
-        return NSLayoutConstraint.constraints(withVisualFormat: "[selectionIndicator(==button)]", options: [], metrics: nil, views: views)
-    }
-    
-    private func heightLayoutConstraintsForIndicator()-> [NSLayoutConstraint] {
-        let heightConstraints = NSLayoutConstraint.constraints(withVisualFormat: "V:[selectionIndicator(==3)]", options: [], metrics: nil, views: ["selectionIndicator": self.selectionIndicator])
-        
-        self.selectionIndicatorHeightConstraint = heightConstraints.first!
-        
-        return heightConstraints
-    }
-    
-    private func bottomLayoutConstraintsForIndicator()-> [NSLayoutConstraint] {
-        return NSLayoutConstraint.constraints(withVisualFormat: "V:[selectionIndicator]-(0)-|", options: [], metrics: nil, views: ["selectionIndicator": self.selectionIndicator])
+        let subView = controller.view
+        subView?.translatesAutoresizingMaskIntoConstraints = false
+        subView?.topAnchor.constraint(equalTo: controllersContainer.topAnchor).isActive = true
+        subView?.leftAnchor.constraint(equalTo: controllersContainer.leftAnchor).isActive = true
+        subView?.bottomAnchor.constraint(equalTo: controllersContainer.bottomAnchor).isActive = true
+        subView?.rightAnchor.constraint(equalTo: controllersContainer.rightAnchor).isActive = true
     }
 }
 
-/*
- * MARK: - Button Extension
- */
-
-protocol AZTabBarButtonDelegate: class {
-    
-    
-    /// Function used to decide if the TabBarButton should animate upon interaction.
-    ///
-    /// - Parameter tabBarButton: The sender.
-    func shouldAnimate(_ tabBarButton: AZTabBarButton)->Bool
-    
-    
-    /// The start animation duration.
-    ///
-    /// - Parameter tabBarButton: The sender.
-    func beginAnimationDuration(_ tabBarButton: AZTabBarButton)->TimeInterval
-    
-    
-    /// The ending animation duration.
-    ///
-    /// - Parameter tabBarButton: The sender.
-    func endAnimationDuration(_ tabBarButton: AZTabBarButton)->TimeInterval
-    
-    
-    /// The initial Spring Velocity for the ending animation.
-    ///
-    /// - Parameter tabBarButton: The sender.
-    func initialSpringVelocity(_ tabBarButton: AZTabBarButton)->CGFloat
-    
-    
-    /// The Spring Damping value.
-    ///
-    /// - Parameter tabBarButton: The sender.
-    /// - Returns: The value of the damping
-    func usingSpringWithDamping(_ tabBarButton: AZTabBarButton)->CGFloat
-    
-    
-    /// Function used to decide if the action of the button can be triggered using a long click gesture.
-    ///
-    /// - Parameter tabBarButton: The sender.
-    /// - Returns: True if you wish to enable long-click-gesture for the button.
-    func shouldLongClick(_ tabBarButton: AZTabBarButton)->Bool
-    
-    
-    /// Set the duration that takes for the long click gesture to be triggered.
-    ///
-    /// - Parameter tabBarButton: The sender.
-    /// - Returns: The duration that takes for the long click gesture to be triggered.
-    func longClickTriggerDuration(_ tabBarButton: AZTabBarButton)-> TimeInterval
-    
-    
-    /// A function that is invoked when long-click gesture occurs.
-    ///
-    /// - Parameter tabBarButton: The sender.
-    func longClickAction(_ tabBarButton: AZTabBarButton)
-}
-
-class AZTabBarButton: UIButton{
-    
-    var longClickTimer: Timer?
-    
-    open weak var delegate:AZTabBarButtonDelegate!
-    
-    open var shouldAnimateInteraction:Bool {
-        get{
-            return delegate.shouldAnimate(self)
-        }
-    }
-    
-    open var beginAnimationDuration: TimeInterval{
-        get{
-            return delegate.beginAnimationDuration(self)
-        }
-    }
-    
-    open var endAnimationDuration: TimeInterval{
-        get{
-            return delegate.endAnimationDuration(self)
-        }
-    }
-    
-    open var initialSpringVelocity: CGFloat{
-        get{
-            return delegate.initialSpringVelocity(self)
-        }
-    }
-    
-    open var usingSpringWithDamping: CGFloat{
-        get{
-            return delegate.usingSpringWithDamping(self)
-        }
-    }
-    
-    open var longClickTriggerDuration: TimeInterval{
-        get{
-            return delegate.longClickTriggerDuration(self)
-        }
-    }
-    
-    open var isLongClickEnabled: Bool{
-        get{
-            return delegate.shouldLongClick(self)
-        }
-    }
-    
-    func longClickPerformed(){
-        if isLongClickEnabled{
-            self.touchesCancelled(Set<UITouch>(), with: nil)
-            self.delegate.longClickAction(self)
-        }
-        
-    }
-    
-}
-
-extension AZTabBarButton {
-    // MARK: - Public methods
-    override open func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        longClickTimer = Timer.scheduledTimer(timeInterval: self.longClickTriggerDuration,
-                                              target: self,
-                                              selector: #selector(longClickPerformed),
-                                              userInfo: nil, repeats: false)
-        if self.shouldAnimateInteraction{
-            UIView.animate(withDuration: self.beginAnimationDuration, animations: {
-                self.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-            }) { (complete) in
-            }
-        }
-        super.touchesBegan(touches, with: event)
-    }
-    
-    override open func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let tap:UITouch = touches.first!
-        let point = tap.location(in: self)
-        //longClickTimer?.invalidate()
-        if !self.bounds.contains(point){
-            if self.shouldAnimateInteraction{
-                UIView.animate(withDuration: self.beginAnimationDuration, animations: {
-                    self.transform = .identity
-                }) { (complete) in
-                }
-            }
-        }else{
-            if self.shouldAnimateInteraction{
-                UIView.animate(withDuration: self.beginAnimationDuration, animations: {
-                    self.transform = CGAffineTransform(scaleX: 0.8, y: 0.8)
-                }) { (complete) in
-                }
-            }
-        }
-        
-        
-        super.touchesMoved(touches, with: event)
-        
-    }
-    
-    override open func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        //let tap:UITouch = touches.first!
-        //let point = tap.location(in: self)
-        longClickTimer?.invalidate()
-        if self.shouldAnimateInteraction{
-            UIView.animate(withDuration: self.endAnimationDuration,
-                           delay: 0,
-                           usingSpringWithDamping: self.usingSpringWithDamping,
-                           initialSpringVelocity: self.initialSpringVelocity,
-                           options: .allowUserInteraction,
-                           animations: {
-                            self.transform = .identity
-            },
-                           completion: nil)
-        }
-        super.touchesEnded(touches, with: event)
-        
-    }
-    
-    override open func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
-        longClickTimer?.invalidate()
-        if self.shouldAnimateInteraction{
-            UIView.animate(withDuration: self.endAnimationDuration,
-                           delay: 0,
-                           usingSpringWithDamping: self.usingSpringWithDamping,
-                           initialSpringVelocity: self.initialSpringVelocity,
-                           options: .allowUserInteraction,
-                           animations: {
-                            self.transform = .identity
-            },
-                           completion: nil)
-        }
-        super.touchesCancelled(touches, with: event)
-    }
-    
-    func customizeForTabBarWithImage(_ image: UIImage,
-                                     highlightImage: UIImage? = nil,
-                                     selectedColor: UIColor,
-                                     highlighted: Bool,
-                                     defaultColor: UIColor = UIColor.gray,
-                                     highlightColor: UIColor = UIColor.white,
-                                     ignoreColor: Bool = false) {
-        if highlighted {
-            self.customizeAsHighlighted(image: image, selectedColor: selectedColor, highlightedColor: highlightColor,ignoreColor: ignoreColor)
-        }
-        else {
-            self.customizeAsNormal(image: image,highlightImage: highlightImage, selectedColor: selectedColor,defaultColor: defaultColor, ignoreColor: ignoreColor)
-        }
-    }
-    // MARK: - Private methods
-    
-    private func customizeAsHighlighted(image: UIImage,selectedColor: UIColor,highlightedColor: UIColor,ignoreColor: Bool = false) {
-        // We want the image to be always white in highlighted state.
-        self.tintColor = highlightedColor
-        self.setImage(ignoreColor ? image : image.withRenderingMode(.alwaysTemplate), for: .normal)
-        // And its background color should always be the selected color.
-        self.backgroundColor = selectedColor
-    }
-    
-    private func customizeAsNormal(image: UIImage,highlightImage: UIImage? = nil,selectedColor: UIColor,defaultColor: UIColor = UIColor.gray,ignoreColor: Bool = false) {
-
-        self.tintColor = selectedColor
-        
-        self.setImage(ignoreColor ? image : image.imageWithColor(color: defaultColor), for: [])
-        self.setImage(ignoreColor ? image : image.imageWithColor(color: defaultColor), for: .highlighted)
-        if let hImage = highlightImage {
-            self.setImage(ignoreColor ? hImage : hImage.imageWithColor(color: selectedColor), for: .selected)
-            self.setImage(ignoreColor ? hImage : hImage.imageWithColor(color: selectedColor), for: [.selected, .highlighted])
-        }else{
-            self.setImage(ignoreColor ? image : image.imageWithColor(color: selectedColor), for: .selected)
-            self.setImage(ignoreColor ? image : image.imageWithColor(color: selectedColor), for: [.selected, .highlighted])
-        }
-        
-        
-        // We don't want a background color to use the one in the tab bar.
-        self.backgroundColor = UIColor.clear
-    }
-}
-
-fileprivate extension UIImage {
-    func imageWithColor(color: UIColor) -> UIImage? {
-        var image = withRenderingMode(.alwaysTemplate)
-        UIGraphicsBeginImageContextWithOptions(size, false, scale)
-        color.set()
-        image.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
-        image = UIGraphicsGetImageFromCurrentImageContext()!
-        UIGraphicsEndImageContext()
-        return image
-    }
-}
 
 public extension UIViewController{
     
