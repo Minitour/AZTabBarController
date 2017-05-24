@@ -945,7 +945,8 @@ fileprivate extension AZTabBarController {
     func setupStackConstraints(){
         buttonsStackView.translatesAutoresizingMaskIntoConstraints = false
         buttonsStackView.heightAnchor.constraint(equalToConstant: buttonsContainerHeightConstraintInitialConstant).isActive = true
-        buttonsStackView.widthAnchor.constraint(equalTo: buttonsContainer.widthAnchor, multiplier: 1.0).isActive = true
+        buttonsStackView.rightAnchor.constraint(equalTo: buttonsContainer.rightAnchor).isActive = true
+        buttonsStackView.leftAnchor.constraint(equalTo: buttonsContainer.leftAnchor).isActive = true
         buttonsStackView.topAnchor.constraint(equalTo: buttonsContainer.topAnchor).isActive = true
     }
     
