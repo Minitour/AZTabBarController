@@ -523,12 +523,13 @@ public class AZTabBarController: UIViewController {
         }
     }
     
-    
     /// Show and hide the tab bar.
     ///
     /// - Parameters:
     ///   - hidden: To hide or show.
     ///   - animated: To animate or not.
+    ///   - duration: <#duration description#>
+    ///   - completion: <#completion description#>
     open func setBar(hidden: Bool, animated: Bool,duration: TimeInterval = 0.3, completion: ((Bool)->Void)? = nil) {
         let animations = {() -> Void in
             self.buttonsContainerHeightConstraint.constant = hidden ? 0 : self.buttonsContainerHeightConstraintInitialConstant
@@ -543,14 +544,17 @@ public class AZTabBarController: UIViewController {
         }
     }
     
-    
     /// Insert a tab at a certain index
     ///
     /// - Parameters:
     ///   - index: The index of the new tab.
     ///   - icon: The default icon of the tab
     ///   - selectedIcon: The highlighted (selected) icon of the tab
-    open func insertTab(atIndex index: Int,icon: UIImage, selectedIcon: UIImage? = nil){
+    ///   - animated: Add the button with animation.
+    ///   - duration: The duration of the animation, default is 0.2
+    ///   - completion: The completion block of the animation.
+    open func insertTab(atIndex index: Int,icon: UIImage, selectedIcon: UIImage? = nil,
+                        animated: Bool = false, duration: TimeInterval = 0.2, completion: ((Bool)->Void)? = nil){
         //create button
         let button = createButton(forIndex: index)
         
@@ -561,7 +565,20 @@ public class AZTabBarController: UIViewController {
         }
         
         if index <= buttonsStackView.arrangedSubviews.count {
-            buttonsStackView.insertArrangedSubview(button, at: index)
+            
+            button.isHidden = true
+            let animations: ()->Void = { [weak self] in
+                self?.buttonsStackView.insertArrangedSubview(button, at: index)
+                button.isHidden = false
+            }
+            
+            if animated {
+                UIView.animate(withDuration: duration, animations: animations, completion: completion)
+            }else{
+                animations()
+                completion?(false)
+            }
+            
         }
         
         if selectedIndex >= index {
@@ -589,7 +606,7 @@ public class AZTabBarController: UIViewController {
     /// Remove a tab at a certain index. This will not work if attempted to remove at index that equals to the selected index.
     ///
     /// - Parameter index: The index of the tab to remove.
-    open func removeTab(atIndex index: Int){
+    open func removeTab(atIndex index: Int,animated: Bool = false, duration: TimeInterval = 0.2, completion: ((Bool)->Void)? = nil){
         
         if selectedIndex == index || index >= buttons.count {
             return
@@ -597,8 +614,18 @@ public class AZTabBarController: UIViewController {
         
         if buttons != nil {
             let button = buttons.remove(at: index)
-            UIView.animate(withDuration: 0.2){
+            
+            let aCompletion: (Bool)->Void = { (bool) in
                 button.removeFromSuperview()
+                completion?(bool)
+            }
+            
+            if animated {
+                UIView.animate(withDuration: duration, animations: {
+                    button.isHidden = true
+                },completion: completion)
+            }else{
+                aCompletion(false)
             }
             
             for i in 0..<buttons.count{ buttons[i].tag = i }

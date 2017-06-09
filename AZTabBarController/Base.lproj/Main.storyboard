@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lHY-da-yza">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.17" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lHY-da-yza">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.14"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,7 +19,7 @@
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -41,7 +42,7 @@
                         <viewControllerLayoutGuide type="bottom" id="pBm-RY-E45"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="0lM-BK-JJk">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kic-Lp-6P5">
@@ -81,11 +82,11 @@
                         <viewControllerLayoutGuide type="bottom" id="KCp-g1-AiQ"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="4QN-6m-I3w">
-                        <rect key="frame" x="0.0" y="64" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4eC-3F-wFn">
-                                <rect key="frame" x="114" y="290.5" width="147" height="22"/>
+                                <rect key="frame" x="105.5" y="285" width="164" height="33"/>
                                 <state key="normal" title="Increase Badge!" image="ic_camera">
                                     <color key="titleColor" red="0.17254901959999999" green="0.24313725489999999" blue="0.31372549020000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
@@ -289,8 +290,64 @@
             </objects>
             <point key="canvasLocation" x="1076" y="138.98050974512745"/>
         </scene>
+        <!--Item 2-->
+        <scene sceneID="SIJ-eZ-siI">
+            <objects>
+                <viewController id="Y8h-w4-Uyt" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SVE-rF-g2I"/>
+                        <viewControllerLayoutGuide type="bottom" id="HH1-N0-T7F"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hbJ-em-pJd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 2" id="M7S-FB-F52"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OpA-9z-3ZM" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1444" y="1673"/>
+        </scene>
+        <!--Item 1-->
+        <scene sceneID="dz8-Bk-Tdd">
+            <objects>
+                <viewController id="Scb-cE-RKk" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="xO3-Dp-sLY"/>
+                        <viewControllerLayoutGuide type="bottom" id="6Ib-iN-ENz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="rbc-En-OUZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 1" id="tx7-g0-bmL"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jkV-P1-XSK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1465" y="975"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="iic-0u-YCJ">
+            <objects>
+                <tabBarController id="RPq-Ys-GPw" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="3he-Bt-1KZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="Scb-cE-RKk" kind="relationship" relationship="viewControllers" id="qlq-Nx-gKo"/>
+                        <segue destination="Y8h-w4-Uyt" kind="relationship" relationship="viewControllers" id="QvD-1o-Hlq"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="V7t-kI-sxL" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="484" y="1265"/>
+        </scene>
     </scenes>
     <resources>
-        <image name="ic_camera" width="16" height="16"/>
+        <image name="ic_camera" width="33" height="33"/>
     </resources>
 </document>

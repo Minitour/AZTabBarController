@@ -106,10 +106,11 @@ class ViewController: UIViewController {
         
         tabController.setAction(atIndex: 2) {
             
-            self.tabController.removeTab(atIndex: 3)
+            //self.tabController.removeTab(atIndex: 3)
             //self.counter += 1
             //self.tabController.set(badgeText: "\(self.counter)", atIndex: 3)
             //self.actionLaunchCamera()
+            self.tabController.insertTab(atIndex: 3, icon: #imageLiteral(resourceName: "ic_phone"),animated: true)
         }
         
         tabController.setAction(atIndex: 4) {
@@ -120,8 +121,8 @@ class ViewController: UIViewController {
         
         tabController.animateTabChange = true
         
-        self.tabController.insertTab(atIndex: 3, icon: #imageLiteral(resourceName: "ic_phone"))
-        tabController.setViewController(UIViewController(), atIndex: 3)
+        //self.tabController.insertTab(atIndex: 3, icon: #imageLiteral(resourceName: "ic_phone"))
+        //tabController.setViewController(UIViewController(), atIndex: 3)
     }
     
     override func viewDidAppear(_ animated: Bool) {
