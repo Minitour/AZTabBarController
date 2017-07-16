@@ -152,7 +152,7 @@ tabController.setTitle("Feed", atIndex: 3)
 tabController.setTitle("Profile", atIndex: 4)
 ```
 
-<img src="Screenshots/ss2.png" height="100" />
+<img src="Screenshots/ss3.png" height="100" />
 
 
 ### Show Title Only For Selected Index:
@@ -161,7 +161,7 @@ tabController.setTitle("Profile", atIndex: 4)
 tabController.onlyShowTextForSelectedButtons = true
 ```
 
-<img src="Screenshots/ss3.png" height="100" />
+<img src="Screenshots/ss2.png" height="100" />
 
 ## Access AZTabBarController from child view controllers:
 
