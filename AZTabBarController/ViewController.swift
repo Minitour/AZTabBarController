@@ -40,12 +40,12 @@ class ViewController: UIViewController {
         sIcons.append(#imageLiteral(resourceName: "ic_camera"))
         sIcons.append(#imageLiteral(resourceName: "ic_heart"))
         sIcons.append(#imageLiteral(resourceName: "ic_account"))
-        
+
         
         //init
         //tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
         tabController = AZTabBarController.insert(into: self, withTabIcons: icons, andSelectedIcons: sIcons)
-        
+
         //set delegate
         tabController.delegate = self
         
@@ -54,7 +54,7 @@ class ViewController: UIViewController {
         
         
         tabController.setViewController(ColorSelectorController.instance(), atIndex: 0)
-        
+
         let darkController = getNavigationController(root: LabelController.controller(text: "Search", title: "Recents"))
         darkController.navigationBar.barStyle = .black
         darkController.navigationBar.isTranslucent = false
@@ -71,27 +71,29 @@ class ViewController: UIViewController {
         
         //customize
         
-        tabController.selectedColor = #colorLiteral(red: 0.09048881881, green: 0.09048881881, blue: 0.09048881881, alpha: 1) //UIColor(colorLiteralRed: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0)
+        let color = UIColor(colorLiteralRed: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0)
         
-        tabController.highlightColor = #colorLiteral(red: 0.1803921569, green: 0.8, blue: 0.4431372549, alpha: 1)
+        tabController.selectedColor = color
         
-        //tabController.highlightedBackgroundColor
+        tabController.highlightColor = color
         
-        tabController.defaultColor = #colorLiteral(red: 0.09048881881, green: 0.09048881881, blue: 0.09048881881, alpha: 1)
+        tabController.highlightedBackgroundColor = #colorLiteral(red: 0.1803921569, green: 0.8, blue: 0.4431372549, alpha: 1)
+        
+        tabController.defaultColor = .lightGray
         
         //tabController.highlightButton(atIndex: 2)
         
         tabController.buttonsBackgroundColor = UIColor(colorLiteralRed: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)//#colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
         
-        tabController.selectionIndicatorHeight = 3
+        tabController.selectionIndicatorHeight = 0
         
-        tabController.selectionIndicatorColor = #colorLiteral(red: 0.1803921569, green: 0.8, blue: 0.4431372549, alpha: 1)
+        tabController.selectionIndicatorColor = color
         
         tabController.tabBarHeight = 60
         
-        tabController.notificationBadgeAppearance.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-        tabController.notificationBadgeAppearance.textColor = .red
-        tabController.notificationBadgeAppearance.borderColor = .black
+        tabController.notificationBadgeAppearance.backgroundColor = .red
+        tabController.notificationBadgeAppearance.textColor = .white
+        tabController.notificationBadgeAppearance.borderColor = .clear
         tabController.notificationBadgeAppearance.borderWidth = 0.2
         
         
@@ -105,12 +107,7 @@ class ViewController: UIViewController {
         }
         
         tabController.setAction(atIndex: 2) {
-            
-            //self.tabController.removeTab(atIndex: 3)
-            //self.counter += 1
-            //self.tabController.set(badgeText: "\(self.counter)", atIndex: 3)
-            //self.actionLaunchCamera()
-            self.tabController.insertTab(atIndex: 3, icon: #imageLiteral(resourceName: "ic_phone"),animated: true)
+            self.tabController.onlyShowTextForSelectedButtons = !self.tabController.onlyShowTextForSelectedButtons
         }
         
         tabController.setAction(atIndex: 4) {
@@ -119,10 +116,21 @@ class ViewController: UIViewController {
         
         tabController.setIndex(1, animated: true)
         
-        tabController.animateTabChange = true
+        tabController.animateTabChange = false
+        tabController.onlyShowTextForSelectedButtons = false
+        tabController.setTitle("Home", atIndex: 0)
+        tabController.setTitle("Search", atIndex: 1)
+        tabController.setTitle("Camera", atIndex: 2)
+        tabController.setTitle("Feed", atIndex: 3)
+        tabController.setTitle("Profile", atIndex: 4)
+        tabController.font = UIFont(name: "AvenirNext-Regular", size: 12)
         
-        //self.tabController.insertTab(atIndex: 3, icon: #imageLiteral(resourceName: "ic_phone"))
-        //tabController.setViewController(UIViewController(), atIndex: 3)
+        let container = tabController.buttonsContainer
+        container?.layer.shadowOffset = CGSize(width: 0, height: -2)
+        container?.layer.shadowRadius = 10
+        container?.layer.shadowOpacity = 0.1
+        container?.layer.shadowColor = UIColor.black.cgColor
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -175,11 +183,11 @@ extension ViewController: AZTabBarDelegate{
     }
     
     func tabBar(_ tabBar: AZTabBarController, shouldLongClickForIndex index: Int) -> Bool {
-        return false//index != 2 && index != 3
+        return true//index != 2 && index != 3
     }
     
     func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index: Int) -> Bool {
-        return !(index == 3 || index == 2)
+        return false
     }
     
     func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int) {

@@ -176,6 +176,20 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    /// If you are setting a text for each menu using the function `setTitle(_:_:)`, you can decide how the text will be presented. When the value of this variable is false, then all titles will be visable. However if it is true, then only the title of the selected index is visale.
+    open var onlyShowTextForSelectedButtons: Bool = false{
+        didSet{
+            updateInterfaceIfNeeded()
+        }
+    }
+    
+    /// The UIFont for the buttons.
+    open var font: UIFont? = UIFont.systemFont(ofSize: 12){
+        didSet{
+            updateInterfaceIfNeeded()
+        }
+    }
+    
     /// The duration that is needed to invoke a long click.
     open var longClickTriggerDuration: TimeInterval = 0.5
     
@@ -196,6 +210,7 @@ public class AZTabBarController: UIViewController {
     
     /// The AZTabBar Delegate
     open weak var delegate: AZTabBarDelegate?
+    
     
     /*
      * MARK: - Internal Properties
@@ -258,23 +273,29 @@ public class AZTabBarController: UIViewController {
      * MARK: - Private Properties
      */
     
-    ///Array which holds the controllers.
+    /// Array which holds the controllers.
     fileprivate var controllers: [UIViewController?]!
     
-    ///Array which holds the actions.
+    /// Array which holds the actions.
     fileprivate var actions: [AZTabBarAction?]!
     
-    ///A flag to indicate if the interface was set up.
+    /// A flag to indicate if the interface was set up.
     fileprivate var didSetupInterface:Bool = false
     
-    ///An array which keeps track of the highlighted menus.
+    /// An array which keeps track of the highlighted menus.
     fileprivate var highlightedButtonIndexes:NSMutableSet!
     
+    /// Array that holds the badge values. it is used only before the controller is displayed.
     fileprivate var badgeValues: [String?]!
     
+    /// Computed var that returns the amount of tabs.
     fileprivate var tabCount: Int{ return tabIcons.count }
     
+    /// A flag that marks if the interface was setup or not.
     fileprivate var didSetUpInterface = false
+    
+    /// An array that holds text values before controller is displayed.
+    fileprivate lazy var buttonsText: [String?] = Array<String?>(repeating: nil, count: self.tabCount)
     
     /*
      * MARK: - Init
@@ -293,8 +314,8 @@ public class AZTabBarController: UIViewController {
         
         
         //add in correct hierachy
-        view.addSubview(buttonsContainer)
         view.addSubview(controllersContainer)
+        view.addSubview(buttonsContainer)
         view.addSubview(separatorLine)
         buttonsContainer.addSubview(buttonsStackView)
         
@@ -372,10 +393,12 @@ public class AZTabBarController: UIViewController {
     override public func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
+        //Setup interface if didn't already
         if !didSetUpInterface {
             self.setupInterface()
             self.moveToController(at: selectedIndex, animated: false)
             
+            //add badges if needed
             if let badgeValues = badgeValues {
                 for i in 0..<badgeValues.count{
                     if let value = badgeValues[i]{
@@ -384,11 +407,17 @@ public class AZTabBarController: UIViewController {
                 }
                 self.badgeValues = nil
             }
+            
+            for i in 0..<buttonsText.count{
+                setTitle(buttonsText[i], atIndex: i)
+            }
+            
+            //mark interface as ready
             didSetUpInterface = true
         }
     }
     
-    override public func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {        
+    override public func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         let selectedButtonX: CGFloat = self.buttons[self.selectedIndex].frame.origin.x
         self.selectionIndicatorLeadingConstraint.constant = selectedButtonX
     }
@@ -435,7 +464,7 @@ public class AZTabBarController: UIViewController {
         controllers[index] = nil
     }
     
-  
+    
     /// Change the current menu programatically.
     ///
     /// - Parameters:
@@ -443,17 +472,11 @@ public class AZTabBarController: UIViewController {
     ///   - animated: animate the selection indicator or not.
     open func setIndex(_ index:Int,animated: Bool = true){
         
-        if index >= tabCount{
-            return
-        }
+        if index >= tabCount { return }
         
-        if self.selectedIndex != index {
-            moveToController(at: index, animated: animated)
-        }
+        if self.selectedIndex != index { moveToController(at: index, animated: animated) }
         
-        if let action = actions[index] {
-            action()
-        }
+        if let action = actions[index] { action() }
     }
     
     
@@ -491,19 +514,82 @@ public class AZTabBarController: UIViewController {
             if index < buttons.count{
                 self.notificationBadgeAppearance.distenceFromCenterX = 15
                 self.notificationBadgeAppearance.distenceFromCenterY = -10
-                buttons[index].badge(text: text, appearnce: self.notificationBadgeAppearance)
+                let button = buttons[index] as! AZTabBarButton
+                button.addBadge(text: text, appearnce: notificationBadgeAppearance)
             }
         }else{
             self.badgeValues[index] = text
         }
     }
     
+    
+    /// Add text
+    ///
+    /// - Parameters:
+    ///   - text: The text to set.
+    ///   - index: The index at which you would like to set the title.
+    open func setTitle(_ text: String?, atIndex index: Int){
+        if let buttons = buttons{
+            if index < buttons.count{
+                let button = buttons[index]
+                
+                button.setTitleColor(selectedColor, for: .selected)
+                button.setTitleColor(selectedColor, for: [.selected,.highlighted])
+                button.setTitleColor(defaultColor, for: [])
+                
+                if onlyShowTextForSelectedButtons{
+                    button.setTitle(nil, for: .normal)
+                    button.setTitle(nil, for: .highlighted)
+                    button.setTitle(text, for: .selected)
+                    button.setTitle(text, for: [.selected,.highlighted])
+                    
+                }else{
+                    button.setTitle(text, for: [])
+                }
+            }
+        }else{
+            self.buttonsText[index] = text
+        }
+    }
+    
+    
+    /// Get the title at a certain index
+    ///
+    /// - Parameter index: The index of which you would like to get the title.
+    /// - Returns: The title.
+    open func getTitle(atIndex index: Int)-> String?{
+        if let buttons = buttons{
+            if index < buttons.count{
+                let button = buttons[index]
+                return button.title(for: []) ?? button.title(for: .selected)
+            }else{
+                return nil
+            }
+        }else{
+            if index < buttonsText.count {
+                return self.buttonsText[index]
+            }else{
+                return nil
+            }
+            
+        }
+    }
 
+    
     /// Make a button look highlighted.
     ///
     /// - Parameter index: The index of the button which you would like to highlight.
     open func highlightButton(atIndex index: Int) {
         self.highlightedButtonIndexes.add(index)
+        self.updateInterfaceIfNeeded()
+    }
+    
+    
+    /// Make button normal again.
+    ///
+    /// - Parameter index: The index of the button which you would like to un-highlight.
+    open func removeHighlight(atIndex index: Int) {
+        self.highlightedButtonIndexes.remove(index)
         self.updateInterfaceIfNeeded()
     }
     
@@ -523,13 +609,14 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    
     /// Show and hide the tab bar.
     ///
     /// - Parameters:
     ///   - hidden: To hide or show.
     ///   - animated: To animate or not.
-    ///   - duration: <#duration description#>
-    ///   - completion: <#completion description#>
+    ///   - duration: The duration of the animation.
+    ///   - completion: The completion handler that is called once the animation is completed.
     open func setBar(hidden: Bool, animated: Bool,duration: TimeInterval = 0.3, completion: ((Bool)->Void)? = nil) {
         let animations = {() -> Void in
             self.buttonsContainerHeightConstraint.constant = hidden ? 0 : self.buttonsContainerHeightConstraintInitialConstant
@@ -544,6 +631,7 @@ public class AZTabBarController: UIViewController {
         }
     }
     
+    
     /// Insert a tab at a certain index
     ///
     /// - Parameters:
@@ -557,7 +645,7 @@ public class AZTabBarController: UIViewController {
                         animated: Bool = false, duration: TimeInterval = 0.2, completion: ((Bool)->Void)? = nil){
         //create button
         let button = createButton(forIndex: index)
-        
+        button.setTitle(nil, for: [])
         if buttons != nil{
             buttons.insert(button, at: index)
             //sync buttons tag
@@ -767,6 +855,7 @@ public class AZTabBarController: UIViewController {
         for i in 0 ..< self.tabIcons.count {
             let button:AZTabBarButton = self.buttons[i] as! AZTabBarButton
             
+            
             let isHighlighted = self.highlightedButtonIndexes.contains(i)
             
             var highlightedImage: UIImage?
@@ -782,6 +871,23 @@ public class AZTabBarController: UIViewController {
                 color = self.selectedColor ?? UIColor.black
             }
             
+            button.titleLabel?.font = font
+            
+            button.setTitleColor(selectedColor, for: .selected)
+            button.setTitleColor(selectedColor, for: [.selected,.highlighted])
+            button.setTitleColor(defaultColor, for: [])
+            
+            let title: String? = button.title(for: []) ?? button.title(for: .selected)
+            
+            if onlyShowTextForSelectedButtons{
+                button.setTitle(nil, for: .normal)
+                button.setTitle(nil, for: .highlighted)
+                button.setTitle(title, for: .selected)
+                button.setTitle(title, for: [.selected,.highlighted])
+                
+            }else{
+                button.setTitle(title, for: [])
+            }
             
             button.customizeForTabBarWithImage(self.tabIcons[i],
                                                highlightImage: highlightedImage,
@@ -795,6 +901,7 @@ public class AZTabBarController: UIViewController {
     
     private func createButton(forIndex index:Int)-> UIButton{
         let button = AZTabBarButton(type: .custom)
+        button.setTitle(" ", for: [])
         button.delegate = self
         button.tag = index
         button.isExclusiveTouch = true

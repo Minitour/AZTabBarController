@@ -140,6 +140,28 @@ func tabBar(_ tabBar: AZTabBarController, statusBarStyleForIndex index: Int) -> 
 }
 ```
 
+## Manage Titles
+
+### Adding Titles:
+
+```swift
+tabController.setTitle("Home", atIndex: 0)
+tabController.setTitle("Search", atIndex: 1)
+tabController.setTitle("Camera", atIndex: 2)
+tabController.setTitle("Feed", atIndex: 3)
+tabController.setTitle("Profile", atIndex: 4)
+```
+
+<img src="Screenshots/ss2.png" height="100" />
+
+
+### Show Title Only For Selected Index:
+
+```swift
+tabController.onlyShowTextForSelectedButtons = true
+```
+
+<img src="Screenshots/ss3.png" height="100" />
 
 ## Access AZTabBarController from child view controllers:
 

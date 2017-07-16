@@ -6,7 +6,7 @@
 //  Copyright © 2017 Crofis. All rights reserved.
 //
 
-import Foundation
+import EasyNotificationBadge
 import UIKit
 
 public class AZTabBarButton: UIButton{
@@ -62,6 +62,72 @@ public class AZTabBarButton: UIButton{
             self.touchesCancelled(Set<UITouch>(), with: nil)
             self.delegate.longClickAction(self)
         }
+    }
+    
+    override public func titleRect(forContentRect contentRect: CGRect) -> CGRect {
+        let original = super.titleRect(forContentRect: contentRect)
+        let image: CGFloat = self.imageRect(forContentRect: contentRect).minY / 2.0
+        return CGRect(x: 0, y: contentRect.height - original.height - image, width: contentRect.width , height: original.height)
+    }
+    
+    override public func imageRect(forContentRect contentRect: CGRect) -> CGRect {
+        let labelHeight = super.titleRect(forContentRect: contentRect).height
+        let original = super.imageRect(forContentRect: contentRect)
+        let height = original.height
+        
+        let y = labelHeight > 0 ? (contentRect.height - labelHeight)/2.0 - height/2.0 : contentRect.height/2.0 - height/2.0
+        
+        return CGRect(x: contentRect.width/2.0 - height/2.0, y: y, width: height, height: height)
+    }
+    
+    var didAddBadge = false
+    
+    func addBadge(text: String?, appearnce: BadgeAppearnce){
+        didAddBadge = true
+        badge(text: text, appearnce: appearnce)
+    }
+    
+    
+    override public func layoutSubviews() {
+        
+        if didAddBadge{
+            super.layoutSubviews()
+            didAddBadge = false
+            return
+        }
+        
+        let animate = delegate.shouldAnimate(self)
+        
+        if let titleLabel = titleLabel{
+            titleLabel.frame = self.titleRect(forContentRect: self.frame)
+        }
+        
+        self.imageView?.frame = self.imageRect(forContentRect: self.frame)
+        
+        if animate {
+            super.layoutSubviews()
+        }else{
+            UIView.animate(withDuration: 0.1) {
+                
+                super.layoutSubviews()
+            }
+        }
+        
+    }
+    
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        centerTitleLabel()
+    }
+    
+    required public init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        centerTitleLabel()
+    }
+    
+    private func centerTitleLabel() {
+        self.titleLabel?.textAlignment = .center
     }
 }
 
@@ -183,6 +249,9 @@ extension AZTabBarButton {
         // We don't want a background color to use the one in the tab bar.
         self.backgroundColor = UIColor.clear
     }
+    
+    
+    
 }
 
 fileprivate extension UIImage {
