@@ -584,12 +584,6 @@ public class AZTabBarController: UIViewController {
         self.updateInterfaceIfNeeded()
     }
     
-    // MARK: Unhighlight a button
-    open func removeHighlight(atIndex index: Int) {
-        self.highlightedButtonIndexes.remove(index)
-        self.updateInterfaceIfNeeded()
-    }
-
     
     /// Make button normal again.
     ///
