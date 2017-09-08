@@ -35,11 +35,11 @@ icons.append("ic_settings_outline")
 
 //The icons that will be displayed for each tab once they are selected.
 var selectedIcons = [String]()
-icons.append("ic_star_filled")
-icons.append("ic_history_filled")
-icons.append("ic_phone_filled")
-icons.append("ic_chat_filled")
-icons.append("ic_settings_filled")
+selectedIcons.append("ic_star_filled")
+selectedIcons.append("ic_history_filled")
+selectedIcons.append("ic_phone_filled")
+selectedIcons.append("ic_chat_filled")
+selectedIcons.append("ic_settings_filled")
 ```
 
 Now initialize the controller object through the following method:
