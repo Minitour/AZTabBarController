@@ -182,15 +182,6 @@ public class AZTabBarController: UIViewController {
             self.buttonsContainerHeightConstraint.constant = newValue + safeAreaBottom
         }
     }
-
-    public override func viewSafeAreaInsetsDidChange() {
-        if #available(iOS 11.0, *) {
-            super.viewSafeAreaInsetsDidChange()
-            tabBarHeight = buttonsContainerHeightConstraintInitialConstant
-        } else {
-            // Fallback on earlier versions
-        }
-    }
     
     /// If you are setting a text for each menu using the function `setTitle(_:_:)`, you can decide how the text will be presented. When the value of this variable is false, then all titles will be visable. However if it is true, then only the title of the selected index is visale.
     open var onlyShowTextForSelectedButtons: Bool = false{
@@ -204,6 +195,12 @@ public class AZTabBarController: UIViewController {
         didSet{
             updateInterfaceIfNeeded()
         }
+    }
+
+    /// Returns the current controller if exists.
+    public var currentTab: UIViewController? {
+        if selectedIndex >= 0,selectedIndex < tabCount, let controller = controllers[selectedIndex] { return controller }
+        return nil
     }
     
     /// The duration that is needed to invoke a long click.
@@ -436,6 +433,13 @@ public class AZTabBarController: UIViewController {
     override public func didRotate(from fromInterfaceOrientation: UIInterfaceOrientation) {
         let selectedButtonX: CGFloat = self.buttons[self.selectedIndex].frame.origin.x
         self.selectionIndicatorLeadingConstraint.constant = selectedButtonX
+    }
+
+    public override func viewSafeAreaInsetsDidChange() {
+        if #available(iOS 11.0, *) {
+            super.viewSafeAreaInsetsDidChange()
+            tabBarHeight = buttonsContainerHeightConstraintInitialConstant
+        }
     }
     
     /*
