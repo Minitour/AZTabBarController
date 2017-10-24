@@ -3,10 +3,10 @@ UIView extension that adds a notification badge.
 
 The code that was used in this extension was originally written by [mustafaibrahim989](https://github.com/mustafaibrahim989) in the library [MIBadgeButton-Swift](https://github.com/mustafaibrahim989/MIBadgeButton-Swift).
 
-##Screenshots
+## Screenshots
 <img src="Screenshots/ss6.PNG"  height="400" />
 
-##Installation
+## Installation
 
 
 ```bash
@@ -15,7 +15,7 @@ pod 'EasyNotificationBadge'
 
 Or simply drag and drop ```NSBadge.swift``` to your project.
 
-##Usage
+## Usage
 
 To add a badge with default settings use this (This also applies to updating an existing badge):
 ```swift
@@ -35,7 +35,7 @@ view.badge(text: nil)
 barButtonItem.badge(text: nil)
 ```
 
-##Advanced Usage
+## Advanced Usage
 
 ```swift
 let badgeAppearnce = BadgeAppearnce()
@@ -50,3 +50,6 @@ appearnce.borderColor = .blue
 appearnce.borderWidth = 1
 view.badge(text: "Your text", appearnce: badgeAppearnce)
 ```
+
+### Important
+When calling `.badge` make sure that the view has already been loaded and has a superview. Setting a badge on a view that hasn't fully loaded can lead to unexpected results.

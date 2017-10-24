@@ -1,6 +1,6 @@
 PODS:
   - AZSearchView (1.0.3)
-  - EasyNotificationBadge (1.0.3)
+  - EasyNotificationBadge (1.1.0)
 
 DEPENDENCIES:
   - AZSearchView
@@ -8,7 +8,7 @@ DEPENDENCIES:
 
 SPEC CHECKSUMS:
   AZSearchView: 4ed3266ff6b27c1131466ac2bcaaa499800b1a0b
-  EasyNotificationBadge: 7da13ae3e2f139ee458461983d960a45f231f94c
+  EasyNotificationBadge: 1b8d1130add8cf22232f596b3d2b3f866e4b0530
 
 PODFILE CHECKSUM: 17064c498c2658d9eed32cacb21cf837ef73ede3
 

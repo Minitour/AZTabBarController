@@ -82,9 +82,9 @@ public class AZTabBarButton: UIButton{
     
     var didAddBadge = false
     
-    func addBadge(text: String?, appearnce: BadgeAppearnce){
+    func addBadge(text: String?, appearance: BadgeAppearance){
         didAddBadge = true
-        badge(text: text, appearnce: appearnce)
+        badge(text: text, appearance: appearance)
     }
     
     

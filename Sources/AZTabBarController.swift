@@ -157,7 +157,7 @@ public class AZTabBarController: UIViewController {
     open var highlightsSelectedButton:Bool = false
     
     /// The appearance of the notification badge.
-    open var notificationBadgeAppearance: BadgeAppearnce = BadgeAppearnce()
+    open var notificationBadgeAppearance: BadgeAppearance = BadgeAppearance()
     
     /// The height of the selection indicator.
     open var selectionIndicatorHeight:CGFloat = 3.0{
@@ -171,8 +171,24 @@ public class AZTabBarController: UIViewController {
         get{
             return self.buttonsContainerHeightConstraintInitialConstant
         }set{
+            let safeAreaBottom: CGFloat
+            if #available(iOS 11.0, *){
+                safeAreaBottom = view.safeAreaInsets.bottom
+            }else{
+                safeAreaBottom = 0.0
+            }
+
             self.buttonsContainerHeightConstraintInitialConstant = newValue
-            self.buttonsContainerHeightConstraint.constant = newValue
+            self.buttonsContainerHeightConstraint.constant = newValue + safeAreaBottom
+        }
+    }
+
+    public override func viewSafeAreaInsetsDidChange() {
+        if #available(iOS 11.0, *) {
+            super.viewSafeAreaInsetsDidChange()
+            tabBarHeight = buttonsContainerHeightConstraintInitialConstant
+        } else {
+            // Fallback on earlier versions
         }
     }
     
@@ -275,7 +291,7 @@ public class AZTabBarController: UIViewController {
     
     /// Array which holds the controllers.
     fileprivate var controllers: [UIViewController?]!
-    
+
     /// Array which holds the actions.
     fileprivate var actions: [AZTabBarAction?]!
     
@@ -512,10 +528,10 @@ public class AZTabBarController: UIViewController {
     open func setBadgeText(_ text: String?, atIndex index:Int){
         if let buttons = buttons{
             if index < buttons.count{
-                self.notificationBadgeAppearance.distenceFromCenterX = 15
-                self.notificationBadgeAppearance.distenceFromCenterY = -10
+                self.notificationBadgeAppearance.distanceFromCenterX = 15
+                self.notificationBadgeAppearance.distanceFromCenterY = -10
                 let button = buttons[index] as! AZTabBarButton
-                button.addBadge(text: text, appearnce: notificationBadgeAppearance)
+                button.addBadge(text: text, appearance: notificationBadgeAppearance)
             }
         }else{
             self.badgeValues[index] = text
@@ -619,7 +635,15 @@ public class AZTabBarController: UIViewController {
     ///   - completion: The completion handler that is called once the animation is completed.
     open func setBar(hidden: Bool, animated: Bool,duration: TimeInterval = 0.3, completion: ((Bool)->Void)? = nil) {
         let animations = {() -> Void in
-            self.buttonsContainerHeightConstraint.constant = hidden ? 0 : self.buttonsContainerHeightConstraintInitialConstant
+            let safeAreaBottom: CGFloat
+
+            if #available(iOS 11.0, *){
+                safeAreaBottom = self.view.safeAreaInsets.bottom
+            }else{
+                safeAreaBottom = 0.0
+            }
+
+            self.buttonsContainerHeightConstraint.constant = hidden ? 0.0 : self.buttonsContainerHeightConstraintInitialConstant + safeAreaBottom
             self.view.layoutIfNeeded()
         }
         if animated {
@@ -1117,5 +1141,6 @@ public extension UIViewController{
         return nil
     }
 }
+
 
 
