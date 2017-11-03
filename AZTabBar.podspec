@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "AZTabBar"
-  s.version      = "1.3.0"
+  s.version      = "1.3.1"
   s.summary      = "A custom tab bar controller for iOS written in Swift 3.0"
   s.homepage     = "https://github.com/Minitour/AZTabBarController"
   s.license      = "MIT"
