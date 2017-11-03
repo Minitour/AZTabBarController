@@ -71,7 +71,7 @@ class ViewController: UIViewController {
         
         //customize
         
-        let color = UIColor(colorLiteralRed: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0)
+        let color = UIColor(red: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0)
         
         tabController.selectedColor = color
         
@@ -83,7 +83,7 @@ class ViewController: UIViewController {
         
         //tabController.highlightButton(atIndex: 2)
         
-        tabController.buttonsBackgroundColor = UIColor(colorLiteralRed: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)//#colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
+        tabController.buttonsBackgroundColor = UIColor(red: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)//#colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
         
         tabController.selectionIndicatorHeight = 0
         

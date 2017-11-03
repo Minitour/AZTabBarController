@@ -160,7 +160,7 @@
 				TargetAttributes = {
 					4F613FF81D883D72005BFB4F = {
 						CreatedOnToolsVersion = 8.0;
-						DevelopmentTeam = Y759RK5K7D;
+						DevelopmentTeam = 35DWKWL79J;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -381,13 +381,13 @@
 			baseConfigurationReference = 9433B79E50ED01D596E39D98 /* Pods-AZTabBarController.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = Y759RK5K7D;
+				DEVELOPMENT_TEAM = 35DWKWL79J;
 				INFOPLIST_FILE = AZTabBarController/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.crofis.AZTabBarController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -396,13 +396,13 @@
 			baseConfigurationReference = 2A0F8BB07592D080B9FAE825 /* Pods-AZTabBarController.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = Y759RK5K7D;
+				DEVELOPMENT_TEAM = 35DWKWL79J;
 				INFOPLIST_FILE = AZTabBarController/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = net.crofis.AZTabBarController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

@@ -778,7 +778,7 @@ public class AZTabBarController: UIViewController {
      * MARK: - Actions
      */
     
-    func tabButtonAction(button:UIButton){
+    @objc func tabButtonAction(button:UIButton){
         if let index = self.buttons.index(of: button){
         	delegate?.tabBar(self, didSelectTabAtIndex: index)
         

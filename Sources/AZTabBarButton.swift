@@ -57,7 +57,7 @@ public class AZTabBarButton: UIButton{
         }
     }
     
-    func longClickPerformed(){
+    @objc func longClickPerformed(){
         if isLongClickEnabled{
             self.touchesCancelled(Set<UITouch>(), with: nil)
             self.delegate.longClickAction(self)
