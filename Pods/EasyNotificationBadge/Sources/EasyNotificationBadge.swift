@@ -1,5 +1,5 @@
 //
-//  NSBadge.swift
+//  EasyNotificationBadge.swift
 //
 //  Created by Antonio Zaitoun on 8/10/16.
 //  Copyright © 2016 Crofis. All rights reserved.
@@ -14,13 +14,13 @@ extension UIView {
      */
 
     /// - parameter text: The badge value, use nil to remove exsiting badge.
-    @objc public func badge(text badgeText: String!) {
+    @objc public func badge(text badgeText: String?) {
         badge(text: badgeText, appearance: BadgeAppearance())
     }
 
     /// - parameter text: The badge value, use nil to remove exsiting badge.
     /// - parameter appearance: The appearance of the badge.
-    public func badge(text badgeText: String!, appearance: BadgeAppearance) {
+    public func badge(text badgeText: String?, appearance: BadgeAppearance) {
         badge(text: badgeText, badgeEdgeInsets: nil, appearance: appearance)
     }
 
@@ -28,15 +28,15 @@ extension UIView {
      * Assign badge with text and edge insets.
      */
 
-    @available(*, deprecated, message: "Use badge(text: String!, appearance:BadgeAppearance)")
-    @objc public func badge(text badgeText: String!, badgeEdgeInsets: UIEdgeInsets) {
+    @available(*, deprecated, message: "Use badge(text: String?, appearance:BadgeAppearance)")
+    @objc public func badge(text badgeText: String?, badgeEdgeInsets: UIEdgeInsets) {
         badge(text: badgeText, badgeEdgeInsets: badgeEdgeInsets, appearance: BadgeAppearance())
     }
 
     /*
      * Assign badge with text,insets, and appearance.
      */
-    public func badge(text badgeText: String!, badgeEdgeInsets: UIEdgeInsets?, appearance: BadgeAppearance) {
+    public func badge(text badgeText: String?, badgeEdgeInsets: UIEdgeInsets?, appearance: BadgeAppearance) {
 
         //Create badge label
         var badgeLabel: BadgeLabel!
@@ -51,7 +51,7 @@ extension UIView {
         }
 
         //If assigned text is nil (request to remove badge) and badge label is not nil:
-        if badgeText == nil && !(badgeLabel == nil) {
+        if badgeText == nil && badgeLabel != nil {
 
             if appearance.animate {
                 UIView.animate(withDuration: appearance.duration, animations: {
@@ -82,6 +82,13 @@ extension UIView {
             doesBadgeExist = true
         }
 
+        let oldWidth: CGFloat?
+        if doesBadgeExist {
+            oldWidth = badgeLabel.frame.width
+        }else{
+            oldWidth = nil
+        }
+
         //Set the text on the badge label
         badgeLabel.text = badgeText
 
@@ -109,7 +116,6 @@ extension UIView {
         badgeLabel.frame.size = CGSize(width: width, height: height)
 
         //add to subview
-
         if doesBadgeExist {
             //remove view to delete constraints
             badgeLabel.removeFromSuperview()
@@ -166,6 +172,14 @@ extension UIView {
                 },
                                completion: nil)
             }
+        }else{
+            if appearance.animate, let oldWidth = oldWidth {
+                let currentWidth = badgeLabel.frame.width
+                badgeLabel.frame.size.width = oldWidth
+                UIView.animate(withDuration: appearance.duration){
+                    badgeLabel.frame.size.width = currentWidth
+                }
+            }
         }
     }
 
@@ -176,51 +190,32 @@ extension UIBarButtonItem {
     /*
      * Assign badge with only text.
      */
-    @objc public func badge(text badgeText: String!) {
-        if let view = getView() {
-            view.badge(text: badgeText, appearance: BadgeAppearance())
+    @objc public func badge(text: String?) {
+        badge(text: text, appearance: BadgeAppearance())
+    }
+    
+    public func badge(text badgeText: String?, appearance: BadgeAppearance = BadgeAppearance()) {
+        if let view = badgeViewHolder {
+            getView(in: view).badge(text: badgeText, appearance: appearance)
         } else {
             NSLog("Attempted setting badge with value '\(badgeText ?? "nil")' on a nil UIBarButtonItem view.")
         }
     }
 
-    public func badge(text badgeText: String!, appearance: BadgeAppearance) {
-        if let view = getView() {
-            view.badge(text: badgeText, appearance: appearance)
-        } else {
-            NSLog("Attempted setting badge with value '\(badgeText ?? "nil")' on a nil UIBarButtonItem view.")
-        }
-    }
-
-    /*
-     * Assign badge with text and edge insets.
-     */
-    @available(*, deprecated, message: "Use badge(text: String!, appearance:BadgeAppearance)")
-    @objc public func badge(text badgeText: String!, badgeEdgeInsets: UIEdgeInsets) {
-        if let view = getView() {
-            view.badge(text: badgeText, badgeEdgeInsets: badgeEdgeInsets, appearance: BadgeAppearance())
-        } else {
-            NSLog("Attempted setting badge with value '\(badgeText ?? "nil")' on a nil UIBarButtonItem view.")
-        }
-
-    }
-
-    /*
-     * Assign badge with text,insets, and appearance.
-     */
-    @available(*, deprecated, message: "Use badge(text: String!, appearance:BadgeAppearance)")
-    public func badge(text badgeText: String!, badgeEdgeInsets: UIEdgeInsets!, appearance: BadgeAppearance) {
-        if let view = getView() {
-            view.badge(text: badgeText, badgeEdgeInsets: badgeEdgeInsets, appearance: appearance)
-        } else {
-            NSLog("Attempted setting badge with value '\(badgeText ?? "nil")' on a nil UIBarButtonItem view.")
-        }
-    }
-
-    private func getView() -> UIView? {
+    private var badgeViewHolder: UIView? {
         return value(forKey: "view") as? UIView
     }
+    
+    private func getView(in holder: UIView)->UIView{
+        for sub in holder.subviews {
+            if "\(type(of: sub))" == "_UIModernBarButton" {
+                return sub
+            }
+        }
+        return holder
+    }
 
+    
 }
 
 /*

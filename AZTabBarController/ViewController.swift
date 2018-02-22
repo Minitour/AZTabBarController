@@ -130,11 +130,14 @@ class ViewController: UIViewController {
         container?.layer.shadowRadius = 10
         container?.layer.shadowOpacity = 0.1
         container?.layer.shadowColor = UIColor.black.cgColor
-        
+
+
+        tabController.setButtonTintColor(color: #colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1), atIndex: 0)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+
     }
     
     override var childViewControllerForStatusBarStyle: UIViewController?{

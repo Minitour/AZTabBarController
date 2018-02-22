@@ -309,6 +309,8 @@ public class AZTabBarController: UIViewController {
     
     /// An array that holds text values before controller is displayed.
     fileprivate lazy var buttonsText: [String?] = Array<String?>(repeating: nil, count: self.tabCount)
+
+    fileprivate lazy var buttonsColors: [UIColor?] = Array<UIColor?>(repeating: nil,count: self.tabCount)
     
     /*
      * MARK: - Init
@@ -457,6 +459,9 @@ public class AZTabBarController: UIViewController {
         
         if let currentViewController = self.controllers[index]{
             currentViewController.removeFromParentViewController()
+            if index == selectedIndex {
+                currentViewController.view.removeFromSuperview()
+            }
         }
         self.controllers[index] = controller
         self.addChildViewController(controller)
@@ -553,8 +558,8 @@ public class AZTabBarController: UIViewController {
             if index < buttons.count{
                 let button = buttons[index]
                 
-                button.setTitleColor(selectedColor, for: .selected)
-                button.setTitleColor(selectedColor, for: [.selected,.highlighted])
+                button.setTitleColor(buttonsColors[index] ?? selectedColor, for: .selected)
+                button.setTitleColor(buttonsColors[index] ?? selectedColor, for: [.selected,.highlighted])
                 button.setTitleColor(defaultColor, for: [])
                 
                 if onlyShowTextForSelectedButtons{
@@ -620,13 +625,8 @@ public class AZTabBarController: UIViewController {
     ///   - color: The color which you would like to set as tint color for the button at a certain index.
     ///   - index: The index of the button.
     open func setButtonTintColor(color: UIColor, atIndex index: Int) {
-        if !self.highlightedButtonIndexes.contains((index)) {
-            let button:UIButton = self.buttons[index]
-            button.tintColor! = color
-            let buttonImage = button.image(for: .normal)!
-            button.setImage(buttonImage.withRenderingMode(.alwaysTemplate), for: .normal)
-            button.setImage(buttonImage.withRenderingMode(.alwaysTemplate), for: .selected)
-        }
+        buttonsColors[index] = color
+        updateInterfaceIfNeeded()
     }
     
     
@@ -896,13 +896,13 @@ public class AZTabBarController: UIViewController {
             if isHighlighted{
                 color = self.highlightedBackgroundColor ?? UIColor.black
             }else{
-                color = self.selectedColor ?? UIColor.black
+                color = buttonsColors[i] ?? self.selectedColor ?? UIColor.black
             }
             
             button.titleLabel?.font = font
             
-            button.setTitleColor(selectedColor, for: .selected)
-            button.setTitleColor(selectedColor, for: [.selected,.highlighted])
+            button.setTitleColor(buttonsColors[i] ?? selectedColor, for: .selected)
+            button.setTitleColor(buttonsColors[i] ?? selectedColor, for: [.selected,.highlighted])
             button.setTitleColor(defaultColor, for: [])
             
             let title: String? = button.title(for: []) ?? button.title(for: .selected)
@@ -922,7 +922,7 @@ public class AZTabBarController: UIViewController {
                                                selectedColor: color,
                                                highlighted: isHighlighted,
                                                defaultColor: self.defaultColor ?? UIColor.gray,
-                                               highlightColor: self.highlightColor ?? UIColor.white,
+                                               highlightColor: buttonsColors[i] ?? self.highlightColor ?? UIColor.white,
                                                ignoreColor: ignoreIconColors)
         }
     }
