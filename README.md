@@ -1,9 +1,6 @@
-![AZTabBarController](https://github.com/Tobaloidee/AZTabBarController/blob/master/Screenshots/logo/logotype-a.png)
+![AZTabBarController](/Screenshots/logo/logotype-a.png)
 
-A custom tab bar controller for iOS written in Swift 3.0
-
-## Live Demo
-Checkout the live demo on [Appetize](https://appetize.io/app/dmbky73efrt5uvkh4xfdaz5axr?device=iphone6s&scale=75&orientation=portrait&osVersion=9.2)
+A custom tab bar controller for iOS written in Swift 4.0
 
 ## Screenshots
 
@@ -247,10 +244,11 @@ func tabBar(_ tabBar: AZTabBarController, willMoveToTabAtIndex index:Int)
 func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int)
 ```
 
-## Credit
+## Credits
 
-AZTabBarController is a converted and modified version of [ESTabBarController](https://github.com/ezescaruli/ESTabBarController) that is written in Objective-C by [ezescaruli](https://github.com/ezescaruli).
+AZTabBarController was originally inspired by [ESTabBarController](https://github.com/ezescaruli/ESTabBarController) that is written in Objective-C by [ezescaruli](https://github.com/ezescaruli).
 
+Thanks to [Tobaloidee](https://github.com/Tobaloidee) for creating the logo.
 
 
 
