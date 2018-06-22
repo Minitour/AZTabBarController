@@ -1,4 +1,5 @@
-# AZTabBarController
+![AZTabBarController](https://github.com/Tobaloidee/AZTabBarController/blob/master/Screenshots/logo/logotype-a.png)
+
 A custom tab bar controller for iOS written in Swift 3.0
 
 ## Live Demo
