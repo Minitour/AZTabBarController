@@ -9,7 +9,6 @@
 import Foundation
 import AVFoundation
 import UIKit
-import AZSearchView
 
 class ViewController: UIViewController {
     
@@ -18,8 +17,7 @@ class ViewController: UIViewController {
     var tabController:AZTabBarController!
     
     var audioId: SystemSoundID!
-    
-    var searchController: AZSearchViewController!
+
     var resultArray:[String] = []
     
     override func viewDidLoad() {
@@ -61,7 +59,8 @@ class ViewController: UIViewController {
         darkController.navigationBar.barTintColor = #colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
         
         
-        tabController.setViewController(SearchController.instance(), atIndex: 1)
+        tabController.setViewController(UIViewController(), atIndex: 1)
+      tabController.highlightButtonsOnTap = true
 
         tabController.setViewController(getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
         
@@ -166,7 +165,6 @@ class ViewController: UIViewController {
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
         {
             let imagePicker:UIImagePickerController = UIImagePickerController()
-            imagePicker.delegate = self
             imagePicker.sourceType = UIImagePickerControllerSourceType.camera
             imagePicker.allowsEditing = true
             
@@ -213,44 +211,6 @@ extension ViewController: AZTabBarDelegate{
         return tabBar.selectedIndex == index ? nil : audioId
     }
     
-}
-
-extension ViewController: AZSearchViewDelegate{
-    
-    func searchView(_ searchView: AZSearchViewController, didSearchForText text: String) {
-        searchView.dismiss(animated: false, completion: nil)
-    }
-    
-    func searchView(_ searchView: AZSearchViewController, didTextChangeTo text: String, textLength: Int) {
-        self.resultArray.removeAll()
-        if textLength > 3 {
-            for i in 0..<arc4random_uniform(10)+1 {self.resultArray.append("\(text) \(i+1)")}
-        }
-        
-        searchView.reloadData()
-    }
-    
-    func searchView(_ searchView: AZSearchViewController, didSelectResultAt index: Int, text: String) {
-        searchView.dismiss(animated: true, completion: {
-        })
-    }
-}
-
-extension ViewController: AZSearchViewDataSource{
-    
-    func results() -> [String] {
-        return self.resultArray
-    }
-}
-
-extension ViewController: UIImagePickerControllerDelegate,UINavigationControllerDelegate{
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        
-    }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        picker.dismiss(animated: true, completion: nil)
-    }
 }
 
 class LabelController: UIViewController {

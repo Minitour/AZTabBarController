@@ -14,7 +14,6 @@
 		4F6140071D883D72005BFB4F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F6140051D883D72005BFB4F /* LaunchScreen.storyboard */; };
 		4F6140121D886FE4005BFB4F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6140111D886FE4005BFB4F /* ViewController.swift */; };
 		4F6140161D895F14005BFB4F /* AZTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6140141D895F14005BFB4F /* AZTabBarController.swift */; };
-		9D1BF76B1E9F9521004F8F8C /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1BF76A1E9F9521004F8F8C /* SearchController.swift */; };
 		9D1BF76D1E9FC2D4004F8F8C /* ColorSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1BF76C1E9FC2D4004F8F8C /* ColorSelectorController.swift */; };
 		9D8D5F5C1E451CA900038D0D /* blop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9D8D5F5B1E451CA900038D0D /* blop.mp3 */; };
 		9DDDC8051ECE1CC700869009 /* AZTabBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDDC8041ECE1CC700869009 /* AZTabBarDelegate.swift */; };
@@ -34,7 +33,6 @@
 		4F6140141D895F14005BFB4F /* AZTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarController.swift; sourceTree = "<group>"; };
 		5C1DF6371E2DF3A8BE6120E9 /* Pods_AZTabBarController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AZTabBarController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9433B79E50ED01D596E39D98 /* Pods-AZTabBarController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AZTabBarController.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController.debug.xcconfig"; sourceTree = "<group>"; };
-		9D1BF76A1E9F9521004F8F8C /* SearchController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		9D1BF76C1E9FC2D4004F8F8C /* ColorSelectorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectorController.swift; sourceTree = "<group>"; };
 		9D8D5F5B1E451CA900038D0D /* blop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = blop.mp3; sourceTree = "<group>"; };
 		9DDDC8041ECE1CC700869009 /* AZTabBarDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarDelegate.swift; sourceTree = "<group>"; };
@@ -110,7 +108,6 @@
 		9D1BF7691E9F9513004F8F8C /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
-				9D1BF76A1E9F9521004F8F8C /* SearchController.swift */,
 				9D1BF76C1E9FC2D4004F8F8C /* ColorSelectorController.swift */,
 			);
 			name = Tabs;
@@ -137,7 +134,6 @@
 				4F613FF61D883D72005BFB4F /* Frameworks */,
 				4F613FF71D883D72005BFB4F /* Resources */,
 				CC710D6F7D0CDC6E5B699A7F /* [CP] Embed Pods Frameworks */,
-				EFA7C56E3FB00E82F8ECFED9 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -204,13 +200,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
 			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-AZTabBarController-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		CC710D6F7D0CDC6E5B699A7F /* [CP] Embed Pods Frameworks */ = {
@@ -219,28 +218,16 @@
 			files = (
 			);
 			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController-frameworks.sh",
+				"${BUILT_PRODUCTS_DIR}/EasyNotificationBadge/EasyNotificationBadge.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EasyNotificationBadge.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EFA7C56E3FB00E82F8ECFED9 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -257,7 +244,6 @@
 				4F613FFD1D883D72005BFB4F /* AppDelegate.swift in Sources */,
 				9DDDC8091ECE1D6200869009 /* AZTabBarButtonDelegate.swift in Sources */,
 				9D1BF76D1E9FC2D4004F8F8C /* ColorSelectorController.swift in Sources */,
-				9D1BF76B1E9F9521004F8F8C /* SearchController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
