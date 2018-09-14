@@ -105,12 +105,11 @@ public class AZTabBarButton: UIButton{
         self.imageView?.frame = self.imageRect(forContentRect: self.frame)
         
         if animate {
+          UIView.animate(withDuration: 0.1) {
             super.layoutSubviews()
+          }
         }else{
-            UIView.animate(withDuration: 0.1) {
-                
-                super.layoutSubviews()
-            }
+          super.layoutSubviews()
         }
         
     }
