@@ -8,7 +8,10 @@
 
 import UIKit
 import AVFoundation
+
+#if canImport(EasyNotificationBadge)
 import EasyNotificationBadge
+#endif
 
 public typealias AZTabBarAction = (() -> Void)
 
@@ -27,10 +30,10 @@ public class AZTabBarController: UIViewController {
     /// - Returns: The instance of AZTabBarController which was created.
     open class func insert(into parent:UIViewController, withTabIconNames names: [String],andSelectedIconNames sNames: [String]? = nil)->AZTabBarController {
         let controller = AZTabBarController(withTabIconNames: names,highlightedIcons: sNames)
-        parent.addChildViewController(controller)
+        parent.addChild(controller)
         parent.view.addSubview(controller.view)
         controller.view.frame = parent.view.bounds
-        controller.didMove(toParentViewController: parent)
+        controller.didMove(toParent: parent)
         
         return controller
     }
@@ -45,10 +48,10 @@ public class AZTabBarController: UIViewController {
     /// - Returns: The instance of AZTabBarController which was created.
     open class func insert(into parent:UIViewController, withTabIcons icons: [UIImage],andSelectedIcons sIcons: [UIImage]? = nil)->AZTabBarController {
         let controller = AZTabBarController(withTabIcons: icons,highlightedIcons: sIcons)
-        parent.addChildViewController(controller)
+        parent.addChild(controller)
         parent.view.addSubview(controller.view)
         controller.view.frame = parent.view.bounds
-        controller.didMove(toParentViewController: parent)
+        controller.didMove(toParent: parent)
         return controller
     }
     
@@ -233,7 +236,7 @@ public class AZTabBarController: UIViewController {
         return self.statusBarStyle
     }
     
-    override public var childViewControllerForStatusBarStyle: UIViewController?{
+    override public var childForStatusBarStyle: UIViewController?{
         return nil
     }
     
@@ -292,8 +295,7 @@ public class AZTabBarController: UIViewController {
     /// Array which holds the actions.
     fileprivate var actions: [AZTabBarAction?]!
     
-    /// A flag to indicate if the interface was set up.
-    fileprivate var didSetupInterface:Bool = false
+
     
     /// An array which keeps track of the highlighted menus.
     fileprivate var highlightedButtonIndexes:NSMutableSet!
@@ -302,7 +304,7 @@ public class AZTabBarController: UIViewController {
     fileprivate var badgeValues: [String?]!
     
     /// Computed var that returns the amount of tabs.
-    fileprivate var tabCount: Int{ return tabIcons.count }
+    fileprivate var tabCount: Int { return tabIcons.count }
     
     /// A flag that marks if the interface was setup or not.
     fileprivate var didSetUpInterface = false
@@ -458,13 +460,13 @@ public class AZTabBarController: UIViewController {
         if index >= tabCount { return }
         
         if let currentViewController = self.controllers[index]{
-            currentViewController.removeFromParentViewController()
+            currentViewController.removeFromParent()
             if index == selectedIndex {
                 currentViewController.view.removeFromSuperview()
             }
         }
         self.controllers[index] = controller
-        self.addChildViewController(controller)
+        self.addChild(controller)
         if index == self.selectedIndex {
             // If the index is the selected one, we have to update the view
             // controller at that index so that the change is reflected.
@@ -483,7 +485,7 @@ public class AZTabBarController: UIViewController {
         if selectedIndex == index { return }
         
         if let currentVC = controllers[index] {
-            currentVC.removeFromParentViewController()
+            currentVC.removeFromParent()
         }
         
         controllers[index] = nil
@@ -553,13 +555,17 @@ public class AZTabBarController: UIViewController {
     /// - Parameters:
     ///   - text: The text to set.
     ///   - index: The index at which you would like to set the title.
-    open func setTitle(_ text: String?, atIndex index: Int){
+    open func setTitle(_ text: String?, atIndex index: Int, titleColor: UIColor? = nil){
         if let buttons = buttons{
             if index < buttons.count{
                 let button = buttons[index]
-                
-                button.setTitleColor(buttonsColors[index] ?? selectedColor, for: .selected)
-                button.setTitleColor(buttonsColors[index] ?? selectedColor, for: [.selected,.highlighted])
+
+                let color: UIColor
+                if let titleColor = titleColor { color = titleColor }
+                else { color = selectedColor }
+
+                button.setTitleColor(buttonsColors[index] ?? color, for: .selected)
+                button.setTitleColor(buttonsColors[index] ?? color, for: [.selected,.highlighted])
                 button.setTitleColor(defaultColor, for: [])
                 
                 if onlyShowTextForSelectedButtons{
@@ -844,7 +850,7 @@ public class AZTabBarController: UIViewController {
     }
     
     private func updateInterfaceIfNeeded() {
-        if self.didSetupInterface {
+        if self.didSetUpInterface {
             // If the UI was already setup, it's necessary to update it.
             self.setupInterface()
         }
@@ -854,7 +860,7 @@ public class AZTabBarController: UIViewController {
         self.setupButtons()
         self.setupSelectionIndicator()
         self.setupSeparatorLine()
-        self.didSetupInterface = true
+        self.didSetUpInterface = true
     }
     
     private func setupButtons(){
@@ -907,7 +913,7 @@ public class AZTabBarController: UIViewController {
             
             let title: String? = button.title(for: []) ?? button.title(for: .selected)
             
-            if onlyShowTextForSelectedButtons{
+            if onlyShowTextForSelectedButtons {
                 button.setTitle(nil, for: .normal)
                 button.setTitle(nil, for: .highlighted)
                 button.setTitle(title, for: .selected)
@@ -980,13 +986,13 @@ public class AZTabBarController: UIViewController {
                 }
             }
             
-            controller.willMove(toParentViewController: self)
+            controller.willMove(toParent: self)
             
             controller.view.translatesAutoresizingMaskIntoConstraints = false
             self.controllersContainer.addSubview(controller.view)
             self.setupConstraints(forChildController: controller)
             
-            controller.didMove(toParentViewController: self)
+            controller.didMove(toParent: self)
             
             if let currentViewControllerView = currentViewControllerView, animated, animateTabChange {
                 //animate

@@ -140,7 +140,7 @@ class ViewController: UIViewController {
 
     }
     
-    override var childViewControllerForStatusBarStyle: UIViewController?{
+    override var childForStatusBarStyle: UIViewController?{
         return tabController
     }
     
@@ -163,18 +163,18 @@ class ViewController: UIViewController {
     
     func actionLaunchCamera()
     {
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.camera)
+        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerController.SourceType.camera)
         {
             let imagePicker:UIImagePickerController = UIImagePickerController()
             imagePicker.delegate = self
-            imagePicker.sourceType = UIImagePickerControllerSourceType.camera
+            imagePicker.sourceType = UIImagePickerController.SourceType.camera
             imagePicker.allowsEditing = true
             
             self.present(imagePicker, animated: true, completion: nil)
         }
         else
         {
-            let alert:UIAlertController = UIAlertController(title: "Camera Unavailable", message: "Unable to find a camera on this device", preferredStyle: UIAlertControllerStyle.alert)
+            let alert:UIAlertController = UIAlertController(title: "Camera Unavailable", message: "Unable to find a camera on this device", preferredStyle: UIAlertController.Style.alert)
             self.present(alert, animated: true, completion: nil)
         }
     }
