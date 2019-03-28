@@ -9,115 +9,6 @@
 import Foundation
 import UIKit
 
-public struct AZSearchViewDefaults{
-    
-    static let nibName: String = "AZSearchView"
-    
-    static let reuseIdetentifer = "cell"
-    
-    static let backgroundColor: UIColor = UIColor(colorLiteralRed: 0.0, green: 0.0, blue: 0.0, alpha: 0.6)
-    
-    static let searchBarColor: UIColor = UIColor(colorLiteralRed: 0.86, green: 0.86, blue: 0.86, alpha: 1)
-    
-    static let searchBarPortraitHeight:CGFloat = 64
-    
-    static let searchBarLandscapeHeight:CGFloat = 32
-    
-    static let searchBarPortraitOffset:CGFloat = 10
-    
-    static let searchBarLandscapeOffset:CGFloat = 0
-    
-    static let animationDuration = 0.3
-    
-    static let cellHeight:CGFloat = 44
-}
-
-
-//MARK: - AZSearchViewDelegate
-
-public protocol AZSearchViewDelegate{
-    
-    ///didTextChange is called once the user types/deletes.
-    /// - parameter searchView: Is the current instance of AZSearchViewController.
-    /// - parameter text: Is the new text.
-    /// - parameter textLength: Is the length of the new text.
-    func searchView(_ searchView: AZSearchViewController,didTextChangeTo text: String, textLength: Int)
-    
-    ///didSearch is called once the user clicks the `Search` button in the keyboard.
-    /// - parameter searchView: Is the current instance of AZSearchViewController.
-    /// - parameter text: Is the text that the user is searching for.
-    func searchView(_ searchView: AZSearchViewController,didSearchForText text: String)
-    
-    ///didSelectResult is called once the user has selected one of the results in the table view.
-    /// - parameter searchView: Is the current instance of AZSearchViewController.
-    /// - parameter index: Is the index of the item that was selected.
-    /// - parameter text: Is the text of the selected result. Note that this is fetched from the data source, so if the data source function `results()` has changed it's data set this will return the new data.
-    func searchView(_ searchView: AZSearchViewController, didSelectResultAt index: Int,text: String)
-    
-    /// Called when controller has been dismissed.
-    ///
-    /// - Parameters:
-    ///   - searchView: The current instance of AZSearchViewController.
-    ///   - text: Is the text.
-    func searchView(_ searchView: AZSearchViewController, didDismissWithText text: String)
-    
-    ///Optional function, override if you wish to add custom actions to your cells.
-    func searchView(_ searchView: AZSearchViewController, tableView: UITableView, editActionsForRowAtIndexPath indexPath: IndexPath) -> [UITableViewRowAction]?
-    
-    ///Optional function, override if you wish to modify the height of each row.
-    func searchView(_ searchView: AZSearchViewController, tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
-    
-}
-
-public extension AZSearchViewDelegate{
-    
-    func searchView(_ searchView: AZSearchViewController, didDismissWithText text: String){}
-    
-    func searchView(_ searchView: AZSearchViewController,tableView: UITableView, editActionsForRowAtIndexPath indexPath: IndexPath) -> [UITableViewRowAction]?{
-        return []
-    }
-    
-    func searchView(_ searchView: AZSearchViewController, tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return AZSearchViewDefaults.cellHeight
-    }
-}
-
-//MARK: - AZSearchViewDataSource
-
-public protocol AZSearchViewDataSource {
-    ///results is called whenever the UITableView's data source functions `cellForRowAt` and `numberOfRowsInSection` and when calling `reloadData()` on an instance of `AZSearchViewController`.
-    /// - returns: An array of strings which are displayed as a auto-complete suggestion.
-    func results()->[String]
-    
-    ///Optional function, override if you wish to dequeue a custom cell class.
-    func searchView(_ searchView: AZSearchViewController, tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    
-    ///Optional function, override if you want to allow a cell to be edited.
-    func searchView(_ searchView: AZSearchViewController, tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool
-    
-    func searchView(_ searchView: AZSearchViewController, tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
-    
-    func statusBarStyle()-> UIStatusBarStyle
-    
-}
-
-//This extension is used to make the function optional
-public extension AZSearchViewDataSource {
-    func searchView(_ searchView: AZSearchViewController,tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell{
-        let cell = tableView.dequeueReusableCell(withIdentifier: searchView.cellIdentifier)
-        cell?.textLabel?.text = results()[indexPath.row]
-        return cell!
-    }
-    
-    func searchView(_ searchView: AZSearchViewController,tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-    
-    func searchView(_ searchView: AZSearchViewController, tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath){}
-    
-    func statusBarStyle()-> UIStatusBarStyle {return .default}
-    
-}
 
 public class AZSearchViewController: UIViewController{
     
@@ -291,8 +182,8 @@ public class AZSearchViewController: UIViewController{
         self.view.addGestureRecognizer(tap)
         
         //add observers to listen to keyboard events
-        NotificationCenter.default.addObserver(self, selector: #selector(AZSearchViewController.keyboardWillShow(notification:)), name: NSNotification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(AZSearchViewController.keyboardWillHide(notification:)), name: NSNotification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AZSearchViewController.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(AZSearchViewController.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -323,18 +214,18 @@ public class AZSearchViewController: UIViewController{
     
     //MARK: - Selectors
     
-    func didTapBackground(sender: AnyObject?){
+    @objc func didTapBackground(sender: AnyObject?){
         self.dismiss(animated: true, completion: nil)
     }
     
-    func keyboardWillShow(notification: NSNotification) {
-        guard let kbSizeValue = notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue else { return }
-        guard let kbDurationNumber = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber else { return }
+    @objc func keyboardWillShow(notification: NSNotification) {
+        guard let kbSizeValue = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue else { return }
+        guard let kbDurationNumber = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else { return }
         animateToKeyboardHeight(kbHeight: kbSizeValue.cgRectValue.height, duration: kbDurationNumber.doubleValue)
     }
     
-    func keyboardWillHide(notification: NSNotification) {
-        guard let kbDurationNumber = notification.userInfo?[UIKeyboardAnimationDurationUserInfoKey] as? NSNumber else { return }
+    @objc func keyboardWillHide(notification: NSNotification) {
+        guard let kbDurationNumber = notification.userInfo?[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else { return }
         animateToKeyboardHeight(kbHeight: 0, duration: kbDurationNumber.doubleValue)
     }
     
@@ -389,7 +280,7 @@ extension AZSearchViewController: UITableViewDataSource{
         return self.dataSource?.searchView(self, tableView: tableView, canEditRowAt: indexPath) ?? false
     }
     
-    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         self.dataSource?.searchView(self, tableView: tableView, commit: editingStyle, forRowAt: indexPath)
     }
     
@@ -400,7 +291,7 @@ extension AZSearchViewController: UITableViewDataSource{
 extension AZSearchViewController: UISearchBarDelegate{
     
     public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        self.delegate?.searchView(self, didTextChangeTo: searchBar.text!, textLength: searchBar.text!.characters.count)
+        self.delegate?.searchView(self, didTextChangeTo: searchBar.text!, textLength: searchBar.text!.count)
     }
     
     public func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

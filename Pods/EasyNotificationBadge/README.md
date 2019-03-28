@@ -30,17 +30,17 @@ view.badge(text: nil)
 ## Advanced Usage
 
 ```swift
-var badgeAppearnce = BadgeAppearance()
+var badgeAppearance = BadgeAppearance()
 badgeAppearance.backgroundColor = UIColor.blue //default is red
 badgeAppearance.textColor = UIColor.white // default is white
 badgeAppearance.textAlignment = .center //default is center
 badgeAppearance.textSize = 15 //default is 12
-badgeAppearance.distenceFromCenterX = 15 //default is 0
-badgeAppearance.distenceFromCenterY = -10 //default is 0
+badgeAppearance.distanceFromCenterX = 15 //default is 0
+badgeAppearance.distanceFromCenterY = -10 //default is 0
 badgeAppearance.allowShadow = true
 badgeAppearance.borderColor = .blue
 badgeAppearance.borderWidth = 1
-view.badge(text: "Your text", appearnce: badgeAppearnce)
+view.badge(text: "Your text", appearance: badgeAppearance)
 ```
 
 ### Important

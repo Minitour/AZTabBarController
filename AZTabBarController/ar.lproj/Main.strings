@@ -1,0 +1,27 @@
+
+/* Class = "UITabBarItem"; title = "Home"; ObjectID = "0Q2-AM-ruf"; */
+"0Q2-AM-ruf.title" = "Home";
+
+/* Class = "UIButton"; normalTitle = "Increase Badge!"; ObjectID = "4eC-3F-wFn"; */
+"4eC-3F-wFn.normalTitle" = "Increase Badge!";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "Kic-Lp-6P5"; */
+"Kic-Lp-6P5.text" = "Label";
+
+/* Class = "UITabBarItem"; title = "Search"; ObjectID = "M7S-FB-F52"; */
+"M7S-FB-F52.title" = "Search";
+
+/* Class = "UIBarButtonItem"; title = "Hide Tab Bar"; ObjectID = "PkL-5D-WIf"; */
+"PkL-5D-WIf.title" = "Hide Tab Bar";
+
+/* Class = "UINavigationItem"; title = "Search"; ObjectID = "c6G-zF-BB5"; */
+"c6G-zF-BB5.title" = "Search";
+
+/* Class = "UITabBarItem"; title = "Item 2"; ObjectID = "mBP-gB-4am"; */
+"mBP-gB-4am.title" = "Item 2";
+
+/* Class = "UITabBarItem"; title = "Item 2"; ObjectID = "pKn-N5-8lo"; */
+"pKn-N5-8lo.title" = "Item 2";
+
+/* Class = "UITabBarItem"; title = "Item 2"; ObjectID = "u3W-kI-0eR"; */
+"u3W-kI-0eR.title" = "Item 2";

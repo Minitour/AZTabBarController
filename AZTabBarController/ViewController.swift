@@ -19,7 +19,6 @@ class ViewController: UIViewController {
     
     var audioId: SystemSoundID!
     
-    var searchController: AZSearchViewController!
     var resultArray:[String] = []
     
     override func viewDidLoad() {
@@ -61,7 +60,7 @@ class ViewController: UIViewController {
         darkController.navigationBar.barTintColor = #colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
         
         
-        tabController.setViewController(SearchController.instance(), atIndex: 1)
+        tabController.setViewController(UIViewController(), atIndex: 1)
 
         tabController.setViewController(getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
         
@@ -116,7 +115,7 @@ class ViewController: UIViewController {
         
         tabController.setIndex(1, animated: true)
         
-        tabController.animateTabChange = false
+        tabController.animateTabChange = true
         tabController.onlyShowTextForSelectedButtons = false
         tabController.setTitle("Home", atIndex: 0)
         tabController.setTitle("Search", atIndex: 1)
@@ -156,7 +155,7 @@ class ViewController: UIViewController {
     
     func createAudio()->SystemSoundID{
         var soundID: SystemSoundID = 0
-        let soundURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(), "blop" as CFString!, "mp3" as CFString!, nil)
+        let soundURL = CFBundleCopyResourceURL(CFBundleGetMainBundle(), "blop" as CFString?, "mp3" as CFString?, nil)
         AudioServicesCreateSystemSoundID(soundURL!, &soundID)
         return soundID
     }

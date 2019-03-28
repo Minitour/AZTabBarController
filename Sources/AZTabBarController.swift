@@ -313,6 +313,10 @@ public class AZTabBarController: UIViewController {
     fileprivate lazy var buttonsText: [String?] = Array<String?>(repeating: nil, count: self.tabCount)
 
     fileprivate lazy var buttonsColors: [UIColor?] = Array<UIColor?>(repeating: nil,count: self.tabCount)
+
+    fileprivate var isRTL: Bool {
+        return UIApplication.shared.userInterfaceLayoutDirection == UIUserInterfaceLayoutDirection.rightToLeft
+    }
     
     /*
      * MARK: - Init
@@ -998,8 +1002,8 @@ public class AZTabBarController: UIViewController {
                 //animate
                     
                 let offset: CGFloat = self.view.frame.size.width / 5
-                //let startX = index > selectedIndex ? self.view.frame.size.width + offset : -offset
-                let startX = index > selectedIndex ? offset : -offset
+                let startX = (index > selectedIndex ? offset : -offset) * (isRTL ? -1 : 1)
+
                 controller.view.transform = CGAffineTransform(translationX: startX, y: 0)
                 controller.view.alpha = 0
                     
