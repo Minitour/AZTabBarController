@@ -42,79 +42,80 @@ class ViewController: UIViewController {
 
         
         //init
-        //tabController = AZTabBarController.insert(into: self, withTabIconNames: icons)
-        tabController = AZTabBarController.insert(into: self, withTabIcons: icons, andSelectedIcons: sIcons)
+        //tabController = .insert(into: self, withTabIconNames: icons)
+        tabController = .insert(into: self, withTabIcons: icons, andSelectedIcons: sIcons)
 
         //set delegate
         tabController.delegate = self
-        
+
         //set child controllers
-        
-        
-        
+
+
+
         tabController.setViewController(ColorSelectorController.instance(), atIndex: 0)
 
         let darkController = getNavigationController(root: LabelController.controller(text: "Search", title: "Recents"))
         darkController.navigationBar.barStyle = .black
         darkController.navigationBar.isTranslucent = false
         darkController.navigationBar.barTintColor = #colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
-        
-        
+
+
         tabController.setViewController(UIViewController(), atIndex: 1)
 
-        tabController.setViewController(getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.", title: "Chat")), atIndex: 3)
-        
+        tabController.setViewController(getNavigationController(root: LabelController.controller(text: "You should really focus on the tab bar.",
+                                                                                                 title: "Chat")),
+                                        atIndex: 3)
+
         let buttonController = ButtonController.controller(badgeCount: 0, currentIndex: 4)
         tabController.setViewController(getNavigationController(root: buttonController), atIndex: 4)
-        
-        
+
+
         //customize
-        
+
         let color = UIColor(red: 14.0/255, green: 122.0/255, blue: 254.0/255, alpha: 1.0)
-        
+
         tabController.selectedColor = color
-        
+
         tabController.highlightColor = color
-        
+
         tabController.highlightedBackgroundColor = #colorLiteral(red: 0.1803921569, green: 0.8, blue: 0.4431372549, alpha: 1)
-        
+
         tabController.defaultColor = .lightGray
-        
+
         //tabController.highlightButton(atIndex: 2)
-        
-        tabController.buttonsBackgroundColor = UIColor(red: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)//#colorLiteral(red: 0.2039215686, green: 0.2862745098, blue: 0.368627451, alpha: 1)
-        
+
+        tabController.buttonsBackgroundColor = UIColor(red: (247.0/255), green: (247.0/255), blue: (247.0/255), alpha: 1.0)
+
         tabController.selectionIndicatorHeight = 0
-        
+
         tabController.selectionIndicatorColor = color
-        
+
         tabController.tabBarHeight = 60
-        
+
         tabController.notificationBadgeAppearance.backgroundColor = .red
         tabController.notificationBadgeAppearance.textColor = .white
         tabController.notificationBadgeAppearance.borderColor = .clear
         tabController.notificationBadgeAppearance.borderWidth = 0.2
-        
-        
+
         tabController.setBadgeText("!", atIndex: 4)
-        
+
         tabController.setIndex(10, animated: true)
-        
+
         tabController.setAction(atIndex: 3){
             self.counter = 0
             self.tabController.setBadgeText(nil, atIndex: 3)
         }
-        
+
         tabController.setAction(atIndex: 2) {
             self.tabController.onlyShowTextForSelectedButtons = !self.tabController.onlyShowTextForSelectedButtons
         }
-        
+
         tabController.setAction(atIndex: 4) {
             //self.tabController.setBar(hidden: true, animated: true)
         }
-        
+
         tabController.setIndex(1, animated: true)
-        
+
         tabController.animateTabChange = true
         tabController.onlyShowTextForSelectedButtons = false
         tabController.setTitle("Home", atIndex: 0)
@@ -123,7 +124,7 @@ class ViewController: UIViewController {
         tabController.setTitle("Feed", atIndex: 3)
         tabController.setTitle("Profile", atIndex: 4)
         tabController.font = UIFont(name: "AvenirNext-Regular", size: 12)
-        
+
         let container = tabController.buttonsContainer
         container?.layer.shadowOffset = CGSize(width: 0, height: -2)
         container?.layer.shadowRadius = 10

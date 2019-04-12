@@ -42,7 +42,7 @@ selectedIcons.append("ic_settings_filled")
 
 Now initialize the controller object through the following method:
 ```swift
-tabController = AZTabBarController.insert(into: self, withTabIconNames: icons, andSelectedIconNames: selectedIcons)
+tabController = .insert(into: self, withTabIconNames: icons, andSelectedIconNames: selectedIcons)
 ```
 
 Add controllers:

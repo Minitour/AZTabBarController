@@ -226,6 +226,9 @@ extension AZTabBarButton {
     private func customizeAsHighlighted(image: UIImage,selectedColor: UIColor,highlightedColor: UIColor,ignoreColor: Bool = false) {
         // We want the image to be always white in highlighted state.
         self.tintColor = highlightedColor
+        self.setTitleColor(highlightedColor, for: [.highlighted])
+        self.setTitleColor(highlightedColor, for: [.highlighted,.selected])
+        self.setTitleColor(highlightedColor, for: [])
         self.setImage(ignoreColor ? image : image.withRenderingMode(.alwaysTemplate), for: .normal)
         // And its background color should always be the selected color.
         self.backgroundColor = selectedColor
