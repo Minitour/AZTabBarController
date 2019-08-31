@@ -190,7 +190,7 @@ extension ViewController: AZTabBarDelegate{
     }
     
     func tabBar(_ tabBar: AZTabBarController, shouldAnimateButtonInteractionAtIndex index: Int) -> Bool {
-        return false
+        return true
     }
     
     func tabBar(_ tabBar: AZTabBarController, didMoveToTabAtIndex index: Int) {
