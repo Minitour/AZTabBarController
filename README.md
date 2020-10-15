@@ -15,6 +15,22 @@ A custom tab bar controller for iOS written in Swift 4.0
 pod 'AZTabBar'
 ```
 
+### Swift Package Manager:
+
+You can use [The Swift Package Manager](https://swift.org/package-manager) to install `AZTabBarController` by adding the proper description to your `Package.swift` file:
+
+```swift
+// swift-tools-version:4.0
+import PackageDescription
+let package = Package(
+    name: "YOUR_PROJECT_NAME",
+    dependencies: [
+        .package(url: "https://github.com/Minitour/AZTabBarController.git", from: "1.4.2"),
+    ]
+)
+```
+Then run `swift build` whenever you're ready.
+
 ### Manual:
 
 Simply drag and drop the ```Sources``` folder to your project.
