@@ -9,5 +9,4 @@ Pod::Spec.new do |s|
   s.source       = { :git => "https://github.com/Minitour/AZTabBarController.git", :tag => "#{s.version}" }
   s.source_files  = "Sources/**/*.swift"
   #s.resources  = "Sources/*.xib"
-  s.dependency "EasyNotificationBadge"
 end
