@@ -10,6 +10,7 @@ import Foundation
 import AVFoundation
 import UIKit
 import AZSearchView
+import AZTabBarController
 
 class ViewController: UIViewController {
     

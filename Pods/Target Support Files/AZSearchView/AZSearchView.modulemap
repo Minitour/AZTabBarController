@@ -1,6 +1,0 @@
-framework module AZSearchView {
-  umbrella header "AZSearchView-umbrella.h"
-
-  export *
-  module * { export * }
-}

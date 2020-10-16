@@ -1,0 +1,16 @@
+PODS:
+  - AZSearchView (1.0.5)
+
+DEPENDENCIES:
+  - AZSearchView
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - AZSearchView
+
+SPEC CHECKSUMS:
+  AZSearchView: 21a2c07c5bd05f1aa2bbc34083a91c19f1965ad7
+
+PODFILE CHECKSUM: 4da12622fd55468ccf812e05a48a7eeb034eee74
+
+COCOAPODS: 1.9.3

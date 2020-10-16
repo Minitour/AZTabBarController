@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,24 +13,20 @@
 		4F6140041D883D72005BFB4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4F6140031D883D72005BFB4F /* Assets.xcassets */; };
 		4F6140071D883D72005BFB4F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 4F6140051D883D72005BFB4F /* LaunchScreen.storyboard */; };
 		4F6140121D886FE4005BFB4F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6140111D886FE4005BFB4F /* ViewController.swift */; };
-		4F6140161D895F14005BFB4F /* AZTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4F6140141D895F14005BFB4F /* AZTabBarController.swift */; };
 		9D1BF76D1E9FC2D4004F8F8C /* ColorSelectorController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1BF76C1E9FC2D4004F8F8C /* ColorSelectorController.swift */; };
 		9D8D5F5C1E451CA900038D0D /* blop.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9D8D5F5B1E451CA900038D0D /* blop.mp3 */; };
-		9DDDC8051ECE1CC700869009 /* AZTabBarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDDC8041ECE1CC700869009 /* AZTabBarDelegate.swift */; };
-		9DDDC8071ECE1D1400869009 /* AZTabBarButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDDC8061ECE1D1400869009 /* AZTabBarButton.swift */; };
-		9DDDC8091ECE1D6200869009 /* AZTabBarButtonDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDDC8081ECE1D6200869009 /* AZTabBarButtonDelegate.swift */; };
+		CF778E1F2538483D00D71C25 /* AZTabBarController in Frameworks */ = {isa = PBXBuildFile; productRef = CF778E1E2538483D00D71C25 /* AZTabBarController */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2A0F8BB07592D080B9FAE825 /* Pods-AZTabBarController.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AZTabBarController.release.xcconfig"; path = "Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController.release.xcconfig"; sourceTree = "<group>"; };
-		4F613FF91D883D72005BFB4F /* AZTabBarController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AZTabBarController.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		4F613FF91D883D72005BFB4F /* AZTabBarControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AZTabBarControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		4F613FFC1D883D72005BFB4F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4F6140011D883D72005BFB4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		4F6140031D883D72005BFB4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		4F6140061D883D72005BFB4F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		4F6140081D883D72005BFB4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		4F6140111D886FE4005BFB4F /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		4F6140141D895F14005BFB4F /* AZTabBarController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarController.swift; sourceTree = "<group>"; };
 		5C1DF6371E2DF3A8BE6120E9 /* Pods_AZTabBarController.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AZTabBarController.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9433B79E50ED01D596E39D98 /* Pods-AZTabBarController.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AZTabBarController.debug.xcconfig"; path = "Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController.debug.xcconfig"; sourceTree = "<group>"; };
 		9D1BF76C1E9FC2D4004F8F8C /* ColorSelectorController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ColorSelectorController.swift; sourceTree = "<group>"; };
@@ -39,9 +35,6 @@
 		9D3A10FA224D4F6400CD11AE /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/Main.strings; sourceTree = "<group>"; };
 		9D3A10FB224D4F6400CD11AE /* he */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = he; path = he.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		9D8D5F5B1E451CA900038D0D /* blop.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = blop.mp3; sourceTree = "<group>"; };
-		9DDDC8041ECE1CC700869009 /* AZTabBarDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarDelegate.swift; sourceTree = "<group>"; };
-		9DDDC8061ECE1D1400869009 /* AZTabBarButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarButton.swift; sourceTree = "<group>"; };
-		9DDDC8081ECE1D6200869009 /* AZTabBarButtonDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AZTabBarButtonDelegate.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +43,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1275B07B8657B17D4A95BF28 /* Pods_AZTabBarController.framework in Frameworks */,
+				CF778E1F2538483D00D71C25 /* AZTabBarController in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -67,8 +61,7 @@
 		4F613FF01D883D72005BFB4F = {
 			isa = PBXGroup;
 			children = (
-				4F6140131D895F14005BFB4F /* Sources */,
-				4F613FFB1D883D72005BFB4F /* AZTabBarController */,
+				4F613FFB1D883D72005BFB4F /* AZTabBarControllerExample */,
 				4F613FFA1D883D72005BFB4F /* Products */,
 				EEE99515ED9EF315E9EAAD93 /* Pods */,
 				2064703B5BE1C7D40D02770B /* Frameworks */,
@@ -78,12 +71,12 @@
 		4F613FFA1D883D72005BFB4F /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4F613FF91D883D72005BFB4F /* AZTabBarController.app */,
+				4F613FF91D883D72005BFB4F /* AZTabBarControllerExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4F613FFB1D883D72005BFB4F /* AZTabBarController */ = {
+		4F613FFB1D883D72005BFB4F /* AZTabBarControllerExample */ = {
 			isa = PBXGroup;
 			children = (
 				9D1BF7691E9F9513004F8F8C /* Tabs */,
@@ -95,18 +88,7 @@
 				4F6140051D883D72005BFB4F /* LaunchScreen.storyboard */,
 				4F6140081D883D72005BFB4F /* Info.plist */,
 			);
-			path = AZTabBarController;
-			sourceTree = "<group>";
-		};
-		4F6140131D895F14005BFB4F /* Sources */ = {
-			isa = PBXGroup;
-			children = (
-				4F6140141D895F14005BFB4F /* AZTabBarController.swift */,
-				9DDDC8041ECE1CC700869009 /* AZTabBarDelegate.swift */,
-				9DDDC8061ECE1D1400869009 /* AZTabBarButton.swift */,
-				9DDDC8081ECE1D6200869009 /* AZTabBarButtonDelegate.swift */,
-			);
-			path = Sources;
+			path = AZTabBarControllerExample;
 			sourceTree = "<group>";
 		};
 		9D1BF7691E9F9513004F8F8C /* Tabs */ = {
@@ -129,9 +111,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		4F613FF81D883D72005BFB4F /* AZTabBarController */ = {
+		4F613FF81D883D72005BFB4F /* AZTabBarControllerExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4F61400B1D883D72005BFB4F /* Build configuration list for PBXNativeTarget "AZTabBarController" */;
+			buildConfigurationList = 4F61400B1D883D72005BFB4F /* Build configuration list for PBXNativeTarget "AZTabBarControllerExample" */;
 			buildPhases = (
 				CC3374129962B6DD15F9049A /* [CP] Check Pods Manifest.lock */,
 				4F613FF51D883D72005BFB4F /* Sources */,
@@ -143,9 +125,12 @@
 			);
 			dependencies = (
 			);
-			name = AZTabBarController;
+			name = AZTabBarControllerExample;
+			packageProductDependencies = (
+				CF778E1E2538483D00D71C25 /* AZTabBarController */,
+			);
 			productName = AZTabBarController;
-			productReference = 4F613FF91D883D72005BFB4F /* AZTabBarController.app */;
+			productReference = 4F613FF91D883D72005BFB4F /* AZTabBarControllerExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -165,22 +150,26 @@
 					};
 				};
 			};
-			buildConfigurationList = 4F613FF41D883D72005BFB4F /* Build configuration list for PBXProject "AZTabBarController" */;
+			buildConfigurationList = 4F613FF41D883D72005BFB4F /* Build configuration list for PBXProject "AZTabBarControllerExample" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 				ar,
 				he,
 			);
 			mainGroup = 4F613FF01D883D72005BFB4F;
+			packageReferences = (
+				CF778E1D2538483D00D71C25 /* XCRemoteSwiftPackageReference "." */,
+			);
 			productRefGroup = 4F613FFA1D883D72005BFB4F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4F613FF81D883D72005BFB4F /* AZTabBarController */,
+				4F613FF81D883D72005BFB4F /* AZTabBarControllerExample */,
 			);
 		};
 /* End PBXProject section */
@@ -224,18 +213,16 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/AZSearchView/AZSearchView.framework",
-				"${BUILT_PRODUCTS_DIR}/EasyNotificationBadge/EasyNotificationBadge.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AZSearchView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/EasyNotificationBadge.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-AZTabBarController/Pods-AZTabBarController-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -245,12 +232,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DDDC8051ECE1CC700869009 /* AZTabBarDelegate.swift in Sources */,
-				9DDDC8071ECE1D1400869009 /* AZTabBarButton.swift in Sources */,
-				4F6140161D895F14005BFB4F /* AZTabBarController.swift in Sources */,
 				4F6140121D886FE4005BFB4F /* ViewController.swift in Sources */,
 				4F613FFD1D883D72005BFB4F /* AppDelegate.swift in Sources */,
-				9DDDC8091ECE1D6200869009 /* AZTabBarButtonDelegate.swift in Sources */,
 				9D1BF76D1E9FC2D4004F8F8C /* ColorSelectorController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -383,7 +366,8 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
-				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -394,9 +378,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 35DWKWL79J;
-				INFOPLIST_FILE = AZTabBarController/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/AZTabBarControllerExample/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.crofis.AZTabBarController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -409,9 +396,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 35DWKWL79J;
-				INFOPLIST_FILE = AZTabBarController/Info.plist;
+				INFOPLIST_FILE = "$(SRCROOT)/AZTabBarControllerExample/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = net.crofis.AZTabBarController;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
@@ -421,7 +411,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4F613FF41D883D72005BFB4F /* Build configuration list for PBXProject "AZTabBarController" */ = {
+		4F613FF41D883D72005BFB4F /* Build configuration list for PBXProject "AZTabBarControllerExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4F6140091D883D72005BFB4F /* Debug */,
@@ -430,7 +420,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4F61400B1D883D72005BFB4F /* Build configuration list for PBXNativeTarget "AZTabBarController" */ = {
+		4F61400B1D883D72005BFB4F /* Build configuration list for PBXNativeTarget "AZTabBarControllerExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4F61400C1D883D72005BFB4F /* Debug */,
@@ -440,6 +430,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CF778E1D2538483D00D71C25 /* XCRemoteSwiftPackageReference "." */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = ../;
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.4.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CF778E1E2538483D00D71C25 /* AZTabBarController */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CF778E1D2538483D00D71C25 /* XCRemoteSwiftPackageReference "." */;
+			productName = AZTabBarController;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4F613FF11D883D72005BFB4F /* Project object */;
 }
