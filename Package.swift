@@ -12,7 +12,7 @@ let package = Package(
     dependencies: [
         .package(name: "EasyNotificationBadge",
                  url: "https://github.com/Minitour/EasyNotificationBadge.git",
-                 from: "1.2.0"),
+                 from: "1.2.1"),
     ],
     targets: [
         .target(
