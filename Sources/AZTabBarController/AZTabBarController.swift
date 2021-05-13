@@ -807,7 +807,7 @@ open class AZTabBarController: UIViewController {
      * MARK: - Actions
      */
     
-    @objc func tabButtonAction(button:UIButton){
+    @objc open func tabButtonAction(button:UIButton){
         if let index = self.buttons.firstIndex(of: button){
         	delegate?.tabBar(self, didSelectTabAtIndex: index)
         
@@ -956,7 +956,7 @@ open class AZTabBarController: UIViewController {
         }
     }
     
-    private func createButton(forIndex index:Int)-> UIButton{
+    open func createButton(forIndex index:Int)-> UIButton{
         let button = AZTabBarButton(type: .custom)
         button.setTitle(" ", for: [])
         button.delegate = self
