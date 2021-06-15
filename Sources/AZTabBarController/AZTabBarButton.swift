@@ -9,7 +9,7 @@
 import EasyNotificationBadge
 import UIKit
 
-public class AZTabBarButton: UIButton{
+open class AZTabBarButton: UIButton{
     
     var longClickTimer: Timer?
     
@@ -88,7 +88,7 @@ public class AZTabBarButton: UIButton{
     }
     
     
-    override public func layoutSubviews() {
+    override open func layoutSubviews() {
         
         if didAddBadge{
             super.layoutSubviews()
@@ -115,7 +115,7 @@ public class AZTabBarButton: UIButton{
     }
     
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         centerTitleLabel()
     }
