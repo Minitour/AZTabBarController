@@ -139,6 +139,8 @@ open class AZTabBarController: UIViewController {
     /// Is the tab bar in the middle of an animation.
     fileprivate (set) open var isAnimating: Bool = false
     
+    open var tabButtonActionAnimated: Bool = true
+    
     /// If the separator line view that is between the buttons container and the primary view container is visable.
     open var separatorLineVisible:Bool = true{
         didSet{
@@ -816,7 +818,7 @@ open class AZTabBarController: UIViewController {
             }
         
             if index != NSNotFound {
-                self.setIndex(index, animated: true)
+                self.setIndex(index, animated: tabButtonActionAnimated)
             }
         }
     }
