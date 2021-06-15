@@ -139,7 +139,7 @@ open class AZTabBarController: UIViewController {
     /// Is the tab bar in the middle of an animation.
     fileprivate (set) open var isAnimating: Bool = false
     
-    open var tabButtonActionAnimated: Bool = true
+    open var tabButtonActionAnimated: Bool? = nil
     
     /// If the separator line view that is between the buttons container and the primary view container is visable.
     open var separatorLineVisible:Bool = true{
@@ -818,7 +818,7 @@ open class AZTabBarController: UIViewController {
             }
         
             if index != NSNotFound {
-                self.setIndex(index, animated: tabButtonActionAnimated)
+                self.setIndex(index, animated: true)
             }
         }
     }
@@ -1122,6 +1122,9 @@ extension AZTabBarController: AZTabBarButtonDelegate{
     }
 
     public func shouldAnimate(_ tabBarButton: AZTabBarButton) -> Bool {
+        if let animated = tabButtonActionAnimated {
+            return animated
+        }
         if tabBarButton.tag == selectedIndex || self.highlightedButtonIndexes.contains(tabBarButton.tag) || isAnimating{
             return false
         }
