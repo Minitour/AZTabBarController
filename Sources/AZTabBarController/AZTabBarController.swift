@@ -803,6 +803,15 @@ open class AZTabBarController: UIViewController {
         updateInterfaceIfNeeded()
     }
     
+    /// Change the visibility iof the tab icon at a certain index.
+    ///
+    /// - Parameters:
+    ///   - index: The index of which you would like to change the tab visibility
+    ///   - isHidden: The visibility bool value.
+    open func setButtonTabVisibility(forIndex index:Int, isHidden: Bool) {
+       self.buttons?[index].isHidden = isHidden
+    }
+    
     /*
      * MARK: - Actions
      */
