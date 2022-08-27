@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "EasyNotificationBadge",
+        "repositoryURL": "https://github.com/Minitour/EasyNotificationBadge.git",
+        "state": {
+          "branch": null,
+          "revision": "2774998af193a396b1842c0727fe52c2bd217ae2",
+          "version": "1.2.5"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
